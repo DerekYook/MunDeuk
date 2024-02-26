@@ -25,7 +25,7 @@ public class BoardController {
     private final BoardService boardService;
     private final BoardMapper boardMapper;
 
-    @GetMapping
+    @GetMapping("/boards")
     public ResponseEntity getAllBoards() {
         List<Board> boardsList = boardService.getBoardLists();
 

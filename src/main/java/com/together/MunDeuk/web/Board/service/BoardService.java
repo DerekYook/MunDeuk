@@ -17,7 +17,9 @@ public class BoardService {
     }
 
     public List<Board> getBoardLists(){
-        return boardRepository.findAll();
+//        return boardRepository.findByBoardStatusIs(Board.BoardStatus.Active);
+        return boardRepository.selectBoards();
+//        return boardRepository.findAll();
     }
 
 }

@@ -1,1 +1,1 @@
-CREATE TABLE BOARD(board_seq bigint primary key, title varchar(50), content varchar(200), board_ctgr varchar(10), boardStatus varchar(10));
+CREATE TABLE BOARD(board_seq bigint primary key NOT NULL, title varchar(50) NOT NULL, content varchar(200) NOT NULL, board_ctgr varchar(10) NOT NULL, board_status varchar(10) NOT NULL);
