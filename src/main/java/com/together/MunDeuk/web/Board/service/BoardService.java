@@ -17,9 +17,15 @@ public class BoardService {
     }
 
     public List<Board> getBoardLists(){
-//        return boardRepository.findByBoardStatusIs(Board.BoardStatus.Active);
         return boardRepository.selectBoards();
-//        return boardRepository.findAll();
+    }
+
+    public Board getBoard(Integer boardSeq){
+        return boardRepository.selectBoard(boardSeq);
+    }
+
+    public List<Board> getBoardListByCtgr(String boardCtgr){
+        return boardRepository.selectBoardsByCtgr(boardCtgr);
     }
 
 }

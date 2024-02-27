@@ -13,7 +13,7 @@ import lombok.Setter;
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long boardSeq;
+    private Long boardSeq;
 
     @Column(length = 50, nullable = false)
     private String title;
@@ -21,7 +21,7 @@ public class Board {
     @Column(length = 200, nullable = false)
     private String content;
 
-    @Column(nullable = false)
+    @Column(length = 10, nullable = false)
     private String boardCtgr;
 
     @Enumerated(EnumType.STRING)
@@ -32,4 +32,7 @@ public class Board {
         Active,
         Inactive;
     }
+
+    private Long memberId;
+
 }
