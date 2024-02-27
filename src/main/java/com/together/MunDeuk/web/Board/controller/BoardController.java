@@ -1,13 +1,11 @@
 package com.together.MunDeuk.web.Board.controller;
 
-import com.together.MunDeuk.web.Board.dto.BoardDto;
 import com.together.MunDeuk.web.Board.entity.Board;
 import com.together.MunDeuk.web.Board.mapper.BoardMapper;
 import com.together.MunDeuk.web.Board.service.BoardService;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
