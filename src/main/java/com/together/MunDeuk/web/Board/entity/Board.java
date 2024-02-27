@@ -32,7 +32,7 @@ public class Board {
         Active,
         Inactive;
     }
-
+    @Column(nullable = false)
     private Long memberId;
 
 }

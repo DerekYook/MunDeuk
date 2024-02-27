@@ -28,4 +28,8 @@ public class BoardService {
         return boardRepository.selectBoardsByCtgr(boardCtgr);
     }
 
+    public List<Board> getBoardListByMemberId(Integer memberId){
+        return boardRepository.selectBoardsByMemberId(memberId);
+    }
+
 }

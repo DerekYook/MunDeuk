@@ -48,4 +48,11 @@ public class BoardController {
 
         return new ResponseEntity<>((boardMapper.boardsToBoardResponseDtos(boardsList)), HttpStatus.OK);
     }
+
+    @GetMapping("/user/{memberId}")
+    public ResponseEntity getBoardByMember(@PathVariable("memberId") @Positive Integer memberId) {
+        List<Board> boardsList = boardService.getBoardListByMemberId(memberId);
+
+        return new ResponseEntity<>((boardMapper.boardsToBoardResponseDtos(boardsList)), HttpStatus.OK);
+    }
 }
