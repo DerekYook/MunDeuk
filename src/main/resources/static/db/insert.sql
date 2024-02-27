@@ -1,0 +1,15 @@
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES (1, 'test1', 'test_text1', 'noti', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES (2, 'test2', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (3, 'test3', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (4, 'test4', 'test_text1', 'memo', 'Inactive');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (5, 'test4', 'test_text1', 'todo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (6, 'test6', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (7, 'test7', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (8, 'test4', 'test_text1', 'noti', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (9, 'test9', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (10, 'test10', 'test_text1', 'todo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (11, 'test11', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (12, 'test12', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (13, 'test13', 'test_text1', 'memo', 'Active');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (14, 'test14', 'test_text1', 'map', 'Inactive');
+INSERT INTO BOARD (board_seq, title, content, board_ctgr, board_status) VALUES  (15, 'test15', 'test_text1', 'map', 'Active');
