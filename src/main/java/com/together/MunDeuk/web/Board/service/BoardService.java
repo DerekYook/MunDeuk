@@ -32,4 +32,8 @@ public class BoardService {
         return boardRepository.selectBoardsByMemberId(memberId);
     }
 
+    public Board setBoard(Board board){
+            return boardRepository.save(board);
+    }
+
 }

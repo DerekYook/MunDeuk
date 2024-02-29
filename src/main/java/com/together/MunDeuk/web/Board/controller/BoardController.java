@@ -1,19 +1,19 @@
 package com.together.MunDeuk.web.Board.controller;
 
+import com.together.MunDeuk.web.Board.dto.BoardDto;
 import com.together.MunDeuk.web.Board.entity.Board;
 import com.together.MunDeuk.web.Board.mapper.BoardMapper;
 import com.together.MunDeuk.web.Board.service.BoardService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -52,5 +52,19 @@ public class BoardController {
         List<Board> boardsList = boardService.getBoardListByMemberId(memberId);
 
         return new ResponseEntity<>((boardMapper.boardsToBoardResponseDtos(boardsList)), HttpStatus.OK);
+    }
+
+    @PostMapping("/board")
+    public ResponseEntity insertBoard(@Valid @RequestBody BoardDto.Post requestBody){
+        Board board = new Board();
+        board.setTitle(requestBody.getTitle());
+        board.setContent(requestBody.getContent());
+        board.setBoardCtgr(requestBody.getBoardCtgr());
+        board.setBoardStatus(Board.BoardStatus.Active);
+        board.setMemberId(requestBody.getMemberId());
+
+        boardMapper.boardPostDtoToBoard(boardService.setBoard(board));
+
+        return new ResponseEntity<>("SUCCESS",HttpStatus.CREATED);
     }
 }
