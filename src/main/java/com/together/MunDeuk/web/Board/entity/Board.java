@@ -12,7 +12,7 @@ import lombok.Setter;
 @Entity(name = "board")
 public class Board {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardSeq;
 
     @Column(length = 50, nullable = false)
