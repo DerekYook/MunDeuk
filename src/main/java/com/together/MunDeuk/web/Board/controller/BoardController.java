@@ -5,32 +5,43 @@ import com.together.MunDeuk.web.Board.entity.Board;
 import com.together.MunDeuk.web.Board.mapper.BoardMapper;
 import com.together.MunDeuk.web.Board.service.BoardService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.Request;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 
-@RestController
+//@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/boards")
+//@RequestMapping("/boards")
 @Validated
 @Slf4j
 public class BoardController {
-    private final static String BOARDS_DEFAULT_URL = "/boards";
+//    private final static String BOARDS_DEFAULT_URL = "/boards";
     private final BoardService boardService;
     private final BoardMapper boardMapper;
 
-    @GetMapping("/")
+//    @GetMapping("/")
+    @GetMapping("/boards")
     public ResponseEntity getAllBoards() {
         List<Board> boardsList = boardService.getBoardLists();
 
         return new ResponseEntity<>((boardMapper.boardsToBoardResponseDtos(boardsList)), HttpStatus.OK);
+    }
+
+//    @GetMapping("/boards/test")
+    @RequestMapping(value = "/boards/test")
+    public String test() {
+        return "web/common/main";
     }
 
     @GetMapping("/board/{boardSeq}")
@@ -57,6 +68,7 @@ public class BoardController {
     @PostMapping("/board")
     public ResponseEntity insertBoard(@Valid @RequestBody BoardDto.Post requestBody){
         Board board = new Board();
+
         board.setTitle(requestBody.getTitle());
         board.setContent(requestBody.getContent());
         board.setBoardCtgr(requestBody.getBoardCtgr());

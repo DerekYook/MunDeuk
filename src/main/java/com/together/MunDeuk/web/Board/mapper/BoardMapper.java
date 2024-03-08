@@ -10,7 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BoardMapper {
     List<BoardDto.Response> boardsToBoardResponseDtos(List<Board> boards);
-
     BoardDto.Response boardToBoardResponseDto(Board board);
     BoardDto.Post boardPostDtoToBoard (Board board);
 }

@@ -33,7 +33,9 @@ public class BoardService {
     }
 
     public Board setBoard(Board board){
-            return boardRepository.save(board);
+        // Todo : seq 자동관리
+        board.setBoardSeq(boardRepository.count()+1);
+        return boardRepository.save(board);
     }
 
 }
