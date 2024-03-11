@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC 
+ "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+ "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="mainTemplate" template="/WEB-INF/jsp/tiles/mainTemplate.jsp"> <!--preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">-->
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainHeader.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainTop.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainFooter.jsp" />
+	</definition>
+
+	<definition name="memberTemplate" template="/WEB-INF/jsp/tiles/memberTemplate.jsp"> <!--preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">-->
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/memberHeader.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/memberTop.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/memberFooter.jsp" />
+	</definition>
+
+	<definition name="/boards/*" extends="blankTemplate">
+		<put-attribute name="body" value="/WEB-INF/web/common/main.jsp" />
+	</definition>
+</tiles-definitions>

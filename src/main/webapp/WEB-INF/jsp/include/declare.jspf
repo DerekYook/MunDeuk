@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="org.springframework.security.core.userdetails.User" %>
+<%--<%@ page import="kr.cancerdata.portal.cmmn.McenUserDetails" %>--%>
+<%--<%@ page import="kr.cancerdata.portal.vo.UserVO" %>--%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%--
+<%
+    /*************** header info *******************/
+    response.setHeader    ("Pragma",        "No-cache" );       // HTTP1.0
+    response.setDateHeader("Expires",                 -1);
+//response.setHeader    ("Cache-Control", "no-cache" );       // HTTP1.1
+    response.setHeader    ("Cache-Control", "no-cache, no-store, must-revalidate" );       // HTTP1.1
+
+/*************** header info *******************/
+
+/*************** login info *******************/
+    String memberSeq = "";
+    String userSeq = "";
+    String userId = "";
+    String userName = "";
+    String groupCodeName = "";
+    UserVO user = new UserVO();
+
+
+
+    if(!SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")){
+        /* 	out.println("login user!"); */
+
+
+
+        McenUserDetails userDetails = (McenUserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        user = (UserVO) userDetails.getUserVO();
+        memberSeq = String.valueOf(user.getMemberSeq());
+        userSeq = String.valueOf(user.getUserSeq());
+        userId = user.getUserId();
+        userName = user.getUserName();
+        groupCodeName = user.getGroupCodeName();
+
+
+    }
+
+
+    request.setAttribute("USER_SEQ", userSeq);
+    request.setAttribute("MEMBER_SEQ", memberSeq);
+    request.setAttribute("USER_ID", userId);
+    request.setAttribute("USER_NAME", userName);
+    request.setAttribute("GROUP_CODE_NAME", groupCodeName);
+/*************** login info *******************/
+
+%>--%>

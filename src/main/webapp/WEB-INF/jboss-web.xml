@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <jboss-web xmlns="http://www.jboss.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.jboss.com/xml/ns/javaeehttp://www.jboss.org/j2ee/schema/jboss-web_5_1.xsd">
+    <context-root>/</context-root>
+ 
+ 
+  <session-config>
+   <session-timeout>600</session-timeout>
+   <tracking-mode>COOKIE</tracking-mode>
+</session-config>
+
+
+
+<!--          <env-entry>
+          <env-entry-name>spring.config.location</env-entry-name>
+          <env-entry-type>java.lang.String</env-entry-type>
+          <env-entry-value>C:/dev/application.yml
+</env-entry-value>
+      </env-entry>  -->
+     
+      
+</jboss-web> 

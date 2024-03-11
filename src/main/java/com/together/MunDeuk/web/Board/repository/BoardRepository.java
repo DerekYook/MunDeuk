@@ -19,4 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query(value="SELECT * FROM board WHERE MEMBER_ID = :memberId", nativeQuery = true)
     List<Board> selectBoardsByMemberId(Integer memberId);
+
+    @Query(value = "SELECT max(BOARD_SEQ) FROM board", nativeQuery = true)
+    Long selectMaxBoardSeq();
 }
