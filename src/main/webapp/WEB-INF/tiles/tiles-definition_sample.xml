@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC 
+ "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+ "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+<!-- ########################################################################### -->
+<!-- ######################## Template Definition Start ######################## -->
+
+    <!-- blank 레이아웃 -->	 
+    <definition name="blankTemplate" template="/WEB-INF/jsp/tiles/blankTemplate.jsp">
+        <put-attribute name="body" value=""/>
+    </definition>
+    
+	<!-- popup 레이아웃-->
+	<definition name="popupTemplate" template="/WEB-INF/jsp/tiles/popupTemplate.jsp" >
+  		<put-attribute name="body" value=""/>
+	</definition>
+	<definition name="adminDatasetRequestTemplate" template="/WEB-INF/jsp/tiles/adminDatasetRequestTemplate.jsp" >
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainNcdcHeader.jsp" />
+		<put-attribute name="body" value=""/>
+	</definition>
+
+    <!-- admin login Template 레이아웃 -->	 
+    <definition name="AdminloginTemplate" template="/WEB-INF/jsp/tiles/adminLoginTemplate.jsp">
+    	<put-attribute name="header" value="/WEB-INF/jsp/tiles/adminLoginHeader.jsp" /> 
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/jsp/tiles/adminLoginFooter.jsp" />
+    </definition>
+    
+	<!-- default Template with left menu -->
+	<definition name="adminTemplate" template="/WEB-INF/jsp/tiles/adminTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MenuPreparer" >
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/adminHeader.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/adminTop.jsp" />
+		<put-attribute name="body" value=""/>
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/adminFooter.jsp" />
+	</definition>
+    
+
+	<!-- Main NCDC Template -->
+	<definition name="mainNcdcTemplate" template="/WEB-INF/jsp/tiles/mainNcdcTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainNcdcHeader.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainNcdcTop.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainNcdcFooter.jsp" />
+	</definition>
+
+	<!-- Main NCDC En Template -->
+	<definition name="mainNcdcTemplateEn" template="/WEB-INF/jsp/tiles/mainNcdcTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainNcdcHeaderEn.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainNcdcTopEn.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainNcdcFooterEn.jsp" />
+	</definition>
+
+	<!-- Main Template -->
+	<definition name="mainTemplate" template="/WEB-INF/jsp/tiles/mainTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainNcdcHeader.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainNcdcTop.jsp" />
+		<!-- <put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainFooter.jsp" /> -->
+	</definition>
+
+	<!-- Main En Template -->
+	<definition name="mainTemplateEn" template="/WEB-INF/jsp/tiles/mainTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainNcdcHeaderEn.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainNcdcTopEn.jsp" />
+		<!-- <put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainFooter.jsp" /> -->
+	</definition>
+
+	<!-- Main Detail Template -->
+	<definition name="mainDetailTemplate" template="/WEB-INF/jsp/tiles/mainDetailTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainNcdcHeader.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainNcdcTop.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainNcdcFooter.jsp" />
+	</definition>
+
+	<!-- Main Detail En Template -->
+	<definition name="mainDetailTemplateEn" template="/WEB-INF/jsp/tiles/mainDetailTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainNcdcHeaderEn.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainNcdcTopEn.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainNcdcFooterEn.jsp" />
+	</definition>
+	
+		<!-- main error Template -->
+	<definition name="mainErrorTemplate" template="/WEB-INF/jsp/tiles/mainErrorTemplate.jsp" preparer="kr.cancerdata.portal.configuration.MemberMenuPreparer">
+		<put-attribute name="header" value="/WEB-INF/jsp/tiles/mainHeader.jsp" />
+		<put-attribute name="top" value="/WEB-INF/jsp/tiles/mainTop.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/tiles/mainFooter.jsp" />
+	</definition>
+	
+	
+<!-- ######################## Template Definition End ########################## -->
+<!-- ########################################################################### -->
+
+
+<!-- ########################################################################### -->
+<!-- #################### Template Definition Extends Start #################### -->
+
+	<!-- Submain page
+	<definition name="/tiles/subMain" extends="subMainTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main.jsp" />
+	</definition>-->
+
+
+<!-- ADMIN START -->
+	<!-- Logged in main --> 	
+	<definition name="/ncdcMngLogin" extends="AdminloginTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/amng/login/adminNewLogin.jsp" />
+	</definition>
+
+	<definition name="/amng/dataRequestMng/request/*" extends="adminDatasetRequestTemplate">
+		<put-attribute name="body" value="/WEB-INF/jsp/amng/dataRequestMng/request/{1}.jsp" />
+	</definition>
+	
+	<definition name="/amng/eventUser/*" extends="blankTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/amng/eventUser/{1}.jsp" />
+	</definition>
+	
+	<definition name="/amng/login/*" extends="AdminloginTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/amng/login/{1}.jsp" />
+	</definition>
+	
+	<definition name="/amng/*/*/*" extends="adminTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/amng/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+	<definition name="/amng/*/*" extends="adminTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/amng/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="/amng/*" extends="adminTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/amng/{1}.jsp" />
+	</definition>
+
+	<definition name="/adm/member/*" extends="adminTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/adm/member/{1}.jsp" />
+	</definition>
+
+	<definition name="/adm/custDataVariableMng/*" extends="adminTemplate">
+		<put-attribute name="body" value="/WEB-INF/jsp/amng/custDataVariableMng/{1}.jsp" />
+	</definition>
+
+
+	<!-- ADMIN END -->
+	
+<!-- Site main -->
+	<!-- 
+	<definition name=".main.tiles.index" extends="mainTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main.jsp" />
+	</definition> 
+	-->
+
+	<!-- 영문 -->
+	<definition name="/main/en/userMain" extends="mainTemplateEn">
+		<put-attribute name="body" value="/WEB-INF/jsp/main/en/userMain.jsp" />
+	</definition>
+
+	<definition name="/main/en/intro/mediaIntro" extends="mainDetailTemplateEn">
+		<put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainIntroMiddleEn.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/main/intro/mediaIntro.jsp" />
+	</definition>
+
+	<definition name="/main/en/intro/mediaIntroView" extends="mainDetailTemplateEn">
+		<put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainIntroMiddleEn.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/main/intro/mediaIntroView.jsp" />
+	</definition>
+
+	<definition name="/main/en/intro/*" extends="mainDetailTemplateEn">
+		<put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainIntroMiddleEn.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/main/en/intro/{1}.jsp" />
+	</definition>
+
+	<definition name="/main/en/openData/*" extends="mainDetailTemplateEn">
+		<put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainOpenDataMiddleEn.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/main/en/openData/{1}.jsp" />
+	</definition>
+
+	<definition name="/main/en/statistics/*" extends="mainDetailTemplateEn">
+		<put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainStatisticsMiddleEn.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/main/en/statistics/{1}.jsp" />
+	</definition>
+
+
+	<!-- 국문 -->
+	<definition name="/main/intro/*" extends="mainDetailTemplate">
+	  <put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainIntroMiddle.jsp" />
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/intro/{1}.jsp" />
+	</definition>
+	
+	<definition name="/main/customer/*" extends="mainDetailTemplate">
+	  <put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainBoardMiddle.jsp" />
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/customer/{1}.jsp" />
+	</definition>
+	
+	<definition name="/main/my/myQna/*" extends="mainDetailTemplate">
+	  <put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainMyResearchMiddle.jsp" />
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/customer/{1}.jsp" />
+	</definition>
+
+	<definition name="/main/my/**" extends="mainDetailTemplate">
+	  <put-attribute name="middle" value="/WEB-INF/jsp/tiles/mainMyResearchMiddle.jsp" />
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/my/{1}.jsp" />
+	</definition>
+		
+	<definition name="/main/*/*/*" extends="mainNcdcTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/{1}/{2}/{3}.jsp" />
+	</definition>		
+	
+	<definition name="/main/*/*" extends="mainNcdcTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/{1}/{2}.jsp" />
+	</definition>		
+	
+	<definition name="/main/userMain" extends="mainTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/userMain.jsp" />
+	</definition>
+
+	<definition name="/main/*" extends="mainNcdcTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/{1}.jsp" />
+	</definition>
+
+
+<!-- 	
+	<definition name="/main/ncdc/member/checkplus_success" extends="mainTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp//main/ncdc/member/checkplus_success.jsp" />
+	</definition>	
+	
+	<definition name="/main/ncdc/my/checkplus_success" extends="mainTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp//main/ncdc/my/checkplus_success.jsp" />
+	</definition>
+-->	
+	
+   <!-- popup 페이지 -->
+	<definition name="/popup/*" extends="popupTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/popup/{1}.jsp" />
+	</definition>	
+	<definition name="./popup/*" extends="blankTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/project/{1}.jsp" />
+	</definition>	
+	
+   <!-- ajax 페이지 -->
+	<definition name=".ajax/*/*" extends="blankTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>   
+	<definition name=".ajax/*/*/*" extends="blankTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+	</definition>
+	<definition name=".ajax/*/*/*/*" extends="blankTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	</definition> 	
+		
+
+   <!-- error 페이지 -->
+	<definition name="/error/excelUploadException" extends="adminTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/error/excelUploadException.jsp" />
+	</definition>   
+
+	<definition name="/error/*" extends="mainErrorTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/error/{1}.jsp" />
+	</definition> 
+	
+	<definition name="/main/member/checkplus_success" extends="mainErrorTemplate">
+	  <put-attribute name="body" value="/WEB-INF/jsp/main/member/checkplus_success.jsp" />
+	</definition> 
+	
+<!-- #################### Template Definition Extends End   #################### -->	
+<!-- ########################################################################### -->
+</tiles-definitions>
