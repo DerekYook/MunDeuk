@@ -4,9 +4,9 @@ import com.together.MunDeuk.web.Board.dto.BoardDto;
 import com.together.MunDeuk.web.Board.entity.Board;
 import com.together.MunDeuk.web.Board.mapper.BoardMapper;
 import com.together.MunDeuk.web.Board.service.BoardService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,20 +18,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
-//@RestController
 @Controller
 @RequiredArgsConstructor
-//@RequestMapping("/boards")
 @Validated
 @Slf4j
 public class BoardController {
-//    private final static String BOARDS_DEFAULT_URL = "/boards";
     private final BoardService boardService;
     private final BoardMapper boardMapper;
 
-//    @GetMapping("/")
     @RequestMapping(value = "/boards")
     public ResponseEntity getAllBoards() {
         List<Board> boardsList = boardService.getBoardLists();
@@ -39,7 +33,6 @@ public class BoardController {
         return new ResponseEntity<>((boardMapper.boardsToBoardResponseDtos(boardsList)), HttpStatus.OK);
     }
 
-//    @GetMapping("/boards/test")
     @RequestMapping(value = "/boards/test")
     public String test() {
         return "web/common/main";

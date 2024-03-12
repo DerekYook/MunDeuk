@@ -28,6 +28,15 @@ public class Member {
     private String accTime;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private MemberAuth memberAuth;
+
+    public enum MemberAuth{
+        Admin,
+        Member;
+    }
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberStatus memberStatus;
 
