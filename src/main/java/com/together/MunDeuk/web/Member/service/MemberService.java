@@ -20,4 +20,9 @@ public class MemberService {
     public List<Member> getMemberLists(){
         return memberRepository.selectMembers();
     }
+
+    public Integer vaildMember(String email, String password){
+        int count = memberRepository.countMember(email, password);
+        return count;
+    }
 }
