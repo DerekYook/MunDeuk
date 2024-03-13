@@ -33,11 +33,6 @@ public class BoardController {
         return new ResponseEntity<>((boardMapper.boardsToBoardResponseDtos(boardsList)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/boards/test")
-    public String test() {
-        return "web/common/main";
-    }
-
     @RequestMapping("/boards/board/{boardSeq}")
     public ResponseEntity getBoard(@PathVariable("boardSeq") @Positive Integer boardSeq) {
         Board board = boardService.getBoard(boardSeq);
