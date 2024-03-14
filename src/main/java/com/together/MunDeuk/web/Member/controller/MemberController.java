@@ -1,6 +1,8 @@
 package com.together.MunDeuk.web.Member.controller;
 
+import com.together.MunDeuk.web.Member.dto.MemberDto.Response;
 import com.together.MunDeuk.web.Member.entity.Member;
+import com.together.MunDeuk.web.Member.entity.Member.MemberAuth;
 import com.together.MunDeuk.web.Member.mapper.MemberMapper;
 import com.together.MunDeuk.web.Member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,12 +58,22 @@ public class MemberController {
   public Map<String, Object> confirmLogin(@RequestParam String email,
       @RequestParam String password) {
     Map<String, Object> result = new HashMap<>();
-    int accountCnt = memberService.vaildMember(email, password);
+    Member verifiedMember = memberService.validMember(email, password);
 
-    if (accountCnt != 1) {
+    boolean accountChk = false;
+    if(verifiedMember != null){
+      accountChk = true;
+    }
+
+    if (!accountChk) {
       result.put("status", "fail");
     } else {
-      result.put("status", "success");
+      if (verifiedMember.getMemberAuth() == MemberAuth.Admin){
+        result.put("status", "AdminSuccess");
+      } else {
+        result.put("status", "MemberSuccess");
+      }
+
     }
     return result;
   }
