@@ -45,10 +45,10 @@
             cache: false,
             data: serializedValues,
             success: function (response) {
-              // console.log(data);
-              // $('#loginFrm').attr("action","/main").submit();
-                if (response.status === 'success'){
+                if (response.status === 'MemberSuccess'){
                   window.location.href = '/main';
+                } else if (response.status === 'AdminSuccess'){
+                  window.location.href = '/admin/main';
                 } else {
                   window.location.href = '/loginFail';
                 }
@@ -79,6 +79,21 @@
         }
         const serializedValues = $('#loginFrm').serializeObject();
         <%--fnAriAjaxString("<c:url value="/ajax/login"/>", "loginFrm", loginProcessCallBack );--%>
+        $.ajax({
+          type: 'POST',
+          url: '/ajax/loginProcess',
+          cache: false,
+          data: serializedValues,
+          success: function (response) {
+            if (response.status === 'MemberSuccess'){
+              window.location.href = '/main';
+            } else if (response.status === 'AdminSuccess'){
+              window.location.href = '/admin/main';
+            } else {
+              window.location.href = '/loginFail';
+            }
+          }
+        });
       }
 
       <%--function loginProcessCallBack(result){--%>

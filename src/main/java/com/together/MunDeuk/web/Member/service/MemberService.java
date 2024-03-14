@@ -21,8 +21,8 @@ public class MemberService {
         return memberRepository.selectMembers();
     }
 
-    public Integer vaildMember(String email, String password){
-        int count = memberRepository.countMember(email, password);
-        return count;
+    public Member validMember(String email, String password){
+        Member verifiedMember = memberRepository.verifiedMember(email, password);
+        return verifiedMember;
     }
 }
