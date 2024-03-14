@@ -11,6 +11,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value="SELECT * FROM member WHERE MEMBER_STATUS = 'Active'", nativeQuery = true)
     List<Member> selectMembers();
 
-    @Query(value = "SELECT count(*) FROM member WHERE EMAIL = :email AND PASSWORD = :password", nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM member WHERE EMAIL = :email AND PASSWORD = :password AND MEMBER_STATUS = 'Active'", nativeQuery = true)
     int countMember(String email, String password);
 }
