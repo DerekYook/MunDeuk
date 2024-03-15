@@ -1,28 +1,27 @@
 package com.together.MunDeuk.web.Member.service;
 
-import com.together.MunDeuk.web.Board.repository.BoardRepository;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.repository.MemberRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 @Service
 public class MemberService {
-    private final MemberRepository memberRepository;
 
-    public MemberService(MemberRepository memberRepository){
-        this.memberRepository = memberRepository;
-    }
+  private final MemberRepository memberRepository;
 
-    public List<Member> getMemberLists(){
-        return memberRepository.selectMembers();
-    }
+  public MemberService(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository;
+  }
 
-    public Member validMember(String email, String password){
-        Member verifiedMember = memberRepository.verifiedMember(email, password);
-        return verifiedMember;
-    }
+  public List<Member> getMemberLists() {
+    return memberRepository.selectMembers();
+  }
+
+  public Member validMember(String email, String password) {
+    Member verifiedMember = memberRepository.verifiedMember(email, password);
+    return verifiedMember;
+  }
 }

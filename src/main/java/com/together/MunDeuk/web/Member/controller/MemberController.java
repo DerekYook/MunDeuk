@@ -1,12 +1,9 @@
 package com.together.MunDeuk.web.Member.controller;
 
-import com.together.MunDeuk.web.Member.dto.MemberDto.Response;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.entity.Member.MemberAuth;
 import com.together.MunDeuk.web.Member.mapper.MemberMapper;
 import com.together.MunDeuk.web.Member.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

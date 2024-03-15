@@ -1,6 +1,5 @@
 package com.together.MunDeuk.web.Member.dto;
 
-import com.together.MunDeuk.web.Board.dto.BoardDto;
 import com.together.MunDeuk.web.Member.entity.Member.MemberStatus;
 import lombok.Getter;
 
