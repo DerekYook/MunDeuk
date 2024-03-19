@@ -33,7 +33,7 @@ public class Member {
 
     public enum MemberAuth{
         Admin,
-        Member;
+        User;
     }
 
     @Enumerated(EnumType.STRING)
