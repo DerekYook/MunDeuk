@@ -20,7 +20,8 @@
     <script src="<c:url value="/js/jquery/jquery-3.6.0.js"/>"></script>
     <script src="<c:url value="/js/common/common.js"/>"></script>
     <script src="<c:url value="/js/common/util.js"/>"></script>
-    <script type="text/javascript">
+<%--    <script type="text/javascript">--%>
+    <script>
       $(document).ready(function(){
         $('#email').focus();
         /**버튼 이벤트**/
