@@ -39,12 +39,12 @@
 
           <%--fnAriAjaxString("<c:url value="/ajax/adm/admLoginProcess"/>", "loginFrm", loginProcessCallBack );--%>
           const serializedValues = $('#loginFrm').serializeObject();
-          console.log(serializedValues);
           $.ajax({
             type: 'POST',
             url: '/ajax/loginProcess',
             cache: false,
-            data: serializedValues,
+            contentType: 'application/json',
+            data: JSON.stringify(serializedValues),
             success: function (response) {
                 if (response.status === 'MemberSuccess'){
                   window.location.href = '/main';
@@ -56,7 +56,6 @@
             }
           });
         });
-
       });
 
       $(document).keydown(function(e){
@@ -84,7 +83,8 @@
           type: 'POST',
           url: '/ajax/loginProcess',
           cache: false,
-          data: serializedValues,
+          contentType: 'application/json',
+          data: JSON.stringify(serializedValues),
           success: function (response) {
             if (response.status === 'MemberSuccess'){
               window.location.href = '/main';
@@ -126,13 +126,13 @@
                         <h3 style="width:100%;text-align:left;"><b>로그인</b></h3>
                         <form role="form" id="loginFrm" name="loginFrm" method="post" action="#" onsubmit="return false">
                             <div>
-                                <label for="exampleInputEmail">Email</label>
+                                <label for="InputEmail">Email</label>
                                 <div>
                                     <input type="text" id="email" name="email" value="" placeholder="Email">
                                 </div>
                             </div>
                             <div>
-                                <label for="exampleInputPassword">Password</label>
+                                <label for="InputPassword">Password</label>
                                 <div>
                                     <input type="password" id="password" name="password" value="" placeholder="PW">
                                 </div>

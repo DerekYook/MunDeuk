@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,13 +54,16 @@ public class MemberController {
   @ResponseBody
   @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
   // todo : parameter변경
-  public Map<String, Object> confirmLogin(@RequestParam String email,
-      @RequestParam String password) {
+//  public Map<String, Object> confirmLogin(@RequestParam String email, @RequestParam String password) {
+  public Map<String, Object> confirmLogin() {
     Map<String, Object> result = new HashMap<>();
-    Member verifiedMember = memberService.validMember(email, password);
-
     boolean accountChk = false;
-    if(verifiedMember != null){
+    Member verifiedMember = null;
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if(authentication != null && authentication.isAuthenticated()){
+      String username = authentication.getName();
+      verifiedMember = memberService.validMember(username);
       accountChk = true;
     }
 

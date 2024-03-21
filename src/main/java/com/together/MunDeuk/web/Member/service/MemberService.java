@@ -20,8 +20,8 @@ public class MemberService {
     return memberRepository.selectMembers();
   }
 
-  public Member validMember(String email, String password) {
-    Member verifiedMember = memberRepository.verifiedMember(email, password);
+  public Member validMember(String email) {
+    Member verifiedMember = memberRepository.verifiedMember(email);
     return verifiedMember;
   }
 }

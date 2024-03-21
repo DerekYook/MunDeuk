@@ -28,12 +28,17 @@ public class SpringSecurityConfig extends AbstractHttpConfigurer {
     http.authenticationManager(authenticationManager);
 
     http
+        // CSRF Disable
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorizeRequest ->
             authorizeRequest
-                .requestMatchers(new AntPathRequestMatcher("/auth/**")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/main")).hasRole("User")
+                .requestMatchers(new AntPathRequestMatcher("/admin/main")).hasRole("Admin")
+                .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/loginFail")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2/**")).permitAll()
+                .anyRequest().permitAll()
         )
         .addFilterAt(
             this.abstractAuthenticationProcessingFilter(authenticationManager),
@@ -41,15 +46,15 @@ public class SpringSecurityConfig extends AbstractHttpConfigurer {
         .headers(
             headersConfigurer ->
                 headersConfigurer
+                    // SameOrigin Policy
                     .frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::sameOrigin
                     )
+                    // CSP
                     .contentSecurityPolicy( policyConfig ->
                         policyConfig.policyDirectives(
-                            "script-src 'self'; " + "img-src 'self'; " +
-                                "font-src 'self' data:; " + "default-src 'self'; " +
-                                "frame-src 'self'"
-                        )
+                            "script-src 'self'; img-src 'self'; font-src 'self' data:; default-src 'self'; frame-src 'self'"
+                        ).reportOnly()
                     )
         );
 
@@ -57,6 +62,6 @@ public class SpringSecurityConfig extends AbstractHttpConfigurer {
   }
 
   public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(final AuthenticationManager authenticationManager) {
-    return new LoginAuthenticationFilter("/login", authenticationManager);
+    return new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
   }
 }
