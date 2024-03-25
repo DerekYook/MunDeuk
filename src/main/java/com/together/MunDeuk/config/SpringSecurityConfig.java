@@ -1,71 +1,88 @@
 package com.together.MunDeuk.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
-import javax.sql.DataSource;
+import com.together.MunDeuk.utils.CustomLoginSuccessHandler;
+import com.together.MunDeuk.utils.LoginAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @RequiredArgsConstructor
+@EnableWebSecurity
 @Configuration
-public class SpringSecurityConfig {
+public class SpringSecurityConfig extends AbstractHttpConfigurer {
+  private final AuthenticationConfiguration authenticationConfiguration;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
+    http.authenticationManager(authenticationManager);
+
     http
-        .authorizeHttpRequests((authz) -> authz
-            .anyRequest().authenticated()
+        // CSRF Disable
+//        .csrf(AbstractHttpConfigurer::disable)
+//        .formLogin(AbstractHttpConfigurer::disable)
+        .csrf(csrf -> csrf.disable())
+        .formLogin(login -> login
+            .loginPage("/login")
+            // 기본 redirect url 지정
+//            .defaultSuccessUrl("/main",true)
+//            .permitAll()
+            // successHandler 이용 redirect url 지정
+            .successHandler(customSuccessHandler())
         )
-        .httpBasic(withDefaults());
+        .authorizeHttpRequests(authorizeRequest ->
+            authorizeRequest
+                .requestMatchers(new AntPathRequestMatcher("/main/**")).hasRole("User")
+//                .requestMatchers(new AntPathRequestMatcher("/main/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/admin/main/**")).hasRole("Admin")
+                .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/loginFail/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/h2/**")).permitAll()
+                .anyRequest().permitAll()
+        )
+        // 필터 변경
+        .addFilterAt(
+            this.abstractAuthenticationProcessingFilter(authenticationManager),
+            UsernamePasswordAuthenticationFilter.class)
+        .headers(
+            headersConfigurer ->
+                headersConfigurer
+                    // SameOrigin Policy
+                    .frameOptions(
+                        HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                    )
+                    // CSP
+                    .contentSecurityPolicy( policyConfig ->
+                        policyConfig.policyDirectives(
+                            "script-src 'self'; img-src 'self'; font-src 'self' data:; default-src 'self'; frame-src 'self'"
+                        ).reportOnly()
+                    )
+        );
+
     return http.build();
   }
 
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-    return (web) -> web.ignoring().requestMatchers("/ignore1", "/ignore2");
+  // 인증 필터
+  public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(final AuthenticationManager authenticationManager) {
+    return new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
   }
 
+  // 로그인 성공시 handler
   @Bean
-  public DataSource dataSource() {
-    return new EmbeddedDatabaseBuilder()
-        .setType(EmbeddedDatabaseType.H2)
-        .addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-        .build();
-  }
-
-  @Bean
-  public UserDetailsManager users(DataSource dataSource) {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("sa")
-        .password("")
-        .roles("USER")
-        .build();
-    JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-    users.createUser(user);
-    return users;
-  }
-
-  // todo : 인가된 사용자 검증
-  @Bean
-  public InMemoryUserDetailsManager userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("sa")
-        .password("")
-        .roles("USER")
-        .build();
-    return new InMemoryUserDetailsManager(user);
+  public AuthenticationSuccessHandler customSuccessHandler(){
+    System.out.println("stamp##");
+    return new CustomLoginSuccessHandler();
   }
 }

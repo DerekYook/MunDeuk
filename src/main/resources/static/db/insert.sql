@@ -1,7 +1,8 @@
 -- MEMBER TABLE
-INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 0, 'JOY', 'test@test.com', 'test1234', 'Member', 'Active' );
+INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 0, 'JOY', 'test@test.com', 'test1234', 'User', 'Active' );
 INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 1, 'LOTTO_PAPA', 'lotto@papa.com', 'test1234', 'Admin', 'Active' );
 INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 2, 'backDoor', 'admin@backDoor.com', 'test1234', 'Admin', 'Inactive' );
+INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 3, 'LOTTO_PAPA', 'lotto@papa.com', 'test1234', 'User', 'Active' );
 
 
 -- BOARD TABLE
