@@ -31,12 +31,12 @@ public class MemberController {
 
   @RequestMapping(value = "/loginFail")
   public String loginFail() {
-    return "/web/common/loginFail";
+    return "web/common/loginFail";
   }
 
   @RequestMapping(value = "/main")
   public String mainPage() {
-    return "/web/common/main";
+    return "web/common/main";
   }
 
   @RequestMapping(value = "/login")
@@ -51,32 +51,33 @@ public class MemberController {
     return new ResponseEntity(memberMapper.membersToMemberResponseDtos(memberLists), HttpStatus.OK);
   }
 
-  @ResponseBody
-  @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
-  // todo : parameter변경
-//  public Map<String, Object> confirmLogin(@RequestParam String email, @RequestParam String password) {
-  public Map<String, Object> confirmLogin() {
-    Map<String, Object> result = new HashMap<>();
-    boolean accountChk = false;
-    Member verifiedMember = null;
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if(authentication != null && authentication.isAuthenticated()){
-      String username = authentication.getName();
-      verifiedMember = memberService.validMember(username);
-      accountChk = true;
-    }
-
-    if (!accountChk) {
-      result.put("status", "fail");
-    } else {
-      if (verifiedMember.getMemberAuth() == MemberAuth.Admin){
-        result.put("status", "AdminSuccess");
-      } else {
-        result.put("status", "MemberSuccess");
-      }
-
-    }
-    return result;
-  }
+//  // CustomLoginSuccessHandler에서 처리
+//  @ResponseBody
+//  @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
+//  // todo : parameter변경
+////  public Map<String, Object> confirmLogin(@RequestParam String email, @RequestParam String password) {
+//  public Map<String, Object> confirmLogin() {
+//    Map<String, Object> result = new HashMap<>();
+//    boolean accountChk = false;
+//    Member verifiedMember = null;
+//
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    if(authentication != null && authentication.isAuthenticated()){
+//      String username = authentication.getName();
+//      verifiedMember = memberService.validMember(username);
+//      accountChk = true;
+//    }
+//
+//    if (!accountChk) {
+//      result.put("status", "fail");
+//    } else {
+//      if (verifiedMember.getMemberAuth() == MemberAuth.Admin){
+//        result.put("status", "AdminSuccess");
+//      } else {
+//        result.put("status", "MemberSuccess");
+//      }
+//
+//    }
+//    return result;
+//  }
 }

@@ -43,6 +43,7 @@ public class MemberDto {
       this.memberStatus = memberStatus;
     }
   }
+/*
 
   @Getter
   public static class transform {
@@ -78,6 +79,7 @@ public class MemberDto {
       this.memberStatus = memberStatus;
     }
   }
+*/
 
 
 }

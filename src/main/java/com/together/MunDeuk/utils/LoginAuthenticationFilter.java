@@ -2,7 +2,6 @@ package com.together.MunDeuk.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.together.MunDeuk.web.Member.service.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,9 +30,7 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     if (!method.equals("POST")) {
       throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
     }
-    System.out.println("+++++++++");
-    System.out.println(request.getParameterValues("email"));
-    System.out.println(request.getParameterValues("password"));
+
     ServletInputStream inputStream = request.getInputStream();
 
     LoginRequestDto loginRequestDto = new ObjectMapper().readValue(inputStream, LoginRequestDto.class);
