@@ -46,13 +46,18 @@
             contentType: 'application/json',
             data: JSON.stringify(serializedValues),
             success: function (response) {
-                if (response.status === 'MemberSuccess'){
-                  window.location.href = '/main';
-                } else if (response.status === 'AdminSuccess'){
-                  window.location.href = '/admin/main';
-                } else {
-                  window.location.href = '/loginFail';
-                }
+              if(response.redirectUrl) {
+                window.location.href = response.redirectUrl;
+              }else {
+                console.log("Redirect URL is missing in the response");
+              }
+                // if (response.status === 'MemberSuccess'){
+                //   window.location.href = '/main';
+                // } else if (response.status === 'AdminSuccess'){
+                //   window.location.href = '/admin/main';
+                // } else {
+                //   window.location.href = '/loginFail';
+                // }
             }
           });
         });
@@ -86,12 +91,10 @@
           contentType: 'application/json',
           data: JSON.stringify(serializedValues),
           success: function (response) {
-            if (response.status === 'MemberSuccess'){
-              window.location.href = '/main';
-            } else if (response.status === 'AdminSuccess'){
-              window.location.href = '/admin/main';
-            } else {
-              window.location.href = '/loginFail';
+            if(response.redirectUrl) {
+              window.location.href = response.redirectUrl;
+            }else {
+              console.log("Redirect URL is missing in the response");
             }
           }
         });
