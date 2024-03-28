@@ -1,5 +1,7 @@
 package com.together.MunDeuk.web.Member.controller;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.entity.Member.MemberAuth;
 import com.together.MunDeuk.web.Member.mapper.MemberMapper;
