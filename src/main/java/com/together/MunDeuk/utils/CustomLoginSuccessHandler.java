@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,25 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
   private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+  // 성공시 토큰 발행
+  private JwtTokenizer jwtTokenizer;
+  public CustomLoginSuccessHandler(JwtTokenizer jwtTokenizer){
+    this.jwtTokenizer = jwtTokenizer;
+  }
+
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) throws IOException {
+
+    // JWT 토큰 생성
+    String username = authentication.getName();
+    String accessToken = jwtTokenizer.generateAccessToken(Map.of("username", username), username,
+        new Date(System.currentTimeMillis() + jwtTokenizer.getAccessTokenExpirationMillis()), jwtTokenizer.getSecretKey());
+    String refreshToken = jwtTokenizer.generateRefreshToken(username,
+        new Date(System.currentTimeMillis() + jwtTokenizer.getAccessTokenExpirationMillis()), jwtTokenizer.getSecretKey());
+    // JWT 토큰 발행
+    jwtTokenizer.setAccessTokenHeader(accessToken, response);
+    jwtTokenizer.setRefreshTokenHeader(refreshToken, response);
 
     if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
       response.setContentType("application/json;charset=UTF-8");
@@ -63,10 +80,11 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 //    new ObjectMapper().writeValue(response.getWriter(), responseData);
   }
 
-  private boolean isAdmin(Authentication authentication) {
-    return authentication.getAuthorities().stream()
-        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-  }
+  // 1st try
+//  private boolean isAdmin(Authentication authentication) {
+//    return authentication.getAuthorities().stream()
+//        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+//  }
 
   private void handle(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) throws IOException {

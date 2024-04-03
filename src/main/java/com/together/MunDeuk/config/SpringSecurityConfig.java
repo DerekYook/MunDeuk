@@ -1,6 +1,7 @@
 package com.together.MunDeuk.config;
 
 import com.together.MunDeuk.utils.CustomLoginSuccessHandler;
+import com.together.MunDeuk.utils.JwtTokenizer;
 import com.together.MunDeuk.utils.LoginAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SpringSecurityConfig extends AbstractHttpConfigurer {
 
   private final AuthenticationConfiguration authenticationConfiguration;
+  private final JwtTokenizer jwtTokenizer;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,7 +49,7 @@ public class SpringSecurityConfig extends AbstractHttpConfigurer {
         )
         // 필터 변경
         .addFilterAt(
-            this.abstractAuthenticationProcessingFilter(authenticationManager),
+            this.abstractAuthenticationProcessingFilter(authenticationManager, jwtTokenizer),
             UsernamePasswordAuthenticationFilter.class)
         .headers(
             headersConfigurer ->
@@ -81,9 +83,13 @@ public class SpringSecurityConfig extends AbstractHttpConfigurer {
 
   // 인증 필터
   public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
-      final AuthenticationManager authenticationManager) {
+//      final AuthenticationManager authenticationManager) {
+      // 토큰 정보 추가
+      final AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
     LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
-    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
+//    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
+    // Handler에 토큰 정보 추가
+    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler(jwtTokenizer));
     // Rest API 방식을 사용하기 위해 추가
     loginAuthenticationFilter.setSecurityContextRepository(
         new DelegatingSecurityContextRepository(
@@ -95,7 +101,7 @@ public class SpringSecurityConfig extends AbstractHttpConfigurer {
 
   // 로그인 성공시 handler
   @Bean
-  public AuthenticationSuccessHandler customSuccessHandler() {
-    return new CustomLoginSuccessHandler();
+  public AuthenticationSuccessHandler customSuccessHandler(JwtTokenizer jwtTokenizer) {
+    return new CustomLoginSuccessHandler(jwtTokenizer);
   }
 }
