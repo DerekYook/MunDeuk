@@ -47,7 +47,7 @@
             data: JSON.stringify(serializedValues),
             success: function (response) {
               if(response.redirectUrl) {
-                window.location.href = response.redirectUrl;
+                location.href = response.redirectUrl;
               }else {
                 console.log("Redirect URL is missing in the response");
               }
@@ -92,7 +92,7 @@
           data: JSON.stringify(serializedValues),
           success: function (response) {
             if(response.redirectUrl) {
-              window.location.href = response.redirectUrl;
+              location.href = response.redirectUrl;
             }else {
               console.log("Redirect URL is missing in the response");
             }

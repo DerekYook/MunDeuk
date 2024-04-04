@@ -1,6 +1,7 @@
 package com.together.MunDeuk.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -32,7 +33,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
   // 성공시 토큰 발행
   private JwtTokenizer jwtTokenizer;
-  public CustomLoginSuccessHandler(JwtTokenizer jwtTokenizer){
+
+  public CustomLoginSuccessHandler(JwtTokenizer jwtTokenizer) {
     this.jwtTokenizer = jwtTokenizer;
   }
 
@@ -43,12 +45,30 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     // JWT 토큰 생성
     String username = authentication.getName();
     String accessToken = jwtTokenizer.generateAccessToken(Map.of("username", username), username,
-        new Date(System.currentTimeMillis() + jwtTokenizer.getAccessTokenExpirationMillis()), jwtTokenizer.getSecretKey());
+        new Date(System.currentTimeMillis() + jwtTokenizer.getAccessTokenExpirationMillis()),
+        jwtTokenizer.getSecretKey());
+
+    // 쿠키에 JWT 추가
+    Cookie accessTokenCookie = new Cookie("access_token", accessToken);
+    accessTokenCookie.setHttpOnly(true);
+    accessTokenCookie.setSecure(true);
+    accessTokenCookie.setPath("/");
+    response.addCookie(accessTokenCookie);
+
     String refreshToken = jwtTokenizer.generateRefreshToken(username,
-        new Date(System.currentTimeMillis() + jwtTokenizer.getAccessTokenExpirationMillis()), jwtTokenizer.getSecretKey());
-    // JWT 토큰 발행
-    jwtTokenizer.setAccessTokenHeader(accessToken, response);
-    jwtTokenizer.setRefreshTokenHeader(refreshToken, response);
+        new Date(System.currentTimeMillis() + jwtTokenizer.getAccessTokenExpirationMillis()),
+        jwtTokenizer.getSecretKey());
+
+    // 쿠키에 JWT 추가
+    Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+    refreshTokenCookie.setHttpOnly(true);
+    refreshTokenCookie.setSecure(true);
+    refreshTokenCookie.setPath("/");
+    response.addCookie(refreshTokenCookie);
+
+//    // JWT 토큰 발행
+//    jwtTokenizer.setAccessTokenHeader(accessToken, response);
+//    jwtTokenizer.setRefreshTokenHeader(refreshToken, response);
 
     if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
       response.setContentType("application/json;charset=UTF-8");
