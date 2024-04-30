@@ -20,8 +20,16 @@ public class MemberService {
     return memberRepository.selectMembers();
   }
 
-  public Member validMember(String email) {
-    Member verifiedMember = memberRepository.verifiedMember(email);
-    return verifiedMember;
+//  public Member validMember(String email) {
+//    Member verifiedMember = memberRepository.verifiedMember(email);
+//    return verifiedMember;
+//  }
+
+  public long getMemberIndex(){
+    return memberRepository.selectMaxMemberIdx();
+  }
+
+  public void signInMember(long memberId, String nickName, String email, String password){
+    memberRepository.registerMember(memberId, nickName, email, password);
   }
 }

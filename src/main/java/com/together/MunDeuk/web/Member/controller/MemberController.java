@@ -82,4 +82,19 @@ public class MemberController {
 //    }
 //    return result;
 //  }
+
+  @ResponseBody
+  @RequestMapping(value = "/members/signin", method = RequestMethod.POST)
+  public ResponseEntity signIn(@RequestParam String nickName, @RequestParam String email, @RequestParam String password) throws Exception{
+    // todo : 휴대폰 본인 인증 혹은 이메일 인증 서비스 추가
+//    Map<String, Object> result = new HashMap<>();
+//    result.put("nickName",nickName);
+//    result.put("email",email);
+//    result.put("password",password);
+
+    long id = memberService.getMemberIndex();
+    memberService.signInMember(id, nickName,email,password);
+
+    return new ResponseEntity<>(null, HttpStatus.OK);
+  }
 }

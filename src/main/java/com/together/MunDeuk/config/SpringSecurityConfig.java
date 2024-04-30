@@ -39,6 +39,7 @@ public class SpringSecurityConfig extends AbstractHttpConfigurer {
     http
         .authorizeHttpRequests(authorizeRequest ->
                 authorizeRequest
+                    .requestMatchers(new AntPathRequestMatcher("/members/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/main/**")).hasRole("User")
 //                .requestMatchers(new AntPathRequestMatcher("/main/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/admin/main/**")).hasRole("Admin")

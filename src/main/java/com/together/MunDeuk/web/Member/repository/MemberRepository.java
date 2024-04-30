@@ -2,6 +2,7 @@ package com.together.MunDeuk.web.Member.repository;
 
 import com.together.MunDeuk.web.Member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -17,4 +18,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query(value = "SELECT * FROM member WHERE EMAIL = :email AND MEMBER_STATUS = 'Active'", nativeQuery = true)
     Member verifiedMember(String email);
+
+    @Query(value = "SELECT MAX(MEMBER_ID) + 1 FROM member", nativeQuery = true)
+    long selectMaxMemberIdx();
+
+    @Modifying
+    @Query(value = "INSERT INTO member (MEMBER_ID, NICK_NAME, EMAIL, PASSWORD, MEMBER_AUTH, MEMBER_STATUS) VALUES (:memberId, :nickName, :email, :password, 'User', 'Active')", nativeQuery = true)
+    void registerMember(Long memberId, String nickName, String email, String password);
 }
