@@ -100,20 +100,10 @@
         });
       }
 
-      <%--function loginProcessCallBack(result){--%>
-      <%--  if(result == 'Y'){--%>
-      <%--    loadingStart();--%>
-      <%--    location.href="<c:url value="/tiles/adminMain"/>";--%>
-      <%--  }else if(result == 'VALID_N'){--%>
-      <%--    loadingStop();--%>
-      <%--    alert("계정 유효기간이 만료 되었습니다.\n 관리자에게 문의하세요.");--%>
-      <%--    document.body.style.cursor = "auto";--%>
-      <%--  }else if(result == 'N'){--%>
-      <%--    loadingStop();--%>
-      <%--    alert("아이디 또는 패스워드가 일치하지 않습니다.");--%>
-      <%--    document.body.style.cursor = "auto";--%>
-      <%--  }--%>
-      <%--}--%>
+      function fn_siginIn(){
+        location.href = "/signUp";
+      }
+
     </script>
 </head>
 
@@ -144,6 +134,9 @@
                                 <button type="button" id="loginBtnImg">LOGIN</button>
                             </div>
                         </form>
+                    </div>
+                    <div>
+                        <div onclick="fn_siginIn()">회원가입</div>
                     </div>
                 </div>
                 <div>

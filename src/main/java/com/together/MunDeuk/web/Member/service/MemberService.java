@@ -29,7 +29,7 @@ public class MemberService {
     return memberRepository.selectMaxMemberIdx();
   }
 
-  public void signInMember(long memberId, String nickName, String email, String password){
+  public void signUpMember(long memberId, String nickName, String email, String password){
     memberRepository.registerMember(memberId, nickName, email, password);
   }
 }

@@ -42,8 +42,13 @@ public class MemberController {
   }
 
   @RequestMapping(value = "/login")
-  public String test() {
+  public String login() {
     return "web/common/login";
+  }
+
+  @RequestMapping(value = "/signUp")
+  public String register() {
+    return "web/member/signUp";
   }
 
   @RequestMapping(value = "/members")
@@ -84,8 +89,8 @@ public class MemberController {
 //  }
 
   @ResponseBody
-  @RequestMapping(value = "/members/signin", method = RequestMethod.POST)
-  public ResponseEntity signIn(@RequestParam String nickName, @RequestParam String email, @RequestParam String password) throws Exception{
+  @RequestMapping(value = "/member/signUp", method = RequestMethod.POST)
+  public ResponseEntity signUp(@RequestParam String nickName, @RequestParam String email, @RequestParam String password) throws Exception{
     // todo : 휴대폰 본인 인증 혹은 이메일 인증 서비스 추가
 //    Map<String, Object> result = new HashMap<>();
 //    result.put("nickName",nickName);
@@ -93,7 +98,7 @@ public class MemberController {
 //    result.put("password",password);
 
     long id = memberService.getMemberIndex();
-    memberService.signInMember(id, nickName,email,password);
+    memberService.signUpMember(id, nickName,email,password);
 
     return new ResponseEntity<>(null, HttpStatus.OK);
   }
