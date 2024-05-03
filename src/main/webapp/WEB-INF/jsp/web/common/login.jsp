@@ -100,6 +100,11 @@
         });
       }
 
+      function fn_facebookLogin(){
+        window.name = "Parent_window";
+        window.open('/oauth2/authorization/facebook?prompt=login', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+      }
+
       function fn_siginIn(){
         location.href = "/signUp";
       }
@@ -136,7 +141,12 @@
                         </form>
                     </div>
                     <div>
-                        <div onclick="fn_siginIn()">회원가입</div>
+                        <button type="button" onclick="fn_facebookLogin">페이스북 로그인</button>
+                    </div>
+                    <div></div>
+                    <div></div>
+                    <div>
+                        <button type="button" onclick="fn_siginIn()">회원가입</button>
                     </div>
                 </div>
                 <div>

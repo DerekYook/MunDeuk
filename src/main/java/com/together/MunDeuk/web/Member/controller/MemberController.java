@@ -6,6 +6,7 @@ import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.entity.Member.MemberAuth;
 import com.together.MunDeuk.web.Member.mapper.MemberMapper;
 import com.together.MunDeuk.web.Member.service.MemberService;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import reactor.core.publisher.Mono;
 
 @Controller
 @RequiredArgsConstructor
@@ -101,5 +104,10 @@ public class MemberController {
     memberService.signUpMember(id, nickName,email,password);
 
     return new ResponseEntity<>(null, HttpStatus.OK);
+  }
+
+  @GetMapping("/user")
+  public Mono<Principal> user(Mono<Principal> principal){
+    return principal;
   }
 }
