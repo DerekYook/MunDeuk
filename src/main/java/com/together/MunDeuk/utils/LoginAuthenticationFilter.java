@@ -22,13 +22,13 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request,
-      HttpServletResponse response)
-      throws AuthenticationException, IOException, ServletException {
+      HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
     String method = request.getMethod();
 
     if (!method.equals("POST")) {
-      throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+      throw new AuthenticationServiceException("Authentication method not supported: "
+          + request.getMethod());
     }
 
     ServletInputStream inputStream = request.getInputStream();

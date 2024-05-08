@@ -44,4 +44,19 @@ public class Member {
         Active,
         Inactive;
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private SocialType socialType;
+
+    public enum SocialType{
+        KAKAO,
+        GOOGLE,
+        NAVER,
+        FACEBOOK,
+        INSTAGRAM
+    }
+
+    @Column
+    private String socialId;
 }

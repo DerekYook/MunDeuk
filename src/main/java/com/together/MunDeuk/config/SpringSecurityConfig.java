@@ -5,6 +5,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import com.together.MunDeuk.utils.CustomLoginSuccessHandler;
 import com.together.MunDeuk.utils.JwtTokenizer;
 import com.together.MunDeuk.utils.LoginAuthenticationFilter;
+import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -52,12 +55,12 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import reactor.core.publisher.Mono;
 
-//@RequiredArgsConstructor
-//@EnableWebSecurity
-//@Configuration
-//@ComponentScan(basePackages = {"com.together.MunDeuk.utils"})
-//public class SpringSecurityConfig extends AbstractHttpConfigurer {
-//
+@RequiredArgsConstructor
+@EnableWebSecurity
+@Configuration
+@ComponentScan(basePackages = {"com.together.MunDeuk.utils"})
+public class SpringSecurityConfig extends AbstractHttpConfigurer {
+  // todo: oauth2 not use
 //  private final AuthenticationConfiguration authenticationConfiguration;
 //  private final JwtTokenizer jwtTokenizer;
 //
@@ -136,109 +139,109 @@ import reactor.core.publisher.Mono;
 //  public AuthenticationSuccessHandler customSuccessHandler(JwtTokenizer jwtTokenizer) {
 //    return new CustomLoginSuccessHandler(jwtTokenizer);
 //  }
-//}
+}
 
 
-@RequiredArgsConstructor
-@EnableWebFluxSecurity
-@Configuration
-@ComponentScan(basePackages = {"com.together.MunDeuk.utils"})
-//webflux로 변경
-public class SpringSecurityConfig extends AbstractHttpConfigurer {
-
-  private final AuthenticationConfiguration authenticationConfiguration;
-  private final JwtTokenizer jwtTokenizer;
-
-  @Bean
-  public SecurityWebFilterChain securityWebFilterChain(final ServerHttpSecurity serverHttpSecurity){
-    serverHttpSecurity
-        .authorizeExchange(authorize -> authorize
-            .anyExchange().authenticated())
-        .exceptionHandling(exceptionHandling -> exceptionHandling
-            .authenticationEntryPoint(new RedirectServerAuthenticationEntryPoint("/login"))) // 로그인 페이지
-        .oauth2Login(oauth2 -> oauth2
-//            .authenticationConverter(this.authenticationConverter())
-            .authenticationMatcher(new PathPatternParserServerWebExchangeMatcher("/login/oauth2/callback/{registrationId}")) // 리다이렉션 endpoint
-//            .authenticationManager(this.authenticationManager())
-//            .authenticationSuccessHandler(this.authenticationSuccessHandler()) // 성공
-//            .authenticationFailureHandler(this.authenticationFailureHandler()) // 실패
-//            .clientRegistrationRepository(this.clientRegistrationRepository())
-//            .authorizedClientRepository(this.authorizedClientRepository())
-//            .authorizedClientService(this.authorizedClientService())
-            .authorizationRequestResolver(this.authorizationRequestResolver()) // 로그인 페이지
-//            .authorizationRequestRepository(this.authorizationRequestRepository())
-//            .securityContextRepository(this.securityContextRepository()))
-        )
-//        .oauth2Client(oauth2 -> oauth2
-//            .clientRegistrationRepository(this.clientRegistrationReposirtory())
-//            .authorizedClientRepository(this.authorizedClientRepository())
-//            .authorizationRequestRepository(this.authorizationRequestRepository())
-//            .authorizationRequestResolver(this.authorizationRequestResolver())
-//            .authenticationConverter(this.authenticationConverter())
-//            .authenticationManager(this.authenticationManager()))
+//@RequiredArgsConstructor
+//@EnableWebFluxSecurity
+//@Configuration
+//@ComponentScan(basePackages = {"com.together.MunDeuk.utils"})
+////webflux로 변경
+//public class SpringSecurityConfig extends AbstractHttpConfigurer {
+//
+//  private final AuthenticationConfiguration authenticationConfiguration;
+//  private final JwtTokenizer jwtTokenizer;
+//
+//  @Bean
+//  public SecurityWebFilterChain securityWebFilterChain(final ServerHttpSecurity serverHttpSecurity){
+//    serverHttpSecurity
+//        .authorizeExchange(authorize -> authorize
+//            .anyExchange().authenticated())
+//        .exceptionHandling(exceptionHandling -> exceptionHandling
+//            .authenticationEntryPoint(new RedirectServerAuthenticationEntryPoint("/login"))) // 로그인 페이지
+//        .oauth2Login(oauth2 -> oauth2
+////            .authenticationConverter(this.authenticationConverter())
+//            .authenticationMatcher(new PathPatternParserServerWebExchangeMatcher("/login/oauth2/callback/{registrationId}")) // 리다이렉션 endpoint
+////            .authenticationManager(this.authenticationManager())
+////            .authenticationSuccessHandler(this.authenticationSuccessHandler()) // 성공
+////            .authenticationFailureHandler(this.authenticationFailureHandler()) // 실패
+////            .clientRegistrationRepository(this.clientRegistrationRepository())
+////            .authorizedClientRepository(this.authorizedClientRepository())
+////            .authorizedClientService(this.authorizedClientService())
+//            .authorizationRequestResolver(this.authorizationRequestResolver()) // 로그인 페이지
+////            .authorizationRequestRepository(this.authorizationRequestRepository())
+////            .securityContextRepository(this.securityContextRepository()))
 //        )
-        .csrf(csrf -> csrf.disable());
-
-    return serverHttpSecurity.build();
-  }
-
-  // 로그인 요청
-  private ServerOAuth2AuthorizationRequestResolver authorizationRequestResolver(){
-    ServerWebExchangeMatcher authorizationRequestMatcher =
-        // registartionId가 OAuth2 제공 서버 구분자
-        new PathPatternParserServerWebExchangeMatcher("/login/oauth2/authorization/{registrationId}");
-    return new DefaultServerOAuth2AuthorizationRequestResolver(
-        this.clientRegistrationRepository(),authorizationRequestMatcher);
-  }
-
-  @Bean
-  // UserInfo에서의 권한 Mapping
-  public ReactiveOAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
-    final OidcReactiveOAuth2UserService delegate = new OidcReactiveOAuth2UserService();
-
-    return (userRequest) -> {
-      // Delegate to the default implementation for loading a user
-      return delegate.loadUser(userRequest)
-          .flatMap((oidcUser) -> {
-            OAuth2AccessToken accessToken = userRequest.getAccessToken();
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-
-            // TODO
-            // 1) Fetch the authority information from the protected resource using accessToken
-            // 2) Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
-
-            // 3) Create a copy of oidcUser but use the mappedAuthorities instead
-            oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
-
-            return Mono.just(oidcUser);
-          });
-    };
-  }
-
-  @Bean
-  public ReactiveClientRegistrationRepository clientRegistrationRepository() {
-    return new InMemoryReactiveClientRegistrationRepository(this.googleClientRegistration());
-  }
-
-  private ClientRegistration googleClientRegistration() {
-//    return ClientRegistration.withRegistrationId("google")
+////        .oauth2Client(oauth2 -> oauth2
+////            .clientRegistrationRepository(this.clientRegistrationReposirtory())
+////            .authorizedClientRepository(this.authorizedClientRepository())
+////            .authorizationRequestRepository(this.authorizationRequestRepository())
+////            .authorizationRequestResolver(this.authorizationRequestResolver())
+////            .authenticationConverter(this.authenticationConverter())
+////            .authenticationManager(this.authenticationManager()))
+////        )
+//        .csrf(csrf -> csrf.disable());
+//
+//    return serverHttpSecurity.build();
+//  }
+//
+//  // 로그인 요청
+//  private ServerOAuth2AuthorizationRequestResolver authorizationRequestResolver(){
+//    ServerWebExchangeMatcher authorizationRequestMatcher =
+//        // registartionId가 OAuth2 제공 서버 구분자
+//        new PathPatternParserServerWebExchangeMatcher("/login/oauth2/authorization/{registrationId}");
+//    return new DefaultServerOAuth2AuthorizationRequestResolver(
+//        this.clientRegistrationRepository(),authorizationRequestMatcher);
+//  }
+//
+//  @Bean
+//  // UserInfo에서의 권한 Mapping
+//  public ReactiveOAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
+//    final OidcReactiveOAuth2UserService delegate = new OidcReactiveOAuth2UserService();
+//
+//    return (userRequest) -> {
+//      // Delegate to the default implementation for loading a user
+//      return delegate.loadUser(userRequest)
+//          .flatMap((oidcUser) -> {
+//            OAuth2AccessToken accessToken = userRequest.getAccessToken();
+//            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+//
+//            // TODO
+//            // 1) Fetch the authority information from the protected resource using accessToken
+//            // 2) Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
+//
+//            // 3) Create a copy of oidcUser but use the mappedAuthorities instead
+//            oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), oidcUser.getUserInfo());
+//
+//            return Mono.just(oidcUser);
+//          });
+//    };
+//  }
+//
+//  @Bean
+//  public ReactiveClientRegistrationRepository clientRegistrationRepository() {
+//    return new InMemoryReactiveClientRegistrationRepository(this.googleClientRegistration());
+//  }
+//
+//  private ClientRegistration googleClientRegistration() {
+////    return ClientRegistration.withRegistrationId("google")
+////        .clientId("google-client-id")
+////        .clientSecret("google-client-secret")
+////        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+////        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+////        .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+////        .scope("openid", "profile", "email", "address", "phone")
+////        .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
+////        .tokenUri("https://www.googleapis.com/oauth2/v4/token")
+////        .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
+////        .userNameAttributeName(IdTokenClaimNames.SUB)
+////        .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
+////        .clientName("Google")
+////        .build();
+//    return CommonOAuth2Provider.GOOGLE.getBuilder("google")
 //        .clientId("google-client-id")
 //        .clientSecret("google-client-secret")
-//        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-//        .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
-//        .scope("openid", "profile", "email", "address", "phone")
-//        .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
-//        .tokenUri("https://www.googleapis.com/oauth2/v4/token")
-//        .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-//        .userNameAttributeName(IdTokenClaimNames.SUB)
-//        .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-//        .clientName("Google")
+//        .redirectUri("{baseUrl}/login/oauth2/callback/{registrationId}")
 //        .build();
-    return CommonOAuth2Provider.GOOGLE.getBuilder("google")
-        .clientId("google-client-id")
-        .clientSecret("google-client-secret")
-        .redirectUri("{baseUrl}/login/oauth2/callback/{registrationId}")
-        .build();
-  }
-}
+//  }
+//}

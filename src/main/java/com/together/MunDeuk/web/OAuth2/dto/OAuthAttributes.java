@@ -1,4 +1,4 @@
-package com.together.MunDeuk.web.Member.dto;
+package com.together.MunDeuk.web.OAuth2.dto;
 
 import java.util.Map;
 import lombok.Builder;
