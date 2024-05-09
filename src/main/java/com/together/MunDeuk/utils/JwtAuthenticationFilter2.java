@@ -25,12 +25,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 // JWT 토큰 인증
 public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
-  // 상품 이미지가 보이지 않기에 상품 이미지를 출력하는 /api/items/view 경로를 추가
-  private static final String[] whitelist = {"/signUp", "/login" , "/refresh", "/", "/index.html"};
+  // 필터를 적용하지 않을 API들
+  private static final String[] whitelist = {"/signUp", "/login" , "/refresh", "/"
+      , "/WEB-INF/jsp/web/member/signUp.jsp", "/WEB-INF/jsp/web/common/login.jsp"
+      , "/js/*"};
 
   // 토큰 헤더 검증
   private static void checkAuthorizationHeader(String header) {
     if(header == null) {
+      log.info("로그인이 필요합니다.");
       throw new CustomJwtException("토큰이 전달되지 않았습니다");
     } else if (!header.startsWith(JwtTokenizer2.BEARER_PREFIX)) {
       throw new CustomJwtException("BEARER 로 시작하지 않는 올바르지 않은 토큰 형식입니다");

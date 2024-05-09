@@ -44,8 +44,11 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
     int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
     int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
 
+//    String targetUrl = "/main";
+
     responseMap.put("accessToken", JwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
     responseMap.put("refreshToken", JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
+//    responseMap.put("redirectUrl", targetUrl);
 
     Gson gson = new Gson();
     String json = gson.toJson(responseMap);

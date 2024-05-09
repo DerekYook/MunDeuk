@@ -91,7 +91,7 @@ public class SpringSecurityConfig2{
     });
 
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
-        httpSecurityOAuth2LoginConfigurer.loginPage("/login")
+        httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
             .successHandler(commonLoginSuccessHandler())
             .userInfoEndpoint(userInfoEndpointConfig ->
                 userInfoEndpointConfig.userService(customOAuth2UserService)));

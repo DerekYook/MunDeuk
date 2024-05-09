@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="<c:url value="/css/style.css"/>">
     <link rel="shortcut icon" href="<c:url value="/images/main/slide.jpg"/><c:url value="/images/favicon.png"/>" />--%>
     <script src="<c:url value="/js/jquery/jquery-3.6.0.js"/>"></script>
+    <script src="<c:url value="/js/jquery/jquery-ui_1.12.1.js"/>"></script>
     <script src="<c:url value="/js/common/common.js"/>"></script>
     <script src="<c:url value="/js/common/util.js"/>"></script>
 <%--    <script type="text/javascript">--%>
@@ -146,10 +147,10 @@
                         </form>
                     </div>
                     <div>
-                        <button type="button" onclick="fn_facebookLogin">페이스북 로그인</button>
+                        <button type="button" onclick="fn_facebookLogin()">페이스북 로그인</button>
                     </div>
                     <div>
-                        <button type="button" onclick="fn_kakaoLogin">카카오톡 로그인</button>
+                        <button type="button" onclick="fn_kakaoLogin()">카카오톡 로그인</button>
                     </div>
                     <div></div>
                     <div>

@@ -47,14 +47,13 @@ public class JwtTokenizer2 {
 //  public static final int REFRESH_EXP_TIME = 60 * 24;   // 24시간
   public static final int REFRESH_EXP_TIME = 10;
 
-  private Key key;
+  private static Key key;
 
   public static String getTokenFromHeader(String header) {
     return header.split(" ")[1];
   }
 
   public static String generateToken(Map<String, Object> valueMap, int validTime) {
-    SecretKey key = null;
     try {
       key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     } catch(Exception e){
@@ -72,6 +71,7 @@ public class JwtTokenizer2 {
   public static Authentication getAuthentication(String token) {
     Map<String, Object> claims = validateToken(token);
 
+    System.out.println("+++++++++++++");
     System.out.println(claims);
 
     String email = (String) claims.get("email");

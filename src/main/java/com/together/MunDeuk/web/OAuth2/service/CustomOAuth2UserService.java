@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.valves.rewrite.InternalRewriteMap.UpperCase;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -41,36 +42,35 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     // 제공받은 정보 확인
     String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
         .getUserInfoEndpoint().getUserNameAttributeName();
-    System.out.println(userNameAttributeName);
     // 정보 제공 소셜 확인
     String registrationId = userRequest.getClientRegistration().getRegistrationId();
-//    SocialType socialType = OAuth2Utils.getSocialType(registrationId);
-    System.out.println(registrationId);
+    log.info("social Check = {}", registrationId);
     // 카카오
     Member member = null;
-    if (registrationId.equals("")) {
+    if (registrationId.equals("kakao")) {
       OAuth2UserInfo kakaoUserInfo = new OAuth2UserInfo(attributes);
-      System.out.println(kakaoUserInfo);
-      String socialType = "KAKAO";
+      String socialType = registrationId.toUpperCase();
       String socialId = kakaoUserInfo.getSocialId();
       String name = kakaoUserInfo.getName();
+      String email = kakaoUserInfo.getEmail();
 
       Optional<Member> bySocialId = memberRepository.findBySocialId(socialId);
       // 일치 하는 회원이 없다면 새로 등록
-      member = bySocialId.orElseGet(() -> saveSocialMember(socialId, name, socialType));
-
+      // todo : 단순 로그인 지원이라면 회원가입 페이지로 redirect
+      member = bySocialId.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
+      System.out.println(member);
 //    } else if(registrationId.eqauls("")){
 //      // 구글
     }
     return new OAuth2PrincipalDetail(member,
-        Collections.singleton(new SimpleGrantedAuthority(member.getMemberAuth().name())), attributes);
-//    return null;
+        Collections.singleton(new SimpleGrantedAuthority(member.getMemberAuth().name())),
+        attributes);
   }
 
-  public Member saveSocialMember(String socialId, String name, String socialType) {
+  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
     long memberId = memberRepository.selectMaxMemberIdx();
-    return memberRepository.saveSocialMemeber(memberId, socialId, name, socialType);
-//    return null;
+    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
+    return memberRepository.selectMember(email);
   }
 
 }

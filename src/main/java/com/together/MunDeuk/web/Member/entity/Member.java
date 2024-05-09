@@ -15,11 +15,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long memberId;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 20, nullable = false)
     private String nickName;
 
     @Email
-    @Column(length = 50, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @Column(length = 20, nullable = false)

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
@@ -30,8 +31,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "SELECT * FROM member WHERE SOCIAL_ID = :socialId", nativeQuery = true)
     Optional<Member> findBySocialId(String socialId);
 
+    @Transactional
     @Modifying
     @Query(value = "INSERT INTO member (MEMBER_ID, NICK_NAME, EMAIL, PASSWORD, MEMBER_AUTH, MEMBER_STATUS, SOCIAL_TYPE, SOCIAL_ID)"
-        + "VALUES (:memberId, :nickName, :socialId+'@'+:nickName, :socialId+'@'+:nickName, 'User', 'Active', :socialType, :socialId)", nativeQuery = true)
-    Member saveSocialMemeber(Long memberId, String socialId, String nickName, String socialType);
+        + "VALUES (:memberId, :nickName, :email, :nickName, 'User', 'Active', :socialType, :socialId)", nativeQuery = true)
+    void saveSocialMember(Long memberId, String nickName, String email, String socialId, String socialType);
+
 }
