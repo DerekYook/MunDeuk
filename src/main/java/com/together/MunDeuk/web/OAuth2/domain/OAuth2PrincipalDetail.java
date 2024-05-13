@@ -1,4 +1,4 @@
-package com.together.MunDeuk.utils;
+package com.together.MunDeuk.web.OAuth2.domain;
 
 import com.together.MunDeuk.web.Member.entity.Member;
 import java.util.Collection;

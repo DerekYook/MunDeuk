@@ -1,28 +1,20 @@
 package com.together.MunDeuk.web.OAuth2.service;
 
-import static com.together.MunDeuk.web.OAuth2.entity.OAuth2UserInfo.socialId;
-
-import com.together.MunDeuk.utils.OAuth2PrincipalDetail;
-import com.together.MunDeuk.utils.OAuth2Utils;
+import com.together.MunDeuk.web.OAuth2.domain.OAuth2PrincipalDetail;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.repository.MemberRepository;
 import com.together.MunDeuk.web.OAuth2.entity.OAuth2UserInfo;
-import java.security.Principal;
-import java.sql.SQLException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.valves.rewrite.InternalRewriteMap.UpperCase;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service

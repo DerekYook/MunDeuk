@@ -25,8 +25,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 // JWT 토큰 인증
 public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
+  private CustomUserDetailService customUserDetailService;
   // 필터를 적용하지 않을 API들
-  private static final String[] whitelist = {"/signUp", "/login" , "/refresh", "/"
+  private static final String[] whitelist = {"/signUp", "/login" , "/refresh", "/", "/ajax/loginProcess"
       , "/WEB-INF/jsp/web/member/signUp.jsp", "/WEB-INF/jsp/web/common/login.jsp"
       , "/js/*"};
 

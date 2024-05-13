@@ -77,12 +77,11 @@ public class JwtTokenizer2 {
     String email = (String) claims.get("email");
     String name = (String) claims.get("name");
     String role = (String) claims.get("role");
-//    MemberRole memberRole = MemberRole.valueOf(role);
 
-//    Member member = Member;
+//    Member member = ;
 //    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
 //    PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
-
+//
 //    return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
     return null;
   }
@@ -120,4 +119,15 @@ public class JwtTokenizer2 {
     long remainMs = expDate.getTime() - System.currentTimeMillis();
     return remainMs / (1000 * 60);
   }
+
+  public static void setAccessTokenHeader(String accessToken, HttpServletResponse response){
+    String headerValue = BEARER_PREFIX + accessToken;
+    response.setHeader(AUTHORIZATION_HEADER, headerValue);
+  }
+
+  public static void setRefreshTokenHeader(String refreshToken, HttpServletResponse response){
+    String headerValue = BEARER_PREFIX + refreshToken;
+    response.setHeader(REFRESH_HEADER, headerValue);
+  }
+
 }

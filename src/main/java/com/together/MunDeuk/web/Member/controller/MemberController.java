@@ -2,10 +2,13 @@ package com.together.MunDeuk.web.Member.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.entity.Member.MemberAuth;
 import com.together.MunDeuk.web.Member.mapper.MemberMapper;
 import com.together.MunDeuk.web.Member.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +43,12 @@ public class MemberController {
   }
 
   @RequestMapping(value = "/main")
-  public String mainPage() {
+  public String mainPage(HttpServletRequest request, HttpServletResponse response) {
+
+    System.out.println("!!!!!!!!!");
+    System.out.println(request);
+    System.out.println(response);
+
     return "web/common/main";
   }
 
@@ -61,35 +69,37 @@ public class MemberController {
     return new ResponseEntity(memberMapper.membersToMemberResponseDtos(memberLists), HttpStatus.OK);
   }
 
-//  // CustomLoginSuccessHandler에서 처리
-//  @ResponseBody
-//  @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
-//  // todo : parameter변경
+  // CustomLoginSuccessHandler에서 처리(여기는 그냥 스루패스)
+  @ResponseBody
+  @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
+  // todo : parameter변경
 ////  public Map<String, Object> confirmLogin(@RequestParam String email, @RequestParam String password) {
 //  public Map<String, Object> confirmLogin() {
 //    Map<String, Object> result = new HashMap<>();
+//
 //    boolean accountChk = false;
 //    Member verifiedMember = null;
 //
 //    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //    if(authentication != null && authentication.isAuthenticated()){
 //      String username = authentication.getName();
-//      verifiedMember = memberService.validMember(username);
+////      verifiedMember = memberService.validMember(username);
 //      accountChk = true;
 //    }
 //
-//    if (!accountChk) {
-//      result.put("status", "fail");
-//    } else {
-//      if (verifiedMember.getMemberAuth() == MemberAuth.Admin){
-//        result.put("status", "AdminSuccess");
-//      } else {
-//        result.put("status", "MemberSuccess");
-//      }
-//
-//    }
+////    if (!accountChk) {
+////      result.put("status", "fail");
+////    } else {
+////      if (verifiedMember.getMemberAuth() == MemberAuth.Admin){
+////        result.put("status", "AdminSuccess");
+////      } else {
+////        result.put("status", "MemberSuccess");
+////      }
+////
+////    }
 //    return result;
 //  }
+  public void confirmLogin() {}
 
   @ResponseBody
   @RequestMapping(value = "/member/signUp", method = RequestMethod.POST)
@@ -101,7 +111,7 @@ public class MemberController {
 //    result.put("password",password);
 
     long id = memberService.getMemberIndex();
-    memberService.signUpMember(id, nickName,email,password);
+    memberService.signUpMember(id, nickName, email, password);
 
     return new ResponseEntity<>(null, HttpStatus.OK);
   }

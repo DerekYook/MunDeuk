@@ -1,8 +1,10 @@
 package com.together.MunDeuk.config;
 
 import com.together.MunDeuk.utils.CustomLoginSuccessHandler2;
+import com.together.MunDeuk.utils.CustomOauth2LoginSuccessHandler2;
 import com.together.MunDeuk.utils.JwtAuthenticationFilter2;
 import com.together.MunDeuk.utils.JwtTokenizer;
+import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.utils.LoginAuthenticationFilter;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import java.util.List;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -32,6 +35,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SpringSecurityConfig2{
   // todo : oauth2 use
+  private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomOAuth2UserService customOAuth2UserService;
 
   @Bean
@@ -48,15 +52,19 @@ public class SpringSecurityConfig2{
 
     return source;
   }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+//  // 패스워드 암호화
+//  @Bean
+//  public PasswordEncoder passwordEncoder() {
+//    return new BCryptPasswordEncoder();
+//  }
 
   @Bean
   public CustomLoginSuccessHandler2 commonLoginSuccessHandler() {
     return new CustomLoginSuccessHandler2();
+  }
+  @Bean
+  public CustomOauth2LoginSuccessHandler2 commonOauth2LoginSuccessHandler() {
+    return new CustomOauth2LoginSuccessHandler2();
   }
 
 //  @Bean
@@ -71,6 +79,9 @@ public class SpringSecurityConfig2{
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
+    http.authenticationManager(authenticationManager);
+
     http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
 
     http.csrf(AbstractHttpConfigurer::disable);
@@ -83,16 +94,18 @@ public class SpringSecurityConfig2{
         authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 
     http.addFilterBefore(jwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class);
-
-    http.formLogin(httpSecurityFormLoginConfigurer -> {httpSecurityFormLoginConfigurer
-        .loginPage("/login")
-        .successHandler(commonLoginSuccessHandler());
-//        .failureHandler(commonLoginFailHandler());
-    });
-
+    // 웹페이지 인증
+    http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+//    http.formLogin(httpSecurityFormLoginConfigurer -> {httpSecurityFormLoginConfigurer
+//        .loginPage("/login")
+//        .successHandler(commonLoginSuccessHandler());
+////        .failureHandler(commonLoginFailHandler());
+//    });
+    // oauth인증
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
         httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
-            .successHandler(commonLoginSuccessHandler())
+            .successHandler(commonOauth2LoginSuccessHandler())
+            // 사용자 인증
             .userInfoEndpoint(userInfoEndpointConfig ->
                 userInfoEndpointConfig.userService(customOAuth2UserService)));
 
@@ -101,11 +114,11 @@ public class SpringSecurityConfig2{
 
   // 인증 필터
   public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
-//      final AuthenticationManager authenticationManager) {
       // 토큰 정보 추가
-      final AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
+      final AuthenticationManager authenticationManager) {
+    // 토큰 정보를 이용해 사용자 정보 식별
     LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
-//    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
+//    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/main", authenticationManager);
     // Handler에 토큰 정보 추가
     loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
     // Rest API 방식을 사용하기 위해 추가

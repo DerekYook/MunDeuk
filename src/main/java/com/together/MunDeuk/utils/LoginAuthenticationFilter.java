@@ -34,7 +34,6 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     ServletInputStream inputStream = request.getInputStream();
 
     LoginRequestDto loginRequestDto = new ObjectMapper().readValue(inputStream, LoginRequestDto.class);
-
     // AuthenticationManager : ProviderManager의 인스턴스 -> Provider 순회 인증시도
     return this.getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
         loginRequestDto.username,
