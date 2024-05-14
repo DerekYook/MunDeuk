@@ -2,6 +2,7 @@ package com.together.MunDeuk.web.Member.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import com.together.MunDeuk.utils.CookieUtil;
 import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.entity.Member.MemberAuth;
@@ -9,13 +10,16 @@ import com.together.MunDeuk.web.Member.mapper.MemberMapper;
 import com.together.MunDeuk.web.Member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +40,7 @@ public class MemberController {
 
   private final MemberService memberService;
   private final MemberMapper memberMapper;
+  private final CookieUtil cookieUtil;
 
   @RequestMapping(value = "/loginFail")
   public String loginFail() {
@@ -43,12 +48,7 @@ public class MemberController {
   }
 
   @RequestMapping(value = "/main")
-  public String mainPage(HttpServletRequest request, HttpServletResponse response) {
-
-    System.out.println("!!!!!!!!!");
-    System.out.println(request);
-    System.out.println(response);
-
+  public String mainPage() {
     return "web/common/main";
   }
 
@@ -69,10 +69,35 @@ public class MemberController {
     return new ResponseEntity(memberMapper.membersToMemberResponseDtos(memberLists), HttpStatus.OK);
   }
 
-  // CustomLoginSuccessHandler에서 처리(여기는 그냥 스루패스)
+  // form로그인 동작
   @ResponseBody
   @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
-  // todo : parameter변경
+  public ResponseEntity<?> confirmLogin(@RequestParam String email, @RequestParam String password, HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+
+    Map<String, Object> responseMap = new HashMap<>();
+
+    responseMap.put("name", email);
+    responseMap.put("password", password);
+
+    String targetUrl = "/main";
+
+    int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
+    int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
+
+    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER, JwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
+    ResponseCookie refreshTokenCookie = cookieUtil.createCookie(JwtTokenizer2.REFRESH_HEADER, JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
+
+    response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+    response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+
+    response.sendRedirect(targetUrl);
+
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+
+//  // CustomLoginSuccessHandler에서 처리(여기는 그냥 스루패스)
+//  // todo : parameter변경
 ////  public Map<String, Object> confirmLogin(@RequestParam String email, @RequestParam String password) {
 //  public Map<String, Object> confirmLogin() {
 //    Map<String, Object> result = new HashMap<>();
@@ -99,7 +124,6 @@ public class MemberController {
 ////    }
 //    return result;
 //  }
-  public void confirmLogin() {}
 
   @ResponseBody
   @RequestMapping(value = "/member/signUp", method = RequestMethod.POST)

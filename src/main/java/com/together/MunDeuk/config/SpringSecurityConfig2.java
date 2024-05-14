@@ -94,12 +94,18 @@ public class SpringSecurityConfig2{
         authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 
     http.addFilterBefore(jwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class);
-    // 웹페이지 인증
-    http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+//    // 웹페이지 인증
+//    http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 //    http.formLogin(httpSecurityFormLoginConfigurer -> {httpSecurityFormLoginConfigurer
 //        .loginPage("/login")
 //        .successHandler(commonLoginSuccessHandler());
 ////        .failureHandler(commonLoginFailHandler());
+//    });
+//    // Form 로그인 설정
+//    http.formLogin(httpSecurityFormLoginConfigurer -> {
+//      httpSecurityFormLoginConfigurer
+//          .loginPage("/login")
+//          .successHandler(customSuccessHandler());
 //    });
     // oauth인증
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
@@ -108,7 +114,6 @@ public class SpringSecurityConfig2{
             // 사용자 인증
             .userInfoEndpoint(userInfoEndpointConfig ->
                 userInfoEndpointConfig.userService(customOAuth2UserService)));
-
     return http.build();
   }
 

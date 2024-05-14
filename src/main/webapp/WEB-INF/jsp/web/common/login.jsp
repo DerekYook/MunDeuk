@@ -128,7 +128,7 @@
                         <div>
                         </div>
                         <h3 style="width:100%;text-align:left;"><b>로그인</b></h3>
-                        <form role="form" id="loginFrm" name="loginFrm" method="post" action="#" onsubmit="return false">
+                        <form id="loginFrm" name="loginFrm">
                             <div>
                                 <label for="InputEmail">Email</label>
                                 <div>
