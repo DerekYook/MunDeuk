@@ -9,6 +9,7 @@ import com.together.MunDeuk.utils.LoginAuthenticationFilter;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +34,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 @Configuration
+@Slf4j
 public class SpringSecurityConfig2{
   // todo : oauth2 use
   private final AuthenticationConfiguration authenticationConfiguration;
@@ -58,10 +60,17 @@ public class SpringSecurityConfig2{
 //    return new BCryptPasswordEncoder();
 //  }
 
+  // 로컬 로그인 성공시 handler
+//  @Bean
+//  public CustomLoginSuccessHandler2 commonLoginSuccessHandler() {
+//    return new CustomLoginSuccessHandler2();
+//  }
   @Bean
-  public CustomLoginSuccessHandler2 commonLoginSuccessHandler() {
+  public AuthenticationSuccessHandler customSuccessHandler() {
     return new CustomLoginSuccessHandler2();
   }
+
+  // OAuth2 로그인 성공시 handler
   @Bean
   public CustomOauth2LoginSuccessHandler2 commonOauth2LoginSuccessHandler() {
     return new CustomOauth2LoginSuccessHandler2();
@@ -101,12 +110,21 @@ public class SpringSecurityConfig2{
 //        .successHandler(commonLoginSuccessHandler());
 ////        .failureHandler(commonLoginFailHandler());
 //    });
-//    // Form 로그인 설정
-//    http.formLogin(httpSecurityFormLoginConfigurer -> {
-//      httpSecurityFormLoginConfigurer
-//          .loginPage("/login")
-//          .successHandler(customSuccessHandler());
-//    });
+    // Form 로그인 설정
+    log.info("Configuring form login");
+    http.formLogin(httpSecurityFormLoginConfigurer -> {
+      log.info("----Configuring form login----");
+      httpSecurityFormLoginConfigurer
+          .loginPage("/login");
+//          .loginProcessingUrl("/ajax/loginProcess")
+//          // Parameter가 아닌 Json으로 보냄
+////          .usernameParameter("email")
+////          .passwordParameter("password")
+////          .successHandler(commonLoginSuccessHandler())
+//          .defaultSuccessUrl("/main");
+      // 로컬에서만 Filter적용
+      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+    });
     // oauth인증
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
         httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
@@ -135,9 +153,5 @@ public class SpringSecurityConfig2{
     return loginAuthenticationFilter;
   }
 
-  // 로그인 성공시 handler
-  @Bean
-  public AuthenticationSuccessHandler customSuccessHandler() {
-    return new CustomLoginSuccessHandler2();
-  }
+
 }

@@ -38,6 +38,8 @@ import org.springframework.stereotype.Component;
 public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler {
   @Autowired
   private CookieUtil cookieUtil;
+  private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     log.info("--------------------------- CommonLoginSuccessHandler ---------------------------");
@@ -55,7 +57,6 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
     int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
     int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
 
-    String targetUrl = "/main";
 //    // Header로 넣을 때
 //    responseMap.put("accessToken", JwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
 //    responseMap.put("refreshToken", JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
@@ -84,6 +85,57 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
 //    writer.println(json);
 //    writer.flush();
 
-    response.sendRedirect(targetUrl);
+    // Redirect Strategy
+    if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+      response.setContentType("application/json;charset=UTF-8");
+      response.setStatus(HttpServletResponse.SC_OK);
+
+      Map<String, Object> responseData = new HashMap<>();
+      String targetUrl = determineTargetUrl(authentication); // 사용자 역할에 따라 URL 결정
+      responseData.put("redirectUrl", targetUrl); // 리디렉션할 URL을 JSON 응답에 포함
+
+      new ObjectMapper().writeValue(response.getWriter(), responseData);
+    } else {
+      handle(request, response, authentication);
+    }
+    clearAuthenticationAttributes(request);
+  }
+
+  private void handle(HttpServletRequest request, HttpServletResponse response,
+      Authentication authentication) throws IOException {
+    String targetUrl = determineTargetUrl(authentication);
+    log.info("Authentication : " + authentication);
+
+    if (response.isCommitted()) {
+      log.info("Response has already been committed. Unable to redirect to "
+          + targetUrl);
+      return;
+    }
+
+    redirectStrategy.sendRedirect(request, response, targetUrl);
+  }
+
+  private String determineTargetUrl(final Authentication authentication) {
+
+    Map<String, String> roleTargetUrlMap = new HashMap<>();
+    roleTargetUrlMap.put("ROLE_User", "/main");
+    roleTargetUrlMap.put("ROLE_Admin", "/admin/main");
+
+    final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+    for (final GrantedAuthority grantedAuthority : authorities) {
+      String authorityName = grantedAuthority.getAuthority();
+      if (roleTargetUrlMap.containsKey(authorityName)) {
+        return roleTargetUrlMap.get(authorityName);
+      }
+    }
+    throw new IllegalStateException();
+  }
+
+  private void clearAuthenticationAttributes(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    if (session == null) {
+      return;
+    }
+    session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
   }
 }

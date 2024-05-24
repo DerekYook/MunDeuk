@@ -30,6 +30,8 @@ public class CustomUserDetailService implements UserDetailsService {
 //    } else {
 //      throw new UsernameNotFoundException("User not found with username: " + username);
 //    }
+    System.out.println("+++++++++++++++++++++++++++++++");
+    System.out.println(username);
     Member member = memberRepository.selectMember(username);
 
     return User.withUsername(member.getEmail())

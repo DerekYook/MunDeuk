@@ -93,14 +93,12 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     log.info("--------------------------- JwtVerifyFilter ---------------------------");
 
-    System.out.println(cookieUtil.getCookie(request, "Access"));
     String accessToken = cookieUtil.getCookie(request, "Access").getValue();
     if(cookieUtil.getCookie(request, "Access") == null){
       log.info("로그인이 필요합니다.");
       throw new CustomJwtException("토큰이 전달되지 않았습니다");
     } else {
       String username = jwtTokenizer.getUsernameFromToken(accessToken);
-      System.out.println(username);
     }
 
 

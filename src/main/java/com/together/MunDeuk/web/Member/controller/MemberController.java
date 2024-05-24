@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,13 +73,13 @@ public class MemberController {
   // form로그인 동작
   @ResponseBody
   @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
-  public ResponseEntity<?> confirmLogin(@RequestParam String email, @RequestParam String password, HttpServletRequest request, HttpServletResponse response)
+//  public void confirmLogin(){}
+  public ResponseEntity<?> confirmLogin(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-
     Map<String, Object> responseMap = new HashMap<>();
 
-    responseMap.put("name", email);
-    responseMap.put("password", password);
+//    responseMap.put("name", email);
+//    responseMap.put("password", password);
 
     String targetUrl = "/main";
 
