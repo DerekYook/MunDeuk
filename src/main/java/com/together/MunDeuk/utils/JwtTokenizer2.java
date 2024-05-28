@@ -139,7 +139,8 @@ public class JwtTokenizer2 {
 //  }
 
   public String getUsernameFromToken(String token) {
-    return getClaimFromToken(token, Claims::getId);
+//    return getClaimFromToken(token, Claims::getId);
+    return getClaimFromToken(token, claims -> claims.get("name", String.class));
   }
 
   public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {

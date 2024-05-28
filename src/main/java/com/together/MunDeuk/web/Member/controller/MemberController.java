@@ -66,7 +66,6 @@ public class MemberController {
   @RequestMapping(value = "/members")
   public ResponseEntity getAllMembers() {
     List<Member> memberLists = memberService.getMemberLists();
-
     return new ResponseEntity(memberMapper.membersToMemberResponseDtos(memberLists), HttpStatus.OK);
   }
 
@@ -81,7 +80,7 @@ public class MemberController {
 //    responseMap.put("name", email);
 //    responseMap.put("password", password);
 
-    String targetUrl = "/main";
+//    String targetUrl = "/main";
 
     int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
     int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
@@ -91,9 +90,9 @@ public class MemberController {
 
     response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
     response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
-
-    response.sendRedirect(targetUrl);
-
+//     .jsp반영
+//    response.setContentType("text/html;charset=UTF-8");
+//    response.sendRedirect(targetUrl);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 

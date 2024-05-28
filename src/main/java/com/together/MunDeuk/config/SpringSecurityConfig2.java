@@ -99,6 +99,7 @@ public class SpringSecurityConfig2{
       httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);
     });
 
+    // request URL에 대한 권한 확인
     http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
         authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 
@@ -111,16 +112,15 @@ public class SpringSecurityConfig2{
 ////        .failureHandler(commonLoginFailHandler());
 //    });
     // Form 로그인 설정
-    log.info("Configuring form login");
     http.formLogin(httpSecurityFormLoginConfigurer -> {
       log.info("----Configuring form login----");
       httpSecurityFormLoginConfigurer
-          .loginPage("/login");
+          .loginPage("/login")
 //          .loginProcessingUrl("/ajax/loginProcess")
 //          // Parameter가 아닌 Json으로 보냄
 ////          .usernameParameter("email")
 ////          .passwordParameter("password")
-////          .successHandler(commonLoginSuccessHandler())
+          .successHandler(customSuccessHandler());
 //          .defaultSuccessUrl("/main");
       // 로컬에서만 Filter적용
       http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
@@ -152,6 +152,5 @@ public class SpringSecurityConfig2{
         ));
     return loginAuthenticationFilter;
   }
-
 
 }

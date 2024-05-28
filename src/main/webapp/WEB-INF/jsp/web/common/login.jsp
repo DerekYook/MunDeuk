@@ -45,6 +45,7 @@
             url: '/ajax/loginProcess',
             cache: false,
             contentType: 'application/json',
+            // contentType: 'text/html',
             data: JSON.stringify(serializedValues),
             success: function (response) {
               if(response.redirectUrl) {
@@ -90,6 +91,7 @@
           url: '/ajax/loginProcess',
           cache: false,
           contentType: 'application/json',
+          // contentType: 'text/html',
           data: JSON.stringify(serializedValues),
           success: function (response) {
             if(response.redirectUrl) {

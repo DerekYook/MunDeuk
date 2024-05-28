@@ -92,6 +92,7 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
 
       Map<String, Object> responseData = new HashMap<>();
       String targetUrl = determineTargetUrl(authentication); // 사용자 역할에 따라 URL 결정
+
       responseData.put("redirectUrl", targetUrl); // 리디렉션할 URL을 JSON 응답에 포함
 
       new ObjectMapper().writeValue(response.getWriter(), responseData);
