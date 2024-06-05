@@ -70,4 +70,13 @@ public class CookieUtil {
     cookie.setMaxAge(0);
   }
 
+  public Boolean chkCookie(HttpServletRequest req, String cookieName){
+    final Cookie[] cookies = req.getCookies();
+    if(cookies==null) return false;
+    for(Cookie cookie : cookies){
+      if(cookie.getName().equals(cookieName))
+        return true;
+    }
+    return false;
+  }
 }

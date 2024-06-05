@@ -97,12 +97,15 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
       FilterChain filterChain) throws ServletException, IOException {
     log.info("--------------------------- JwtVerifyFilter ---------------------------");
 
-    String accessToken = cookieUtil.getCookie(request, "Access").getValue();
-    if (cookieUtil.getCookie(request, "Access") == null) {
+    if(!cookieUtil.chkCookie(request,"Access")) {
       log.info("로그인이 필요합니다.");
-      throw new CustomJwtException("토큰이 전달되지 않았습니다");
+//    String accessToken = cookieUtil.getCookie(request, "Access").getValue();
+//    if (accessToken.equals("") || accessToken == null) {
+//      log.info("로그인이 필요합니다.");
+//      // Exception처리를 하면 토큰이 없을때 진행이 막힘(Oauth초기로그인) => try안쪽에서 처리
+//      throw new CustomJwtException("토큰이 전달되지 않았습니다");
     } else {
-
+      String accessToken = cookieUtil.getCookie(request, "Access").getValue();
       try {
         String username = jwtTokenizer.getUsernameFromToken(accessToken);
         UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
@@ -133,10 +136,6 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
 //        // jsp Redirect시 빈페이지 방지
 //        response.setContentType("text/html;charset=UTF-8");
 
-        // try 2
-        // 확인해보니 토큰 검증만 하고 filter기능없이 종료되어서 그랬다.....
-        filterChain.doFilter(request,response);
-
       } catch (CustomExpiredJwtException e) {
         log.info("토큰이 만료되었습니다: " + e.getMessage());
         throw e;
@@ -144,14 +143,16 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
         log.error("토큰 검증 중 오류 발생: " + e.getMessage());
 //        throw new CustomJwtException("토큰 검증 중 오류가 발생했습니다", e);
       }
-
     }
+    // try 2
+    // 확인해보니 토큰 검증만 하고 filter기능없이 종료되어서 그랬다.....
+    filterChain.doFilter(request,response);
   }
 
-  // redirect Page적용
-  private boolean isAjax(HttpServletRequest request) {
-    String ajaxHeader = request.getHeader("X-Requested-With");
-    return "XMLHttpRequest".equals(ajaxHeader);
-  }
+//  // redirect Page적용
+//  private boolean isAjax(HttpServletRequest request) {
+//    String ajaxHeader = request.getHeader("X-Requested-With");
+//    return "XMLHttpRequest".equals(ajaxHeader);
+//  }
 
 }

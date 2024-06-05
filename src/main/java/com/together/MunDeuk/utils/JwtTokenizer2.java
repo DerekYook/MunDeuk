@@ -42,10 +42,10 @@ import org.springframework.util.StringUtils;
 public class JwtTokenizer2 {
   @Value("${jwt.secret}")
   public String secret;
-  public static final String AUTHORIZATION_HEADER = "Authorization";
+  public static final String JWT_HEADER = "Authorization";
   public static final String ACCESS_HEADER = "Access";
   public static final String REFRESH_HEADER = "Refresh";
-  public static final String BEARER_PREFIX = "Bearer ";
+  public static final String JWT_PREFIX = "Bearer ";
   public static final String secretKey = "JWTsecretkeyforexampleJWTsecretkeyforexampleJWTsecretkeyforexample";
   public static final int ACCESS_EXP_TIME = 10;   // 10분
 //  public static final int REFRESH_EXP_TIME = 60 * 24;   // 24시간
@@ -75,9 +75,6 @@ public class JwtTokenizer2 {
 
   public static Authentication getAuthentication(String token) {
     Map<String, Object> claims = validateToken(token);
-
-    System.out.println("+++++++++++++");
-    System.out.println(claims);
 
     String email = (String) claims.get("email");
     String name = (String) claims.get("name");

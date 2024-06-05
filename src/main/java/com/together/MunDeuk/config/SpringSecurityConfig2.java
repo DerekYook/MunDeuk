@@ -113,25 +113,30 @@ public class SpringSecurityConfig2{
 //    });
     // Form 로그인 설정
     http.formLogin(httpSecurityFormLoginConfigurer -> {
-      log.info("----Configuring form login----");
+      log.info("----Configuring Form Login----");
       httpSecurityFormLoginConfigurer
-          .loginPage("/login")
+          .loginPage("/login");
 //          .loginProcessingUrl("/ajax/loginProcess")
 //          // Parameter가 아닌 Json으로 보냄
 ////          .usernameParameter("email")
 ////          .passwordParameter("password")
-          .successHandler(customSuccessHandler());
+//          .successHandler(customSuccessHandler())
 //          .defaultSuccessUrl("/main");
       // 로컬에서만 Filter적용
       http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
     });
     // oauth인증
-    http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
-        httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/login")
+    http.oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
+        log.info("----Configuring Oauth2 Login----");
+        httpSecurityOAuth2LoginConfigurer
             .successHandler(commonOauth2LoginSuccessHandler())
             // 사용자 인증
             .userInfoEndpoint(userInfoEndpointConfig ->
-                userInfoEndpointConfig.userService(customOAuth2UserService)));
+                userInfoEndpointConfig.userService(customOAuth2UserService))
+//            .redirectionEndpoint(redirection -> redirection
+//                .baseUri("/main"))
+        ;
+    });
     return http.build();
   }
 

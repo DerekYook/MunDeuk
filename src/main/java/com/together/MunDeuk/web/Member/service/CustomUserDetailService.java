@@ -3,6 +3,7 @@ package com.together.MunDeuk.web.Member.service;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomUserDetailService implements UserDetailsService {
   private final MemberRepository memberRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) {
+    log.info("--------------------------- OAuth2UserService ---------------------------");
 //    if ("test@test.com".equals(username)) {
 //      return User.withDefaultPasswordEncoder()
 //          .username("test@test.com")

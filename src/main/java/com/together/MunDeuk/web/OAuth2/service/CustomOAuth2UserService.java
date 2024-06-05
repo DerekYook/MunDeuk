@@ -25,6 +25,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+    log.info("--------------------------- OAuth2UserService ---------------------------");
+
     OAuth2User oAuth2User = super.loadUser(userRequest);
     Map<String, Object> attributes = oAuth2User.getAttributes();
 
@@ -32,8 +34,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     log.info("attributes = {}", attributes);
 
     // 제공받은 정보 확인
-    String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
-        .getUserInfoEndpoint().getUserNameAttributeName();
+    String userNameAttributeName = userRequest.getClientRegistration()
+        .getProviderDetails()
+        .getUserInfoEndpoint()
+        .getUserNameAttributeName();
+    log.info("nameAttributeKey = {}", userNameAttributeName);
     // 정보 제공 소셜 확인
     String registrationId = userRequest.getClientRegistration().getRegistrationId();
     log.info("social Check = {}", registrationId);
@@ -48,7 +53,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
       Optional<Member> bySocialId = memberRepository.findBySocialId(socialId);
       // 일치 하는 회원이 없다면 새로 등록
-      // todo : 단순 로그인 지원이라면 회원가입 페이지로 redirect
       member = bySocialId.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
       System.out.println(member);
 //    } else if(registrationId.eqauls("")){

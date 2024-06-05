@@ -19,4 +19,4 @@ spring:
             scope:
               - profile_nickname
               - profile_image
-              - account_email # 비즈 혹은 테스트 앱일 경우에만
+              - account_email # 비즈 혹은 테스트 앱일 경우에만 제공됨
