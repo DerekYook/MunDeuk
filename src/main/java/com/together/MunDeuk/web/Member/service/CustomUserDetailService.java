@@ -17,7 +17,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    log.info("--------------------------- OAuth2UserService ---------------------------");
+    log.info("--------------------------- UserDetailService ---------------------------");
 //    if ("test@test.com".equals(username)) {
 //      return User.withDefaultPasswordEncoder()
 //          .username("test@test.com")

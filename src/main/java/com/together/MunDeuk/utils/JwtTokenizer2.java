@@ -79,8 +79,15 @@ public class JwtTokenizer2 {
     String email = (String) claims.get("email");
     String name = (String) claims.get("name");
     String role = (String) claims.get("role");
+    String provider = (String) claims.get("provider");
 
-//    Member member = ;
+    Member member = new Member();
+    member.setEmail(email);
+    member.setNickName(name);
+    System.out.println(email);
+    System.out.println(name);
+    System.out.println(role);
+    System.out.println(provider);
 //    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
 //    PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
 //
@@ -110,16 +117,23 @@ public class JwtTokenizer2 {
   // 토큰이 만료되었는지 판단하는 메서드
   public static boolean isExpired(String token) {
     try {
-      validateToken(token);
+      Claims claims = validateToken(token);
+      Date tokenTime = claims.getExpiration();
+      if (tokenRemainTime(tokenTime) > 0) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (Exception e) {
       return (e instanceof CustomExpiredJwtException);
     }
-    return false;
   }
 
   // 토큰의 남은 만료시간 계산
-  public static long tokenRemainTime(Integer expTime) {
-    Date expDate = new Date((long) expTime * (1000));
+//  public static long tokenRemainTime(Integer expTime) {
+//    Date expDate = new Date((long) expTime * (1000));
+  public static long tokenRemainTime(Date expTime) {
+    Date expDate = expTime;
     long remainMs = expDate.getTime() - System.currentTimeMillis();
     return remainMs / (1000 * 60);
   }

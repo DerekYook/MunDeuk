@@ -92,6 +92,73 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
 //    }
 //  }
 
+  // 1nd doFilterInternal
+//  @Override
+//  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+//      FilterChain filterChain) throws ServletException, IOException {
+//    log.info("--------------------------- JwtVerifyFilter ---------------------------");
+//
+//    if(!cookieUtil.chkCookie(request,"Access")) {
+//      log.info("로그인이 필요합니다.");
+////    String accessToken = cookieUtil.getCookie(request, "Access").getValue();
+////    if (accessToken.equals("") || accessToken == null) {
+////      log.info("로그인이 필요합니다.");
+////      // Exception처리를 하면 토큰이 없을때 진행이 막힘(Oauth초기로그인) => try안쪽에서 처리
+////      throw new CustomJwtException("토큰이 전달되지 않았습니다");
+//    } else {
+//      log.info("---- branch Local Service / Oauth2 Service ----");
+//      String accessToken = cookieUtil.getCookie(request, "Access").getValue();
+//      try {
+//        String username = jwtTokenizer.getUsernameFromToken(accessToken);
+//        UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+//
+//        if (jwtTokenizer.validateToken(accessToken) != null) {
+//          UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+//              userDetails, null, userDetails.getAuthorities());
+//          SecurityContextHolder.getContext().setAuthentication(authentication);
+//        } else {
+//          throw new CustomJwtException("토큰이 유효하지 않습니다");
+//        }
+////        // try 1
+////        // redirect Page적용
+////        boolean isHandle = false;
+////
+////        if (!isAjax(request)) {
+////          if ("GET".equalsIgnoreCase(request.getMethod())) {
+////            isHandle = true;
+////          }
+////        }
+////
+////        String requestUri = request.getRequestURI();
+////
+////        if (isHandle) {
+////          String loginRedirectUrl = requestUri;
+////          request.getSession().setAttribute("loginRedirectUrl", loginRedirectUrl);
+////        }
+////        // jsp Redirect시 빈페이지 방지
+////        response.setContentType("text/html;charset=UTF-8");
+//
+//      } catch (CustomExpiredJwtException e) {
+//        log.info("토큰이 만료되었습니다: " + e.getMessage());
+//        throw e;
+//      } catch (Exception e) {
+//        log.error("토큰 검증 중 오류 발생: " + e.getMessage());
+////        throw new CustomJwtException("토큰 검증 중 오류가 발생했습니다", e);
+//      }
+//    }
+//    // try 2
+//    // 확인해보니 토큰 검증만 하고 filter기능없이 종료되어서 그랬다.....
+//    filterChain.doFilter(request,response);
+//    logger.info("필터 체인을 실행했습니다.");
+//  }
+//
+////  // redirect Page적용
+////  private boolean isAjax(HttpServletRequest request) {
+////    String ajaxHeader = request.getHeader("X-Requested-With");
+////    return "XMLHttpRequest".equals(ajaxHeader);
+////  }
+
+  // 2nd doFilterInternal
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
@@ -99,13 +166,11 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
 
     if(!cookieUtil.chkCookie(request,"Access")) {
       log.info("로그인이 필요합니다.");
-//    String accessToken = cookieUtil.getCookie(request, "Access").getValue();
-//    if (accessToken.equals("") || accessToken == null) {
-//      log.info("로그인이 필요합니다.");
-//      // Exception처리를 하면 토큰이 없을때 진행이 막힘(Oauth초기로그인) => try안쪽에서 처리
-//      throw new CustomJwtException("토큰이 전달되지 않았습니다");
     } else {
+      log.info("---- branch Local Service / Oauth2 Service ----");
       String accessToken = cookieUtil.getCookie(request, "Access").getValue();
+      jwtTokenizer.getAuthentication(accessToken);
+
       try {
         String username = jwtTokenizer.getUsernameFromToken(accessToken);
         UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
@@ -117,42 +182,15 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
         } else {
           throw new CustomJwtException("토큰이 유효하지 않습니다");
         }
-//        // try 1
-//        // redirect Page적용
-//        boolean isHandle = false;
-//
-//        if (!isAjax(request)) {
-//          if ("GET".equalsIgnoreCase(request.getMethod())) {
-//            isHandle = true;
-//          }
-//        }
-//
-//        String requestUri = request.getRequestURI();
-//
-//        if (isHandle) {
-//          String loginRedirectUrl = requestUri;
-//          request.getSession().setAttribute("loginRedirectUrl", loginRedirectUrl);
-//        }
-//        // jsp Redirect시 빈페이지 방지
-//        response.setContentType("text/html;charset=UTF-8");
-
       } catch (CustomExpiredJwtException e) {
         log.info("토큰이 만료되었습니다: " + e.getMessage());
         throw e;
       } catch (Exception e) {
         log.error("토큰 검증 중 오류 발생: " + e.getMessage());
-//        throw new CustomJwtException("토큰 검증 중 오류가 발생했습니다", e);
       }
     }
-    // try 2
-    // 확인해보니 토큰 검증만 하고 filter기능없이 종료되어서 그랬다.....
     filterChain.doFilter(request,response);
+    logger.info("필터 체인을 실행했습니다.");
   }
-
-//  // redirect Page적용
-//  private boolean isAjax(HttpServletRequest request) {
-//    String ajaxHeader = request.getHeader("X-Requested-With");
-//    return "XMLHttpRequest".equals(ajaxHeader);
-//  }
 
 }

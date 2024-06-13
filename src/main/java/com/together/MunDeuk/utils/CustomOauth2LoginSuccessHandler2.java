@@ -41,8 +41,6 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
       email =  (String) kakao_account.get("email") ;
     }
 
-response.sendRedirect();
-
 //    OAuth2PrincipalDetail principal = (OAuth2PrincipalDetail) authentication.getPrincipal();
 //
 //    log.info("authentication.getPrincipal() = {}", principal);
