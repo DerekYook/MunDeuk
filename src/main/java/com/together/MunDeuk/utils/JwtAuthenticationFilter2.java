@@ -163,7 +163,7 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
     log.info("--------------------------- JwtVerifyFilter ---------------------------");
-
+    log.info(" before provider :",request.authenticate(response));
     if(!cookieUtil.chkCookie(request,"Access")) {
       log.info("로그인이 필요합니다.");
     } else {
@@ -190,7 +190,6 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
       }
     }
     filterChain.doFilter(request,response);
-    logger.info("필터 체인을 실행했습니다.");
   }
 
 }

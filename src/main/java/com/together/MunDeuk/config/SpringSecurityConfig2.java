@@ -6,9 +6,11 @@ import com.together.MunDeuk.utils.CustomLoginSuccessHandler2;
 import com.together.MunDeuk.utils.CustomOauth2LoginSuccessHandler2;
 import com.together.MunDeuk.utils.JwtAuthenticationFilter2;
 import com.together.MunDeuk.utils.JwtAuthenticationProvider;
+import com.together.MunDeuk.utils.JwtProviderManager;
 import com.together.MunDeuk.utils.JwtTokenizer;
 import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.utils.LoginAuthenticationFilter;
+import com.together.MunDeuk.utils.OAuth2LoginAuthenticationProvider;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -27,6 +31,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -43,17 +49,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @Slf4j
 public class SpringSecurityConfig2{
-  // todo : oauth2 use
   private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomOAuth2UserService customOAuth2UserService;
-  private final DaoAuthenticationProvider daoAuthenticationProvider;
-
-  // JwtAuthenticationProvider 주입
-  @Autowired
-  public void configureAuthentication(AuthenticationManagerBuilder builder, JwtAuthenticationProvider jwtAuthenticationProvider){
-    System.out.println("+++++++++++++ provider injection");
-    builder.authenticationProvider(jwtAuthenticationProvider);
-  }
+  private final OAuth2LoginAuthenticationProvider oAuth2LoginAuthenticationProvider;
+//  private final DaoAuthenticationProvider daoAuthenticationProvider;
+//
+//  // JwtAuthenticationProvider 주입
+//  @Autowired
+//  public void configureAuthentication(AuthenticationManagerBuilder builder, JwtAuthenticationProvider jwtAuthenticationProvider){
+//    System.out.println("+++++++++++++ provider injection");
+//    builder.authenticationProvider(jwtAuthenticationProvider);
+//  }
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
@@ -85,6 +91,11 @@ public class SpringSecurityConfig2{
     return new CustomLoginSuccessHandler2();
   }
 
+//  @Bean
+//  public CommonLoginFailHandler commonLoginFailHandler() {
+//    return new CommonLoginFailHandler();
+//  }
+
   // OAuth2 로그인 성공시 handler
   @Bean
   public CustomOauth2LoginSuccessHandler2 customOauth2LoginSuccessHandler() {
@@ -98,9 +109,38 @@ public class SpringSecurityConfig2{
   }
 
 //  @Bean
-//  public CommonLoginFailHandler commonLoginFailHandler() {
-//    return new CommonLoginFailHandler();
+//  public JwtProviderManager jwtProviderManager(){
+//    return new JwtProviderManager(customOAuth2UserService);
 //  }
+
+  // Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException발생
+  @Bean
+  public OAuth2LoginAuthenticationProvider oAuth2LoginAuthenticationProvider(){
+    return new OAuth2LoginAuthenticationProvider(customOAuth2UserService);
+  }
+
+//  @Bean
+//  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//    AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
+//    auth.authenticationProvider(authenticationProviderConfig.daoAuthenticationProvider());
+//    auth.authenticationProvider(authenticationProviderConfig.oauth2AuthenticationProvider());
+//    return auth.build();
+//  }
+
+//  @Bean
+//  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//    ProviderManager providerManager = (ProviderManager) authenticationConfiguration.getAuthenticationManager();
+//    providerManager.getProviders().add(oAuth2LoginAuthenticationProvider());
+//    return providerManager;
+//  }
+
+  @Bean
+  public AuthenticationManager authenticationManager() {
+    List<AuthenticationProvider> providers = List.of(
+        oAuth2LoginAuthenticationProvider()
+    );
+    return new ProviderManager(providers);
+  }
 
   @Bean
   public JwtAuthenticationFilter2 jwtVerifyFilter() {
@@ -124,8 +164,11 @@ public class SpringSecurityConfig2{
     http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
         authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 
+//    // filter동작 전에 provider구분 시킴
+//    http.addFilterBefore(, OAuth2LoginAuthenticationFilter.class);
     http.addFilterBefore(jwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class);
-//    // 웹페이지 인증
+
+    //    // 웹페이지 인증
 //    http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 //    http.formLogin(httpSecurityFormLoginConfigurer -> {httpSecurityFormLoginConfigurer
 //        .loginPage("/login")
@@ -182,12 +225,12 @@ public class SpringSecurityConfig2{
     return loginAuthenticationFilter;
   }
 
-  @Bean
-  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-    System.out.println("build injection");
-    return http.getSharedObject(AuthenticationManagerBuilder.class)
-        .authenticationProvider(daoAuthenticationProvider)
-        .build();
-  }
+//  @Bean
+//  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//    System.out.println("build injection");
+//    return http.getSharedObject(AuthenticationManagerBuilder.class)
+//        .authenticationProvider(daoAuthenticationProvider)
+//        .build();
+//  }
 
 }

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-  private final MemberRepository memberRepository;
+//  private final MemberRepository memberRepository;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -51,23 +51,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       String name = kakaoUserInfo.getName();
       String email = kakaoUserInfo.getEmail();
 
-      Optional<Member> bySocialId = memberRepository.findBySocialId(socialId);
-      // 일치 하는 회원이 없다면 새로 등록
-      member = bySocialId.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
+//      Optional<Member> bySocialId = memberRepository.findBySocialId(socialId);
+//      // 일치 하는 회원이 없다면 새로 등록
+//      member = bySocialId.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
       System.out.println(member);
 //    } else if(registrationId.eqauls("")){
 //      // 구글
     }
-    return new OAuth2PrincipalDetail(member,
-        Collections.singleton(new SimpleGrantedAuthority(member.getMemberAuth().name())),
-        attributes);
+//    return new OAuth2PrincipalDetail(member,
+//        Collections.singleton(new SimpleGrantedAuthority(member.getMemberAuth().name())),
+//        attributes);
+    return oAuth2User;
   }
 
-  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
-    long memberId = memberRepository.selectMaxMemberIdx();
-    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
-    return memberRepository.selectMember(email);
-  }
+//  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
+//    long memberId = memberRepository.selectMaxMemberIdx();
+//    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
+//    return memberRepository.selectMember(email);
+//  }
 
 }
 
