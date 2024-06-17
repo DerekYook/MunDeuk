@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -51,15 +52,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SpringSecurityConfig2{
   private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomOAuth2UserService customOAuth2UserService;
-  private final OAuth2LoginAuthenticationProvider oAuth2LoginAuthenticationProvider;
+  private final JwtAuthenticationProvider jwtAuthenticationProvider;
+//  private final OAuth2LoginAuthenticationProvider oAuth2LoginAuthenticationProvider;
 //  private final DaoAuthenticationProvider daoAuthenticationProvider;
 //
-//  // JwtAuthenticationProvider 주입
-//  @Autowired
-//  public void configureAuthentication(AuthenticationManagerBuilder builder, JwtAuthenticationProvider jwtAuthenticationProvider){
-//    System.out.println("+++++++++++++ provider injection");
-//    builder.authenticationProvider(jwtAuthenticationProvider);
-//  }
+  // JwtAuthenticationProvider 주입
+  @Autowired
+  public void configureAuthentication(AuthenticationManagerBuilder builder){
+    System.out.println("+++++++++++++ provider injection");
+    builder.authenticationProvider(jwtAuthenticationProvider);
+  }
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
@@ -108,40 +110,6 @@ public class SpringSecurityConfig2{
     return new CustomAuthenticationFailureHandler2();
   }
 
-//  @Bean
-//  public JwtProviderManager jwtProviderManager(){
-//    return new JwtProviderManager(customOAuth2UserService);
-//  }
-
-  // Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException발생
-  @Bean
-  public OAuth2LoginAuthenticationProvider oAuth2LoginAuthenticationProvider(){
-    return new OAuth2LoginAuthenticationProvider(customOAuth2UserService);
-  }
-
-//  @Bean
-//  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-//    AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-//    auth.authenticationProvider(authenticationProviderConfig.daoAuthenticationProvider());
-//    auth.authenticationProvider(authenticationProviderConfig.oauth2AuthenticationProvider());
-//    return auth.build();
-//  }
-
-//  @Bean
-//  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//    ProviderManager providerManager = (ProviderManager) authenticationConfiguration.getAuthenticationManager();
-//    providerManager.getProviders().add(oAuth2LoginAuthenticationProvider());
-//    return providerManager;
-//  }
-
-  @Bean
-  public AuthenticationManager authenticationManager() {
-    List<AuthenticationProvider> providers = List.of(
-        oAuth2LoginAuthenticationProvider()
-    );
-    return new ProviderManager(providers);
-  }
-
   @Bean
   public JwtAuthenticationFilter2 jwtVerifyFilter() {
     return new JwtAuthenticationFilter2();
@@ -164,11 +132,9 @@ public class SpringSecurityConfig2{
     http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
         authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 
-//    // filter동작 전에 provider구분 시킴
-//    http.addFilterBefore(, OAuth2LoginAuthenticationFilter.class);
     http.addFilterBefore(jwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class);
 
-    //    // 웹페이지 인증
+//    // 웹페이지 인증
 //    http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 //    http.formLogin(httpSecurityFormLoginConfigurer -> {httpSecurityFormLoginConfigurer
 //        .loginPage("/login")
@@ -184,11 +150,12 @@ public class SpringSecurityConfig2{
 //          // Parameter가 아닌 Json으로 보냄
 ////          .usernameParameter("email")
 ////          .passwordParameter("password")
-//          .successHandler(customSuccessHandler())
+          .successHandler(customSuccessHandler())
+          .failureHandler(customAuthenticationFailureHandler())
 //          .defaultSuccessUrl("/main")
           ;
-      // 로컬에서만 Filter적용
-      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+//      // 로컬에서만 Filter적용
+//      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
     });
     // oauth인증
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
@@ -207,30 +174,22 @@ public class SpringSecurityConfig2{
     return http.build();
   }
 
-  // 인증 필터
-  public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
-      // 토큰 정보 추가
-      final AuthenticationManager authenticationManager) {
-    // 토큰 정보를 이용해 사용자 정보 식별
-    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
-//    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/main", authenticationManager);
-    // Handler에 토큰 정보 추가
-    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
-    // Rest API 방식을 사용하기 위해 추가
-    loginAuthenticationFilter.setSecurityContextRepository(
-        new DelegatingSecurityContextRepository(
-            new RequestAttributeSecurityContextRepository(),
-            new HttpSessionSecurityContextRepository()
-        ));
-    return loginAuthenticationFilter;
-  }
-
-//  @Bean
-//  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-//    System.out.println("build injection");
-//    return http.getSharedObject(AuthenticationManagerBuilder.class)
-//        .authenticationProvider(daoAuthenticationProvider)
-//        .build();
+//  // 인증 필터
+//  public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
+//      // 토큰 정보 추가
+//      final AuthenticationManager authenticationManager) {
+//    // 토큰 정보를 이용해 사용자 정보 식별
+//    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
+////    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/main", authenticationManager);
+//    // Handler에 토큰 정보 추가
+//    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
+//    // Rest API 방식을 사용하기 위해 추가
+//    loginAuthenticationFilter.setSecurityContextRepository(
+//        new DelegatingSecurityContextRepository(
+//            new RequestAttributeSecurityContextRepository(),
+//            new HttpSessionSecurityContextRepository()
+//        ));
+//    return loginAuthenticationFilter;
 //  }
 
 }

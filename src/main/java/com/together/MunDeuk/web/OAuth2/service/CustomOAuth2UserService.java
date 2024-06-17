@@ -1,5 +1,6 @@
 package com.together.MunDeuk.web.OAuth2.service;
 
+import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.web.OAuth2.domain.OAuth2PrincipalDetail;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.repository.MemberRepository;
@@ -27,6 +28,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
     log.info("--------------------------- OAuth2UserService ---------------------------");
 
+    System.out.println(userRequest.getAccessToken());
+
+    System.out.println(userRequest.getClientRegistration().getScopes());
+
+    String accessTokenHeader = JwtTokenizer2.ACCESS_HEADER;
+    String refreshTokenHeader = JwtTokenizer2.REFRESH_HEADER;
+    int accessExpTime = JwtTokenizer2.ACCESS_EXP_TIME;
+    int refreshExpTIme = JwtTokenizer2.REFRESH_EXP_TIME;
+
     OAuth2User oAuth2User = super.loadUser(userRequest);
     Map<String, Object> attributes = oAuth2User.getAttributes();
 
@@ -51,6 +61,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       String name = kakaoUserInfo.getName();
       String email = kakaoUserInfo.getEmail();
 
+
 //      Optional<Member> bySocialId = memberRepository.findBySocialId(socialId);
 //      // 일치 하는 회원이 없다면 새로 등록
 //      member = bySocialId.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
@@ -58,10 +69,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //    } else if(registrationId.eqauls("")){
 //      // 구글
     }
-//    return new OAuth2PrincipalDetail(member,
-//        Collections.singleton(new SimpleGrantedAuthority(member.getMemberAuth().name())),
-//        attributes);
-    return oAuth2User;
+    return new OAuth2PrincipalDetail(member,
+        Collections.singleton(new SimpleGrantedAuthority(member.getMemberAuth().name())),
+        attributes);
+//    return oAuth2User;
   }
 
 //  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
