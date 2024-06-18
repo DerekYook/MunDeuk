@@ -37,6 +37,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     return User.withUsername(member.getEmail())
         .password("{noop}"+member.getPassword())
+        // todo : redirect issue
         .roles(String.valueOf(member.getMemberAuth()))
         .build();
   }

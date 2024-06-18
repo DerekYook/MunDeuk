@@ -55,12 +55,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     // 카카오
     Member member = null;
     if (registrationId.equals("kakao")) {
+      Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+      String nickname = (String) properties.get("nickname");
+
+      Map<String, Object> accountInfo = (Map<String, Object>) attributes.get("kakao_account");
+      String userEmail = (String) accountInfo.get("email");
+
       OAuth2UserInfo kakaoUserInfo = new OAuth2UserInfo(attributes);
       String socialType = registrationId.toUpperCase();
-      String socialId = kakaoUserInfo.getSocialId();
-      String name = kakaoUserInfo.getName();
-      String email = kakaoUserInfo.getEmail();
-
+      String socialId = Long.toString(oAuth2User.getAttribute("id"));
+      String name = nickname;
+      String email = userEmail;
 
 //      Optional<Member> bySocialId = memberRepository.findBySocialId(socialId);
 //      // 일치 하는 회원이 없다면 새로 등록

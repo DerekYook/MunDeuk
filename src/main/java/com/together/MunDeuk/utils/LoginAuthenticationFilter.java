@@ -2,6 +2,7 @@ package com.together.MunDeuk.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.together.MunDeuk.web.Member.entity.Member.MemberAuth;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,15 +28,15 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     String method = request.getMethod();
 
     if (!method.equals("POST")) {
-      throw new AuthenticationServiceException("Authentication method not supported: "
-          + request.getMethod());
+      throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
     }
 
     ServletInputStream inputStream = request.getInputStream();
 
     LoginRequestDto loginRequestDto = new ObjectMapper().readValue(inputStream, LoginRequestDto.class);
     // AuthenticationManager : ProviderManager의 인스턴스 -> Provider 순회 인증시도
-    return this.getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
+//    return this.getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
+    return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(
         loginRequestDto.username,
         loginRequestDto.password
     ));

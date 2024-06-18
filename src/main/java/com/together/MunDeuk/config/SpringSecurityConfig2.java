@@ -53,7 +53,7 @@ public class SpringSecurityConfig2{
   private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomOAuth2UserService customOAuth2UserService;
   private final JwtAuthenticationProvider jwtAuthenticationProvider;
-//  private final OAuth2LoginAuthenticationProvider oAuth2LoginAuthenticationProvider;
+  private final OAuth2LoginAuthenticationProvider oAuth2LoginAuthenticationProvider;
 //  private final DaoAuthenticationProvider daoAuthenticationProvider;
 //
   // JwtAuthenticationProvider 주입
@@ -61,6 +61,7 @@ public class SpringSecurityConfig2{
   public void configureAuthentication(AuthenticationManagerBuilder builder){
     System.out.println("+++++++++++++ provider injection");
     builder.authenticationProvider(jwtAuthenticationProvider);
+    builder.authenticationProvider(oAuth2LoginAuthenticationProvider);
   }
 
   @Bean
@@ -154,8 +155,8 @@ public class SpringSecurityConfig2{
           .failureHandler(customAuthenticationFailureHandler())
 //          .defaultSuccessUrl("/main")
           ;
-//      // 로컬에서만 Filter적용
-//      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+      // 로컬에서만 Filter적용
+      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
     });
     // oauth인증
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
@@ -174,22 +175,22 @@ public class SpringSecurityConfig2{
     return http.build();
   }
 
-//  // 인증 필터
-//  public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
-//      // 토큰 정보 추가
-//      final AuthenticationManager authenticationManager) {
-//    // 토큰 정보를 이용해 사용자 정보 식별
-//    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
-////    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/main", authenticationManager);
-//    // Handler에 토큰 정보 추가
-//    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
-//    // Rest API 방식을 사용하기 위해 추가
-//    loginAuthenticationFilter.setSecurityContextRepository(
-//        new DelegatingSecurityContextRepository(
-//            new RequestAttributeSecurityContextRepository(),
-//            new HttpSessionSecurityContextRepository()
-//        ));
-//    return loginAuthenticationFilter;
-//  }
+  // 인증 필터
+  public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
+      // 토큰 정보 추가
+      final AuthenticationManager authenticationManager) {
+    // 토큰 정보를 이용해 사용자 정보 식별
+    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
+//    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/main", authenticationManager);
+    // Handler에 토큰 정보 추가
+    loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
+    // Rest API 방식을 사용하기 위해 추가
+    loginAuthenticationFilter.setSecurityContextRepository(
+        new DelegatingSecurityContextRepository(
+            new RequestAttributeSecurityContextRepository(),
+            new HttpSessionSecurityContextRepository()
+        ));
+    return loginAuthenticationFilter;
+  }
 
 }

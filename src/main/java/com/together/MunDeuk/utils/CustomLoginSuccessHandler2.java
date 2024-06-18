@@ -45,14 +45,17 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
     log.info("--------------------------- CommonLoginSuccessHandler ---------------------------");
 
     // 가입자 검증
-    UserDetails principal = (User) authentication.getPrincipal();
+    String principal = (String) authentication.getPrincipal();
+    String credential = (String) authentication.getCredentials();
+    String role = authentication.getAuthorities().toString();
 
     log.info("authentication.getPrincipal() = {}", principal);
+    log.info("authentication.getCredentials() = {}", credential);
 
     Map<String, Object> responseMap = new HashMap<>();
 
-    responseMap.put("name", principal.getUsername());
-    responseMap.put("password", principal.getPassword());
+    responseMap.put("name", principal);
+//    responseMap.put("password", credential);
 
     int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
     int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
@@ -72,9 +75,9 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
 //
 //    response.setContentType("application/json; charset=UTF-8");
 
-    String accessToken = (String) responseMap.get("accessToken");
-    String refreshToken = (String) responseMap.get("refreshToken");
-
+//    String accessToken = (String) responseMap.get("accessToken");
+//    String refreshToken = (String) responseMap.get("refreshToken");
+//
 //    // Header로 넣을 때
 //    JwtTokenizer2.setAccessTokenHeader(accessToken, response);
 //    JwtTokenizer2.setRefreshTokenHeader(refreshToken, response);
@@ -92,9 +95,7 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
 
       Map<String, Object> responseData = new HashMap<>();
       String targetUrl = determineTargetUrl(authentication); // 사용자 역할에 따라 URL 결정
-
       responseData.put("redirectUrl", targetUrl); // 리디렉션할 URL을 JSON 응답에 포함
-
       new ObjectMapper().writeValue(response.getWriter(), responseData);
     } else {
       handle(request, response, authentication);
@@ -119,8 +120,10 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
   private String determineTargetUrl(final Authentication authentication) {
 
     Map<String, String> roleTargetUrlMap = new HashMap<>();
-    roleTargetUrlMap.put("ROLE_User", "/main");
-    roleTargetUrlMap.put("ROLE_Admin", "/admin/main");
+    // todo : redirect issue
+    // grantedAuth에 []가 붙어야 하는데 JwtAuthenticationProvider에서 사용자 인증하면서 roles에 [[]]이런식으로 배열속 배열이 되어버려 그렇다. 수정이 필요할까?
+    roleTargetUrlMap.put("[ROLE_User]", "/main");
+    roleTargetUrlMap.put("[ROLE_Admin]", "/admin/main");
 
     final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     for (final GrantedAuthority grantedAuthority : authorities) {

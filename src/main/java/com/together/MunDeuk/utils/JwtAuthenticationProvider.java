@@ -1,7 +1,6 @@
 package com.together.MunDeuk.utils;
 
-import com.together.MunDeuk.web.OAuth2.dto.AuthRequestDto;
-import com.together.MunDeuk.web.OAuth2.dto.AuthResponseDto;
+import com.together.MunDeuk.web.Member.service.CustomUserDetailService;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -24,59 +24,48 @@ import org.springframework.util.ClassUtils;
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
-  private final CustomOAuth2UserService customOAuth2UserService;
+  private final CustomUserDetailService customUserDetailService;
 
-  public JwtAuthenticationProvider(CustomOAuth2UserService customOAuth2UserService) {
-    log.info("---- Action Authentication Provider ----");
-    this.customOAuth2UserService = customOAuth2UserService;
+  public JwtAuthenticationProvider(CustomUserDetailService customUserDetailService) {
+    log.info("---- Action JWT Authentication Provider ----");
+    this.customUserDetailService = customUserDetailService;
   }
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     log.info("add provider : " + authentication);
-//    try {
-//      // 로그인 인증 전
-//      JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) authentication;
-//      String principal = (String) authenticationToken.getPrincipal();
-//      String credential = (String) authenticationToken.getCredentials();
-//      System.out.println(principal);
-//      System.out.println(credential);
-////      AuthResponseDto authResponseDto = customOAuth2UserService.loadUser(new AuthRequestDto(principal, credential));
-//      // 로그인 인증 후
-////      JwtAuthenticationToken authenticated
-////          = new JwtAuthenticationToken(authResponseDto.getUser().getId(), null, AuthorityUtils.createAuthorityList("ROLE_USER"));
-////      authenticated.setDetails(authResponseDto);
-////      return authenticated;
-//        return authenticationToken;
-////    } catch(DoNotExistException e) {
-////      throw new UsernameNotFoundException(e.getMessage());
-//    } catch(IllegalArgumentException e) {
-//      throw new BadCredentialsException(e.getMessage());
-//    } catch(DataAccessException e) {
-//      throw new AuthenticationServiceException(e.getMessage());
-//    }
-    OAuth2LoginAuthenticationToken token = (OAuth2LoginAuthenticationToken) authentication;
-    log.debug("info oauth2 token : " + token.getCredentials());
-    OAuth2UserRequest userRequest = new OAuth2UserRequest(
-        token.getClientRegistration(),
-//        token.getAuthorizationExchange()
-        token.getAccessToken()
-    );
-    OAuth2User user = customOAuth2UserService.loadUser(userRequest);
-    return new OAuth2LoginAuthenticationToken(
-        token.getClientRegistration(),
-        token.getAuthorizationExchange(),
-        user,
-        user.getAuthorities(),
-//        user.getAttributes()
-        token.getAccessToken()
-    );
+    try {
+      // 로그인 인증 전
+      JwtAuthenticationToken token = (JwtAuthenticationToken) authentication;
+      String principal = (String) token.getPrincipal();
+      String credential = (String) token.getCredentials();
+
+      UserDetails userDetails = customUserDetailService.loadUserByUsername(principal);
+
+      String role = String.valueOf(userDetails.getAuthorities());
+
+      // 로그인 인증 후
+      JwtAuthenticationToken authenticated
+//          = new JwtAuthenticationToken(authResponseDto.getUser().getId(), null, AuthorityUtils.createAuthorityList("ROLE_USER"));
+//      authenticated.setDetails(authResponseDto);
+          = new JwtAuthenticationToken(userDetails.getUsername(), credential, AuthorityUtils.createAuthorityList(
+          // todo : redirect issue
+          String.valueOf(userDetails.getAuthorities())));
+      authenticated.setDetails(userDetails);
+      return authenticated;
+//        return token;
+//    } catch(DoNotExistException e) {
+//      throw new UsernameNotFoundException(e.getMessage());
+    } catch(IllegalArgumentException e) {
+      throw new BadCredentialsException(e.getMessage());
+    } catch(DataAccessException e) {
+      throw new AuthenticationServiceException(e.getMessage());
+    }
   }
 
   @Override
   public boolean supports(Class<?> authentication) {
-//    return ClassUtils.isAssignable(JwtAuthenticationToken.class, authentication);
-    return OAuth2LoginAuthenticationToken.class.isAssignableFrom(authentication);
+    return ClassUtils.isAssignable(JwtAuthenticationToken.class, authentication);
   }
 
 }
