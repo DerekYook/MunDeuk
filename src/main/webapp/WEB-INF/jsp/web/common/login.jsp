@@ -113,8 +113,8 @@
       }
       function fn_kakaoSignUp(){
         window.name = "Parent_window";
-        // window.open('/oauthRedirect', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
-        window.open('/oauth2/authorization/kakao', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+        window.open('/oauthRedirect', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+        // window.open('/oauth2/authorization/kakao', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
       }
       // function fn_kakaoLogin(){
       //   window.name = "Parent_window";

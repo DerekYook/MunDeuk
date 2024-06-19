@@ -135,9 +135,10 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
     final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     for (final GrantedAuthority grantedAuthority : authorities) {
       String authorityName = grantedAuthority.getAuthority();
-      if (roleTargetUrlMap.containsKey(authorityName)) {
-        return roleTargetUrlMap.get(authorityName);
-      }
+//      if (roleTargetUrlMap.containsKey(authorityName)) {
+//        return roleTargetUrlMap.get(authorityName);
+//      }
+      return "/oauthRedirect";
     }
     throw new IllegalStateException();
   }
