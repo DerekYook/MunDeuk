@@ -22,15 +22,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-//  private final MemberRepository memberRepository;
+  private final MemberRepository memberRepository;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
     log.info("--------------------------- OAuth2UserService ---------------------------");
-
-    System.out.println(userRequest.getAccessToken());
-
-    System.out.println(userRequest.getClientRegistration().getScopes());
 
     String accessTokenHeader = JwtTokenizer2.ACCESS_HEADER;
     String refreshTokenHeader = JwtTokenizer2.REFRESH_HEADER;
@@ -62,15 +58,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       String userEmail = (String) accountInfo.get("email");
 
       OAuth2UserInfo kakaoUserInfo = new OAuth2UserInfo(attributes);
+
+      log.info("kakao Login Info = {}", kakaoUserInfo);
+
       String socialType = registrationId.toUpperCase();
       String socialId = Long.toString(oAuth2User.getAttribute("id"));
       String name = nickname;
       String email = userEmail;
 
-//      Optional<Member> bySocialId = memberRepository.findBySocialId(socialId);
+      // todo : 로그인 회원가입 분리
+      Optional<Member> verifiedMemberByEmail = memberRepository.verifiedMember(email);
 //      // 일치 하는 회원이 없다면 새로 등록
-//      member = bySocialId.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
-      System.out.println(member);
+      member = verifiedMemberByEmail.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
 //    } else if(registrationId.eqauls("")){
 //      // 구글
     }
@@ -80,11 +79,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //    return oAuth2User;
   }
 
-//  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
-//    long memberId = memberRepository.selectMaxMemberIdx();
-//    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
-//    return memberRepository.selectMember(email);
-//  }
+  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
+    long memberId = memberRepository.selectMaxMemberIdx();
+    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
+    return memberRepository.selectMember(email);
+  }
 
 }
 

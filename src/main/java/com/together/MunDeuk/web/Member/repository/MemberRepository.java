@@ -19,7 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member selectMember(String email);
 
     @Query(value = "SELECT * FROM member WHERE EMAIL = :email AND MEMBER_STATUS = 'Active'", nativeQuery = true)
-    Member verifiedMember(String email);
+    Optional<Member> verifiedMember(String email);
 
     @Query(value = "SELECT MAX(MEMBER_ID) + 1 FROM member", nativeQuery = true)
     long selectMaxMemberIdx();

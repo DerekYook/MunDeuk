@@ -73,27 +73,29 @@ public class JwtTokenizer2 {
         .compact();
   }
 
-  public static Authentication getAuthentication(String token) {
-    Map<String, Object> claims = validateToken(token);
-
-    String email = (String) claims.get("email");
-    String name = (String) claims.get("name");
-    String role = (String) claims.get("role");
-    String provider = (String) claims.get("provider");
-
-    Member member = new Member();
-    member.setEmail(email);
-    member.setNickName(name);
-    System.out.println(email);
-    System.out.println(name);
-    System.out.println(role);
-    System.out.println(provider);
-//    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
-//    PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
+//  public static Authentication getAuthentication(String token) {
+//    Map<String, Object> claims = validateToken(token);
 //
-//    return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
-    return null;
-  }
+//    log.info("claims info : {}" + claims);
+//
+//    String email = (String) claims.get("email");
+//    String name = (String) claims.get("name");
+//    String role = (String) claims.get("role");
+//    String provider = (String) claims.get("provider");
+//
+//    Member member = new Member();
+//    member.setEmail(email);
+//    member.setNickName(name);
+//    System.out.println(email);
+//    System.out.println(name);
+//    System.out.println(role);
+//    System.out.println(provider);
+////    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
+////    PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
+////
+////    return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
+//    return null;
+//  }
 
 //  public static Map<String, Object> validateToken(String token) {
 //    Map<String, Object> claim = null;

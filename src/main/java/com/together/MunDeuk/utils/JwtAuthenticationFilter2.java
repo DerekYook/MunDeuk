@@ -37,9 +37,9 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
   private CookieUtil cookieUtil;
 
   // 필터를 적용하지 않을 API들
-  private static final String[] whitelist = {"/favicon.ico", "/signUp", "/login", "/refresh", "/",
+  private static final String[] whitelist = {"/favicon.ico", "/signUp", "/login", "/refresh","/oauthRedirect", "/",
       "/ajax/loginProcess"
-      , "/WEB-INF/jsp/web/member/signUp.jsp", "/WEB-INF/jsp/web/common/login.jsp"
+      , "/WEB-INF/jsp/web/member/signUp.jsp", "/WEB-INF/jsp/web/common/login.jsp", "/WEB-INF/jsp/web/common/oauthRedirect.jsp"
       , "/js/*"};
 
 //  // 토큰 헤더 검증
@@ -169,7 +169,7 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
     } else {
       log.info("---- branch Local Service / Oauth2 Service ----");
       String accessToken = cookieUtil.getCookie(request, "Access").getValue();
-      jwtTokenizer.getAuthentication(accessToken);
+//      System.out.println(jwtTokenizer.getAuthentication(accessToken));
 
       try {
         String username = jwtTokenizer.getUsernameFromToken(accessToken);

@@ -49,12 +49,16 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
     String credential = (String) authentication.getCredentials();
     String role = authentication.getAuthorities().toString();
 
+    log.info("authentication = {}", authentication);
     log.info("authentication.getPrincipal() = {}", principal);
     log.info("authentication.getCredentials() = {}", credential);
 
     Map<String, Object> responseMap = new HashMap<>();
 
-    responseMap.put("name", principal);
+    responseMap.put("email", principal);
+    responseMap.put("name",null);
+    responseMap.put("role",role);
+    responseMap.put("provider",null);
 //    responseMap.put("password", credential);
 
     int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
