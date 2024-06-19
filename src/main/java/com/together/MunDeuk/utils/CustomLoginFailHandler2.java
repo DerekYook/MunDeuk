@@ -17,8 +17,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomLoginFailHandler2 implements AuthenticationFailureHandler {
+
   @Override
-  public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+  public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+      AuthenticationException exception) throws IOException, ServletException {
     log.info("--------------------------- CommonLoginFailHandler ---------------------------");
 
     Gson gson = new Gson();

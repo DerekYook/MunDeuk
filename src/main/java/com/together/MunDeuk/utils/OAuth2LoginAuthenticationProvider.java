@@ -1,17 +1,20 @@
 package com.together.MunDeuk.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.together.MunDeuk.web.OAuth2.dto.CustomOAuth2TokenResponseDto;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -20,43 +23,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-
 //public class OAuth2LoginAuthenticationProvider {
 
 @Slf4j
 @Component
 public class OAuth2LoginAuthenticationProvider implements AuthenticationProvider {
-//
-//  private final OAuth2UserService<OAuth2UserRequest, OAuth2User> userService;
-//
-//  public OAuth2LoginAuthenticationProvider(OAuth2UserService<OAuth2UserRequest, OAuth2User> userService) {
-//    this.userService = userService;
-//  }
-//
-//  @Override
-//  public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//    OAuth2LoginAuthenticationToken token = (OAuth2LoginAuthenticationToken) authentication;
-//    OAuth2UserRequest userRequest = new OAuth2UserRequest(
-//        token.getClientRegistration(),
-////        token.getAuthorizationExchange()
-//        token.getAccessToken()
-//    );
-////    CustomOAuth2UserService customOAuth2UserService = new CustomOAuth2UserService();
-//    OAuth2User user = userService.loadUser(userRequest);
-//    return new OAuth2LoginAuthenticationToken(
-//        token.getClientRegistration(),
-//        token.getAuthorizationExchange(),
-//        user,
-//        user.getAuthorities(),
-////        user.getAttributes()
-//        token.getAccessToken()
-//    );
-//  }
-//
-//  @Override
-//  public boolean supports(Class<?> authentication) {
-//    return OAuth2LoginAuthenticationToken.class.isAssignableFrom(authentication);
-//  }
 
   private final CustomOAuth2UserService customOAuth2UserService;
 
@@ -125,23 +96,13 @@ public class OAuth2LoginAuthenticationProvider implements AuthenticationProvider
         tokenUri, HttpMethod.POST, request, CustomOAuth2TokenResponseDto.class
     );
 
-//    ResponseEntity<String> response = restTemplate.exchange(
-//        tokenUri, HttpMethod.POST, request, String.class
-//    );
-
     if (response.getStatusCode() == HttpStatus.OK) {
       try {
         // 로그에 응답 본문을 출력하여 디버깅
         log.debug("Token Response: " + response.getBody());
 
-////        // JSON 파싱을 위해 ObjectMapper 사용
-////        ObjectMapper mapper = new ObjectMapper();
-////        OAuth2AccessTokenResponse tokenResponse = mapper.readValue(response.getBody(), OAuth2AccessTokenResponse.class);
-//        OAuth2AccessTokenResponse tokenResponse = response.getBody();
-
         CustomOAuth2TokenResponseDto tokenResponse = response.getBody();
 
-//        return tokenResponse.getAccessToken();
         if (tokenResponse != null) {
           return new OAuth2AccessToken(
               OAuth2AccessToken.TokenType.BEARER,
@@ -153,9 +114,6 @@ public class OAuth2LoginAuthenticationProvider implements AuthenticationProvider
           log.error("Failed to obtain access token: response body is null");
           return null;
         }
-//        ObjectMapper mapper = new ObjectMapper();
-//        OAuth2AccessTokenResponse tokenResponse = mapper.readValue(response.getBody(), OAuth2AccessTokenResponse.class);
-//        return tokenResponse.getAccessToken();
 
       } catch (Exception e) {
         log.error("Failed to parse access token response", e);

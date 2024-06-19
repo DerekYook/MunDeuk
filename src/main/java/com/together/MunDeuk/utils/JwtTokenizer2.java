@@ -2,39 +2,21 @@ package com.together.MunDeuk.utils;
 
 import com.together.MunDeuk.exception.CustomExpiredJwtException;
 import com.together.MunDeuk.exception.CustomJwtException;
-import com.together.MunDeuk.web.Member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.ZonedDateTime;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 import javax.crypto.SecretKey;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.internal.Function;
-import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -73,32 +55,6 @@ public class JwtTokenizer2 {
         .compact();
   }
 
-//  public static Authentication getAuthentication(String token) {
-//    Map<String, Object> claims = validateToken(token);
-//
-//    log.info("claims info : {}" + claims);
-//
-//    String email = (String) claims.get("email");
-//    String name = (String) claims.get("name");
-//    String role = (String) claims.get("role");
-//    String provider = (String) claims.get("provider");
-//
-//    Member member = new Member();
-//    member.setEmail(email);
-//    member.setNickName(name);
-//    System.out.println(email);
-//    System.out.println(name);
-//    System.out.println(role);
-//    System.out.println(provider);
-////    Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
-////    PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
-////
-////    return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
-//    return null;
-//  }
-
-//  public static Map<String, Object> validateToken(String token) {
-//    Map<String, Object> claim = null;
   public static Claims validateToken(String token) {
     Claims claim;
     try {
@@ -131,33 +87,17 @@ public class JwtTokenizer2 {
     }
   }
 
-  // 토큰의 남은 만료시간 계산
-//  public static long tokenRemainTime(Integer expTime) {
-//    Date expDate = new Date((long) expTime * (1000));
   public static long tokenRemainTime(Date expTime) {
     Date expDate = expTime;
     long remainMs = expDate.getTime() - System.currentTimeMillis();
     return remainMs / (1000 * 60);
   }
 
-//  // Header 사용
-//  public static void setAccessTokenHeader(String accessToken, HttpServletResponse response){
-//    String headerValue = BEARER_PREFIX + accessToken;
-//    response.setHeader(AUTHORIZATION_HEADER, headerValue);
-//  }
-//
-//  public static void setRefreshTokenHeader(String refreshToken, HttpServletResponse response){
-//    String headerValue = BEARER_PREFIX + refreshToken;
-//    response.setHeader(REFRESH_HEADER, headerValue);
-//  }
-
   public String getUsernameFromToken(String token) {
-//    return getClaimFromToken(token, Claims::getId);
     return getClaimFromToken(token, claims -> claims.get("name", String.class));
   }
 
   public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-//    final Claims claims = getAllClaimsForToken(token);
     final Claims claims = validateToken(token);
     return claimsResolver.apply(claims);
   }
@@ -165,8 +105,6 @@ public class JwtTokenizer2 {
   private Claims getAllClaimsForToken(String token) {
     System.out.println(secret);
     System.out.println(secretKey);
-//    System.out.println(encodedKey);
-//    return Jwts.parser().setSigningKey(encodedKey).parseClaimsJws(token).getBody();
     return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
   }
 }

@@ -1,6 +1,5 @@
 package com.together.MunDeuk.web.Member.service;
 
-import com.together.MunDeuk.utils.JwtTokenizer;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.repository.MemberRepository;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
   private final MemberRepository memberRepository;
-  private final JwtTokenizer jwtTokenizer;
 
   public List<Member> getMemberLists() {
     return memberRepository.selectMembers();
@@ -25,11 +23,11 @@ public class MemberService {
 //    return verifiedMember;
 //  }
 
-  public long getMemberIndex(){
+  public long getMemberIndex() {
     return memberRepository.selectMaxMemberIdx();
   }
 
-  public void signUpMember(long memberId, String nickName, String email, String password){
+  public void signUpMember(long memberId, String nickName, String email, String password) {
     memberRepository.registerMember(memberId, nickName, email, password);
   }
 }

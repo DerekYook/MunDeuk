@@ -1,14 +1,10 @@
 package com.together.MunDeuk.config;
 
-import com.nimbusds.oauth2.sdk.auth.JWTAuthentication;
 import com.together.MunDeuk.utils.CustomAuthenticationFailureHandler2;
 import com.together.MunDeuk.utils.CustomLoginSuccessHandler2;
 import com.together.MunDeuk.utils.CustomOauth2LoginSuccessHandler2;
 import com.together.MunDeuk.utils.JwtAuthenticationFilter2;
 import com.together.MunDeuk.utils.JwtAuthenticationProvider;
-import com.together.MunDeuk.utils.JwtProviderManager;
-import com.together.MunDeuk.utils.JwtTokenizer;
-import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.utils.LoginAuthenticationFilter;
 import com.together.MunDeuk.utils.OAuth2LoginAuthenticationProvider;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
@@ -18,22 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -78,26 +65,11 @@ public class SpringSecurityConfig2{
 
     return source;
   }
-//  // 패스워드 암호화
-//  @Bean
-//  public PasswordEncoder passwordEncoder() {
-//    return new BCryptPasswordEncoder();
-//  }
 
-  // 로컬 로그인 성공시 handler
-//  @Bean
-//  public CustomLoginSuccessHandler2 commonLoginSuccessHandler() {
-//    return new CustomLoginSuccessHandler2();
-//  }
   @Bean
   public AuthenticationSuccessHandler customSuccessHandler() {
     return new CustomLoginSuccessHandler2();
   }
-
-//  @Bean
-//  public CommonLoginFailHandler commonLoginFailHandler() {
-//    return new CommonLoginFailHandler();
-//  }
 
   // OAuth2 로그인 성공시 handler
   @Bean
@@ -135,25 +107,13 @@ public class SpringSecurityConfig2{
 
     http.addFilterBefore(jwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class);
 
-//    // 웹페이지 인증
-//    http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
-//    http.formLogin(httpSecurityFormLoginConfigurer -> {httpSecurityFormLoginConfigurer
-//        .loginPage("/login")
-//        .successHandler(commonLoginSuccessHandler());
-////        .failureHandler(commonLoginFailHandler());
-//    });
     // Form 로그인 설정
     http.formLogin(httpSecurityFormLoginConfigurer -> {
       log.info("----Configuring Form Login----");
       httpSecurityFormLoginConfigurer
           .loginPage("/login")
-//          .loginProcessingUrl("/ajax/loginProcess")
-//          // Parameter가 아닌 Json으로 보냄
-////          .usernameParameter("email")
-////          .passwordParameter("password")
           .successHandler(customSuccessHandler())
           .failureHandler(customAuthenticationFailureHandler())
-//          .defaultSuccessUrl("/main")
           ;
       // 로컬에서만 Filter적용
       http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
@@ -168,8 +128,6 @@ public class SpringSecurityConfig2{
             // 사용자 인증
             .userInfoEndpoint(userInfoEndpointConfig ->
                 userInfoEndpointConfig.userService(customOAuth2UserService))
-//            .redirectionEndpoint(redirection -> redirection
-//                .baseUri("/main"))
         ;
     });
     return http.build();
@@ -181,7 +139,6 @@ public class SpringSecurityConfig2{
       final AuthenticationManager authenticationManager) {
     // 토큰 정보를 이용해 사용자 정보 식별
     LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
-//    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/main", authenticationManager);
     // Handler에 토큰 정보 추가
     loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
     // Rest API 방식을 사용하기 위해 추가

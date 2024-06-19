@@ -54,7 +54,7 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
     String registrationId = authorizationRequest.getAttribute("registration_id");
 
     String prompt = "";
-    if(registrationId.equals("naver")) {
+    if (registrationId.equals("naver")) {
       prompt = "login";
     } else if (registrationId.equals("google")) {
       prompt = "select_account";
