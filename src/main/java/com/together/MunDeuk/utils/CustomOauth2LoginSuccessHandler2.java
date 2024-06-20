@@ -31,7 +31,7 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
   @Autowired
   private CookieUtil cookieUtil;
 
-  private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+  private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -88,8 +88,7 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
     log.info("Authentication : " + authentication);
 
     if (response.isCommitted()) {
-      log.info("Response has already been committed. Unable to redirect to "
-          + targetUrl);
+      log.info("Response has already been committed. Unable to redirect to " + targetUrl);
       return;
     }
 
@@ -99,12 +98,14 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
   private String determineTargetUrl(final Authentication authentication) {
 
     Map<String, String> roleTargetUrlMap = new HashMap<>();
-    roleTargetUrlMap.put("[ROLE_User]", "/main");
+    roleTargetUrlMap.put("User", "/main");
 
     final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     for (final GrantedAuthority grantedAuthority : authorities) {
       String authorityName = grantedAuthority.getAuthority();
-      return "/oauthRedirect";
+      if(roleTargetUrlMap.containsKey(authorityName)){
+        return "/oauthRedirect";
+      }
     }
     throw new IllegalStateException();
   }
