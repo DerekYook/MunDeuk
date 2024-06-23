@@ -22,6 +22,8 @@
 ## Getting Started
 ### 사용자 요구사항
 1. 사용자 등록
+    - 웹로그인과 간편 로그인(카카오) 기능 구현
+<!--
 2. 사용자 삭제
     - 사용자를 삭제하면 게시글도 모두 삭제해야 한다.
 3. 게시글 작성
@@ -40,10 +42,12 @@
    - 사용자 본인이 삭제를 하면 휴면 처리로 한다.
    - 관리자가 삭제시 사용자를 바로 삭제한다.
    - 사용자가 휴면 혹은 삭제가 되면 게시글은 모두 숨김 처리한다.
+-->
 
-    
+<!--
 ## Documentation
 <a href="https://drive.google.com/drive/folders/1ADAvIToiEl6eJv-lHRXVnPVXkr9qCVKR?usp=sharing" target="_blank">GoogleDrive</a>
+-->
     
 ## Testing
 Postman과 Swagger를 이용한 테스트 진행 및 API 문서 작성
