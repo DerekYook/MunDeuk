@@ -69,18 +69,18 @@ public class MemberController {
 //  public void confirmLogin(){}
   public ResponseEntity<?> confirmLogin(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    Map<String, Object> responseMap = new HashMap<>();
-
-    int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
-    int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
-
-    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER,
-        JwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
-    ResponseCookie refreshTokenCookie = cookieUtil.createCookie(JwtTokenizer2.REFRESH_HEADER,
-        JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
-
-    response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
-    response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+//    Map<String, Object> responseMap = new HashMap<>();
+//
+//    int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
+//    int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
+//
+//    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER,
+//        JwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
+//    ResponseCookie refreshTokenCookie = cookieUtil.createCookie(JwtTokenizer2.REFRESH_HEADER,
+//        JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
+//
+//    response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+//    response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
 
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
@@ -103,13 +103,14 @@ public class MemberController {
     return returnPage;
   }
 
-  @RequestMapping(value = "/login/oauth2/code/{provider}")
-  public String oauth2Login(@PathVariable String provider, HttpRequest request,
-      HttpResponse response) {
-    String returnPage = "/main";
-    log.info("====oauth2 response====");
+  @ResponseBody
+  @RequestMapping(value = "/ajax/accountChk", method = RequestMethod.POST)
+  public ResponseEntity<?> oauthAccountChk(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    log.info("----------------------------------------------");
+    log.info("account Check : " + response);
+    log.info("account Check : " + request);
 
-    return returnPage;
+    return new ResponseEntity<>(null, HttpStatus.OK);
   }
 
 }

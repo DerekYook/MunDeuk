@@ -52,7 +52,6 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
     } else {
       log.info("---- branch Local Service / Oauth2 Service ----");
       String accessToken = cookieUtil.getCookie(request, "Access").getValue();
-//      System.out.println(jwtTokenizer.getAuthentication(accessToken));
 
       try {
         String username = jwtTokenizer.getUsernameFromToken(accessToken);

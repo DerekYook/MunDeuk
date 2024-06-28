@@ -22,8 +22,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class JwtTokenizer2 {
-  @Value("${jwt.secret}")
-  public String secret;
+//  @Value("${jwt.secret}")
+//  public String secret;
   public static final String JWT_HEADER = "Authorization";
   public static final String ACCESS_HEADER = "Access";
   public static final String REFRESH_HEADER = "Refresh";
@@ -103,7 +103,7 @@ public class JwtTokenizer2 {
   }
 
   private Claims getAllClaimsForToken(String token) {
-    System.out.println(secret);
+//    System.out.println(secret);
     System.out.println(secretKey);
     return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
   }

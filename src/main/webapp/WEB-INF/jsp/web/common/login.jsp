@@ -111,56 +111,17 @@
         window.name = "Parent_window";
         window.open('/oauth2/authorization/facebook?prompt=login', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
       }
+      // todo : 회원가입 / 로그인 구분( -> 통합으로 하고  oauth서버 응답이 성공하면 다시 한번 확인 하는 걸로 )
       function fn_kakaoSignUp(){
         window.name = "Parent_window";
         window.open('/oauthRedirect', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
         // window.open('/oauth2/authorization/kakao', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
       }
-      // function fn_kakaoLogin(){
-      //   window.name = "Parent_window";
-      //   window.open('/oauth2/authorization/kakao', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
-      // }
-      // function fn_kakaoLogin() {
-      //   window.Kakao.Auth.loginForm({
-      //     scope: 'profile_nickname, account_email', //동의항목 페이지에 있는 개인정보 보호 테이블의 활성화된 ID값을 넣습니다.
-      //     success: function(response) {
-      //       // console.log(response) // 로그인 성공하면 받아오는 데이터
-      //       window.Kakao.API.request({ // 사용자 정보 가져오기
-      //         url: '/v2/user/me',
-      //         success: (res) => {
-      //           const kakao_account = res.kakao_account;
-      //
-      //           $("#kakao_account").val(kakao_account);
-      //           $("#res").val(res);
-      //           $("#kakao_properties").val(res.properties);
-      //           $("#access_token").val(response.access_token);
-      //           $("#refresh_token").val(response.refresh_token);
-      //           $("#token_type").val(response.token_type);
-      //           $("#scope").val(response.scope);
-      //           $("#id").val(res.id);
-      //           $("#email").val(kakao_account.email);
-      //
-      //           fn_loginProcessByKakao();
-      //         }
-      //       });
-      //     },
-      //     fail: function(error) {
-      //       console.log(error);
-      //     }
-      //   });
-      // }
-      //
-      // function fn_loginProcessByKakao(){
-      //   // const serializedValues = $('#frm').serializeObject();
-      //   // fnMcenAjaxJson("POST", "/oAuth2/loginProcessByKakao", JSON.stringify(serializedValues), oAuth2Result, "");
-      //   $.ajax({
-      //     type: 'GET',
-      //     url: '/main',
-      //     success: function (response) {
-      //     }
-      //   });
-      // }
-
+      function fn_kakaoLogin(){
+        window.name = "Parent_window";
+        window.open('/oauthRedirect', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+        // window.open('/oauth2/authorization/kakao', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+      }
       function fn_siginIn(){
         location.href = "/signUp";
       }

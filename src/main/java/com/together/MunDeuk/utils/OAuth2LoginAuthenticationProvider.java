@@ -1,5 +1,7 @@
 package com.together.MunDeuk.utils;
 
+import com.together.MunDeuk.web.Member.entity.Member;
+import com.together.MunDeuk.web.OAuth2.domain.OAuth2PrincipalDetail;
 import com.together.MunDeuk.web.OAuth2.dto.CustomOAuth2TokenResponseDto;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -61,14 +63,23 @@ public class OAuth2LoginAuthenticationProvider implements AuthenticationProvider
     );
 
     OAuth2User user = customOAuth2UserService.loadUser(userRequest);
-
-    return new OAuth2LoginAuthenticationToken(
-        token.getClientRegistration(),
-        token.getAuthorizationExchange(),
-        user,
-        user.getAuthorities(),
-        accessToken
-    );
+    if (user != null) {
+      return new OAuth2LoginAuthenticationToken(
+          token.getClientRegistration(),
+          token.getAuthorizationExchange(),
+          user,
+          user.getAuthorities(),
+          accessToken
+      );
+    } else {
+      return new OAuth2LoginAuthenticationToken(
+          token.getClientRegistration(),
+          token.getAuthorizationExchange(),
+          new OAuth2PrincipalDetail(new Member(),null),
+          null,
+          accessToken
+      );
+    }
   }
 
   @Override

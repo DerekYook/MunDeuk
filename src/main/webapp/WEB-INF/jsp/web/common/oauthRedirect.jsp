@@ -16,11 +16,39 @@
         // 로그인 성공 여부를 확인합니다.
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('loginSuccess') && urlParams.get('loginSuccess') === 'true') {
-          alert('로그인에 성공하였습니다.');
-          window.opener.location.href = '/main'; // 부모 창을 리다이렉트합니다.
+        //   window.opener.location.href = '/main'; // 부모 창을 리다이렉트합니다.
+        //   window.close(); // 팝업 창을 닫습니다.
+        // // } else if (urlParams.has('error') && urlParams.get('error') === 'true') {
+        // //   var chkAccount = confirm('회원가입이 필요합니다.');
+        // //   if (chkAccount) {
+        // //     alert("회원 가입 페이지로 이동합니다.");
+        // //     window.opener.location.href = '/signUp';
+        // //     window.close();
+        // //   } else {
+        // //     alert("로그인 페이지로 이동합니다.");
+        // //     window.close();
+        // //     window.opener.reload();
+        // //   }
+
+          // todo : ajax로그인 체크
+          $.ajax({
+            method: POST,
+            url: '/ajax/accountChk',
+            success: function (response){
+              if (response) {
+                alert("회원 가입 페이지로 이동합니다.");
+                window.opener.location.href = '/signUp';
+              } else {
+                alert("로그인 페이지로 이동합니다.");
+                window.opener.reload();
+              }
+            }
+          });
+          // window.opener.location.href = '/main'; // 부모 창을 리다이렉트합니다.
           window.close(); // 팝업 창을 닫습니다.
+
         } else {
-          alert('로그인이 필요합니다.');
+          // init url
           window.location.href='/oauth2/authorization/kakao';
         }
       });

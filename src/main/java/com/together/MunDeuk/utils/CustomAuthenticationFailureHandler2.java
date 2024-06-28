@@ -1,5 +1,6 @@
 package com.together.MunDeuk.utils;
 
+import com.together.MunDeuk.exception.CustomOAuth2Exception;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,7 +21,26 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
     // 리디렉션 전에 오류 메시지를 요청에 추가
     request.getSession().setAttribute("error.message", exception.getMessage());
 
-    // 기본 실패 핸들러 호출
-    super.onAuthenticationFailure(request, response, exception);
+    String msg = exception.getMessage() == null ? "" : exception.getMessage();
+
+    // 원인(cause)이 CustomOAuth2Exception인지 확인하고 그 메시지를 추출
+    if (exception.getCause() instanceof CustomOAuth2Exception) {
+      CustomOAuth2Exception customException = (CustomOAuth2Exception) exception.getCause();
+      msg = customException.getMessage();
+    }
+
+//    // 기본 실패 핸들러 호출
+//    super.onAuthenticationFailure(request, response, exception);
+
+    if(!msg.equals("")){
+      if(msg.equals("INVALID_PROVIDER")){
+        logger.error("UNKOWN PROVIDER");
+        response.sendRedirect("/error/FAILED_PROVIDER");
+      } else if(msg.equals("NOT_FOUND")){
+        logger.error("NOT FOUND ACCOUNT");
+        response.sendRedirect("/error/NO_ACCOUNT");
+      }
+    }
+
   }
 }

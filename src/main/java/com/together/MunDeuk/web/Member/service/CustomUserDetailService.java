@@ -18,21 +18,7 @@ public class CustomUserDetailService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) {
     log.info("--------------------------- UserDetailService ---------------------------");
-//    if ("test@test.com".equals(username)) {
-//      return User.withDefaultPasswordEncoder()
-//          .username("test@test.com")
-//          .password("test1234")
-//          .roles("User")
-//          .build();
-//    } else if("lotto@papa.com".equals(username)) {
-//      return User.withDefaultPasswordEncoder()
-//          .username("lotto@papa.com")
-//          .password("test1234")
-//          .roles("User","Admin")
-//          .build();
-//    } else {
-//      throw new UsernameNotFoundException("User not found with username: " + username);
-//    }
+
     Member member = memberRepository.selectMember(username);
 
     return User.withUsername(member.getEmail())
