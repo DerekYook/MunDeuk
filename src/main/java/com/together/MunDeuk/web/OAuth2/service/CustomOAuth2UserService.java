@@ -7,6 +7,7 @@ import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.repository.MemberRepository;
 import com.together.MunDeuk.web.OAuth2.entity.OAuth2UserInfo;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -83,17 +84,27 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       Optional<Member> verifiedMemberBySocial = memberRepository.verifiedMember(socialId, socialType);
       if (verifiedMemberBySocial.isPresent()) {
         try {
-          System.out.println("!!!! Login !!!!");
+          log.info("!!!! Login !!!!");
           member = memberRepository.findBySocial(socialId, socialType);
         } catch (Exception e) {
-          System.out.println("!!!! Error during Login !!!!");
+          log.info("!!!! Error during Login !!!!");
           log.error("Error finding user by social ID: " + socialId + ", " + socialType, e);
           throw e; // 또는 적절한 예외 처리
         }
       } else {
-        System.out.println("!!!! Register !!!!");
+        log.debug("!!!! Need Registration !!!!");
         // 일치 하는 회원이 없다면 새로 등록
-        throw new CustomOAuth2Exception("NOT_FOUND");
+        Map<String, Object> memberMap = new HashMap<>();
+
+        memberMap.put("socialType", socialType);
+        memberMap.put("socialId", socialId);
+        memberMap.put("name", name);
+        memberMap.put("email", email);
+
+        int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
+
+        String tempToken = JwtTokenizer2.generateToken(memberMap, accessTokenLiveTime);
+        throw new CustomOAuth2Exception("NOT_FOUND", tempToken);
       }
 
 //      member = verifiedMemberBySocial.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
@@ -107,11 +118,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         attributes);
   }
 
-  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
-    long memberId = memberRepository.selectMaxMemberIdx();
-    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
-    return memberRepository.selectMember(email);
-  }
+//  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
+//    long memberId = memberRepository.selectMaxMemberIdx();
+//    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
+//    return memberRepository.selectMember(email);
+//  }
 
 }
 

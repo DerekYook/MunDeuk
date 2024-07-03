@@ -46,7 +46,6 @@ public class SpringSecurityConfig2{
   // JwtAuthenticationProvider 주입
   @Autowired
   public void configureAuthentication(AuthenticationManagerBuilder builder){
-    System.out.println("+++++++++++++ provider injection");
     builder.authenticationProvider(jwtAuthenticationProvider);
     builder.authenticationProvider(oAuth2LoginAuthenticationProvider);
   }

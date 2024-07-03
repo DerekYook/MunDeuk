@@ -5,6 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,11 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
     if (exception.getCause() instanceof CustomOAuth2Exception) {
       CustomOAuth2Exception customException = (CustomOAuth2Exception) exception.getCause();
       msg = customException.getMessage();
+
+      CookieUtil cookieUtil = new CookieUtil();
+      ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER, customException.getToken());
+
+      response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
     }
 
 //    // 기본 실패 핸들러 호출
@@ -35,6 +42,7 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
     if(!msg.equals("")){
       if(msg.equals("INVALID_PROVIDER")){
         logger.error("UNKOWN PROVIDER");
+        // todo : redirect 처리
         response.sendRedirect("/error/FAILED_PROVIDER");
       } else if(msg.equals("NOT_FOUND")){
         logger.error("NOT FOUND ACCOUNT");

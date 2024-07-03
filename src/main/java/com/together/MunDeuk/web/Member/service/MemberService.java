@@ -30,4 +30,8 @@ public class MemberService {
   public void signUpMember(long memberId, String nickName, String email, String password) {
     memberRepository.registerMember(memberId, nickName, email, password);
   }
+
+  public void socialSignUp(long memberId, String nickName, String email, String socialId, String socialType){
+    memberRepository.saveSocialMember(memberId, nickName, email, socialId, socialType);
+  }
 }

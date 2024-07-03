@@ -5,6 +5,7 @@ import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.mapper.MemberMapper;
 import com.together.MunDeuk.web.Member.service.MemberService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -91,10 +92,32 @@ public class MemberController {
       @RequestParam String password) throws Exception {
     // todo : 휴대폰 본인 인증 혹은 이메일 인증 서비스 추가
 
-    long id = memberService.getMemberIndex();
-    memberService.signUpMember(id, nickName, email, password);
+    long memberId = memberService.getMemberIndex();
+    memberService.signUpMember(memberId, nickName, email, password);
 
     return new ResponseEntity<>(null, HttpStatus.OK);
+  }
+
+  @RequestMapping(value = "/oAuth2SignUp")//, method = RequestMethod.POST)
+  public String oAuth2SignUp(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    String returnPage = "web/member/oAuth2SignUpSuccess";
+
+    CookieUtil cookieUtil = new CookieUtil();
+    String tempToken = cookieUtil.getCookie(request,"Access").getValue();
+    Claims claims = JwtTokenizer2.validateToken(tempToken);
+
+    long memberId = memberService.getMemberIndex();
+    String name = claims.get("name").toString();
+    String email = claims.get("email").toString();
+    String socialId = claims.get("socialId").toString();
+    String socialType = claims.get("socialType").toString();
+
+    log.info("oauthInfo = " + name + " / " + email + " / " + socialId + " / " + socialType);
+
+    memberService.socialSignUp(memberId, name, email, socialId, socialType);
+//    return new ResponseEntity<>(null, HttpStatus.OK);
+    return returnPage;
   }
 
   @RequestMapping(value = "/oauthRedirect")
@@ -111,6 +134,20 @@ public class MemberController {
     log.info("account Check : " + request);
 
     return new ResponseEntity<>(null, HttpStatus.OK);
+  }
+
+  @RequestMapping(value = "/error/{errorCode}")
+  public String errorRedirect(@PathVariable String errorCode, HttpServletRequest request, HttpServletResponse response){
+    CookieUtil cookieUtil = new CookieUtil();
+    String tempToken = cookieUtil.getCookie(request,"Access").getValue();
+    System.out.println("+++++++++++++++++++" + tempToken);
+
+    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER, tempToken);
+
+    response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+
+    String returnPage = "web/error/" + errorCode;
+    return returnPage;
   }
 
 }
