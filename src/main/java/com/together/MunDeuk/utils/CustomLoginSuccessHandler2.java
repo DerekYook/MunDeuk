@@ -12,6 +12,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -27,9 +28,23 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler {
 
+  @Value("${jwt.access-header}")
+  public String ACCESS_HEADER;
+
+  @Value("${jwt.refresh-header}")
+  public String REFRESH_HEADER;
+
+  @Value("${jwt.access-token-expiration-millis}")
+  public int ACCESS_EXP_TIME;
+
+  @Value("${jwt.refresh-token-expiration-millis}")
+  public int REFRESH_EXP_TIME;
+
   @Autowired
   private CookieUtil cookieUtil;
   private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+  private final JwtTokenizer2 jwtTokenizer2;
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -53,14 +68,23 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
     responseMap.put("provider", null);
 //    responseMap.put("password", credential);
 
-    int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
-    int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
+//    // static 풀기
+//    int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
+//    int refreshTokenLiveTime = JwtTokenizer2.REFRESH_EXP_TIME;
 
-    // Cookie로 넣을 때 (redirect시 header를 사용하면 token전달이 안되서 cookie로 진행)
-    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER,
-        JwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
-    ResponseCookie refreshTokenCookie = cookieUtil.createCookie(JwtTokenizer2.REFRESH_HEADER,
-        JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
+    int accessTokenLiveTime = ACCESS_EXP_TIME;
+    int refreshTokenLiveTime = REFRESH_EXP_TIME;
+
+//    // static 분리
+////    // Cookie로 넣을 때 (redirect시 header를 사용하면 token전달이 안되서 cookie로 진행)
+////    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER,
+////        JwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
+////    ResponseCookie refreshTokenCookie = cookieUtil.createCookie(JwtTokenizer2.REFRESH_HEADER,
+////        JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
+    ResponseCookie accessTokenCookie = cookieUtil.createCookie(ACCESS_HEADER,
+        jwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
+    ResponseCookie refreshTokenCookie = cookieUtil.createCookie(REFRESH_HEADER,
+        jwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
 
     // Cookie로 넣을 때
     response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -25,7 +26,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
+  @Value("${jwt.access-token-expiration-millis}")
+  public int ACCESS_EXP_TIME;
+
   private final MemberRepository memberRepository;
+
+  private final JwtTokenizer2 jwtTokenizer2;
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -101,9 +107,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         memberMap.put("name", name);
         memberMap.put("email", email);
 
-        int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
+//        // static 분리
+//        int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
+        int accessTokenLiveTime = ACCESS_EXP_TIME;
 
-        String tempToken = JwtTokenizer2.generateToken(memberMap, accessTokenLiveTime);
+        String tempToken = jwtTokenizer2.generateToken(memberMap, accessTokenLiveTime);
         throw new CustomOAuth2Exception("NOT_FOUND", tempToken);
       }
 

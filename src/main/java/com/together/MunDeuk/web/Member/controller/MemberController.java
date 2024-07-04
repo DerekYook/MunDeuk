@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,10 @@ public class MemberController {
   private final MemberService memberService;
   private final MemberMapper memberMapper;
   private final CookieUtil cookieUtil;
+  private final JwtTokenizer2 jwtTokenizer2;
+
+  @Value("${jwt.access-header}")
+  public String ACCESS_HEADER;
 
   @RequestMapping(value = "/loginFail")
   public String loginFail() {
@@ -103,9 +108,8 @@ public class MemberController {
 
     String returnPage = "web/member/oAuth2SignUpSuccess";
 
-    CookieUtil cookieUtil = new CookieUtil();
     String tempToken = cookieUtil.getCookie(request,"Access").getValue();
-    Claims claims = JwtTokenizer2.validateToken(tempToken);
+    Claims claims = jwtTokenizer2.validateToken(tempToken);
 
     long memberId = memberService.getMemberIndex();
     String name = claims.get("name").toString();
@@ -138,11 +142,12 @@ public class MemberController {
 
   @RequestMapping(value = "/error/{errorCode}")
   public String errorRedirect(@PathVariable String errorCode, HttpServletRequest request, HttpServletResponse response){
-    CookieUtil cookieUtil = new CookieUtil();
-    String tempToken = cookieUtil.getCookie(request,"Access").getValue();
-    System.out.println("+++++++++++++++++++" + tempToken);
 
-    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER, tempToken);
+    String tempToken = cookieUtil.getCookie(request,"Access").getValue();
+
+//    // static 분리
+//    ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER, tempToken);
+    ResponseCookie accessTokenCookie = cookieUtil.createCookie(ACCESS_HEADER, tempToken);
 
     response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
 

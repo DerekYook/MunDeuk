@@ -5,6 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.AuthenticationException;
@@ -12,7 +15,13 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthenticationFailureHandler {
+
+  @Value("${jwt.access-header}")
+  public String ACCESS_HEADER;
+
+  private final CookieUtil cookieUtil;
 
   @Override
   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -30,8 +39,11 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
       CustomOAuth2Exception customException = (CustomOAuth2Exception) exception.getCause();
       msg = customException.getMessage();
 
-      CookieUtil cookieUtil = new CookieUtil();
-      ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER, customException.getToken());
+//      CookieUtil cookieUtil = new CookieUtil();
+
+//      // static 분리
+//      ResponseCookie accessTokenCookie = cookieUtil.createCookie(JwtTokenizer2.ACCESS_HEADER, customException.getToken());
+      ResponseCookie accessTokenCookie = cookieUtil.createCookie(ACCESS_HEADER, customException.getToken());
 
       response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
     }

@@ -22,7 +22,7 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
 
   @Autowired
   private CustomUserDetailService customUserDetailService;
-  JwtTokenizer2 jwtTokenizer = new JwtTokenizer2();
+  JwtTokenizer2 jwtTokenizer;
 
   @Autowired
   private CookieUtil cookieUtil;

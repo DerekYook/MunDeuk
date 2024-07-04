@@ -1,10 +1,12 @@
 package com.together.MunDeuk.config;
 
+import com.together.MunDeuk.utils.CookieUtil;
 import com.together.MunDeuk.utils.CustomAuthenticationFailureHandler2;
 import com.together.MunDeuk.utils.CustomLoginSuccessHandler2;
 import com.together.MunDeuk.utils.CustomOauth2LoginSuccessHandler2;
 import com.together.MunDeuk.utils.JwtAuthenticationFilter2;
 import com.together.MunDeuk.utils.JwtAuthenticationProvider;
+import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.utils.LoginAuthenticationFilter;
 import com.together.MunDeuk.utils.OAuth2LoginAuthenticationProvider;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
@@ -50,6 +52,9 @@ public class SpringSecurityConfig2{
     builder.authenticationProvider(oAuth2LoginAuthenticationProvider);
   }
 
+  private final JwtTokenizer2 jwtTokenizer2;
+  private final CookieUtil cookieUtil;
+
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -67,19 +72,19 @@ public class SpringSecurityConfig2{
 
   @Bean
   public AuthenticationSuccessHandler customSuccessHandler() {
-    return new CustomLoginSuccessHandler2();
+    return new CustomLoginSuccessHandler2(jwtTokenizer2);
   }
 
   // OAuth2 로그인 성공시 handler
   @Bean
   public CustomOauth2LoginSuccessHandler2 customOauth2LoginSuccessHandler() {
-    return new CustomOauth2LoginSuccessHandler2();
+    return new CustomOauth2LoginSuccessHandler2(jwtTokenizer2);
   }
 
   // OAuth2 로그인 실패시 handler
   @Bean
   public CustomAuthenticationFailureHandler2 customAuthenticationFailureHandler(){
-    return new CustomAuthenticationFailureHandler2();
+    return new CustomAuthenticationFailureHandler2(cookieUtil);
   }
 
   @Bean

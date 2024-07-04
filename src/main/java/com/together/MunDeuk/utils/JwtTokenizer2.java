@@ -22,25 +22,45 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class JwtTokenizer2 {
-//  @Value("${jwt.secret}")
-//  public String secret;
-  public static final String JWT_HEADER = "Authorization";
-  public static final String ACCESS_HEADER = "Access";
-  public static final String REFRESH_HEADER = "Refresh";
-  public static final String JWT_PREFIX = "Bearer ";
-  public static final String secretKey = "JWTsecretkeyforexampleJWTsecretkeyforexampleJWTsecretkeyforexample";
-  public static final int ACCESS_EXP_TIME = 10;   // 10분
+  @Value("${jwt.secret}")
+  public String secretKey;
+//  // static 분리
+//  public static final String secretKey = "JWTsecretkeyforexampleJWTsecretkeyforexampleJWTsecretkeyforexample";
+
+//  public static final String JWT_HEADER = "Authorization";
+
+//  // static 분리
+//  public static final String ACCESS_HEADER = "Access";
+  @Value("${jwt.access-header}")
+  public String ACCESS_HEADER;
+
+//  // static 분리
+//  public static final String REFRESH_HEADER = "Refresh";
+  @Value("${jwt.refresh-header}")
+  public String REFRESH_HEADER;
+
+//  public static final String JWT_PREFIX = "Bearer ";
+
+//  // static 분리
+//  public static final int ACCESS_EXP_TIME = 10;   // 10분
+  @Value("${jwt.access-token-expiration-millis}")
+  public int ACCESS_EXP_TIME;
+//  // static 분리
 //  public static final int REFRESH_EXP_TIME = 60 * 24;   // 24시간
-  public static final int REFRESH_EXP_TIME = 10;
+//  public static final int REFRESH_EXP_TIME = 10;
+  @Value("${jwt.refresh-token-expiration-millis}")
+  public int REFRESH_EXP_TIME;
+
 //  public static final String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
 
-  private static Key key;
+  private Key key;
 
-  public static String getTokenFromHeader(String header) {
-    return header.split(" ")[1];
-  }
+//  public static String getTokenFromHeader(String header) {
+//    return header.split(" ")[1];
+//  }
 
-  public static String generateToken(Map<String, Object> valueMap, int validTime) {
+  // static 분리
+  public String generateToken(Map<String, Object> valueMap, int validTime) {
     try {
       key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     } catch(Exception e){
@@ -55,7 +75,8 @@ public class JwtTokenizer2 {
         .compact();
   }
 
-  public static Claims validateToken(String token) {
+  // static 분리
+  public Claims validateToken(String token) {
     Claims claim;
     try {
       SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -67,15 +88,17 @@ public class JwtTokenizer2 {
     } catch(ExpiredJwtException expiredJwtException){
       throw new CustomExpiredJwtException("토큰이 만료되었습니다", expiredJwtException);
     } catch(Exception e){
+      log.debug("reason : {}" + e);
       throw new CustomJwtException("Error");
     }
     return claim;
   }
 
+  // static 분리
   // 토큰이 만료되었는지 판단하는 메서드
-  public static boolean isExpired(String token) {
+  public boolean isExpired(String token) {
     try {
-      Claims claims = validateToken(token);
+      Claims claims = this.validateToken(token);
       Date tokenTime = claims.getExpiration();
       if (tokenRemainTime(tokenTime) > 0) {
         return true;
@@ -102,9 +125,4 @@ public class JwtTokenizer2 {
     return claimsResolver.apply(claims);
   }
 
-  private Claims getAllClaimsForToken(String token) {
-//    System.out.println(secret);
-    System.out.println(secretKey);
-    return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-  }
 }
