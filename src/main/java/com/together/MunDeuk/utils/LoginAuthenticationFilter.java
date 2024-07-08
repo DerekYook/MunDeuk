@@ -38,12 +38,13 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     // AuthenticationManager : ProviderManager의 인스턴스 -> Provider 순회 인증시도
     return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(
         loginRequestDto.username,
-        loginRequestDto.password
+        loginRequestDto.password,
+        loginRequestDto.csrfToken
     ));
   }
 
   // json에서 email로 오는 값을 username으로 처리
-  public record LoginRequestDto(@JsonProperty("email") String username, String password) {
+  public record LoginRequestDto(@JsonProperty("email") String username, String password, @JsonProperty("_csrf") String csrfToken) {
 
   }
 }

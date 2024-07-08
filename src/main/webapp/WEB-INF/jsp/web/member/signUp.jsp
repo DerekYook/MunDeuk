@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>MoonDeuk</title>
 </head>
-<script src="<c:url value="/js/jquery/jquery-3.6.0.js"/>"></script>
+<script src="<c:url value="/js/jquery/jquery-3.7.1.js"/>"></script>
 <script src="<c:url value="/js/common/common.js"/>"></script>
 <script src="<c:url value="/js/common/util.js"/>"></script>
 <script>

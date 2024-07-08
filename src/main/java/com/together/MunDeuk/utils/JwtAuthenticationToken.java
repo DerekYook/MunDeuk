@@ -9,6 +9,8 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
   private final Object principal;
   private Object credentials;
 
+  private Object csrfToken;
+
   public JwtAuthenticationToken(Object principal, Object credentials) {
     super(null);
     this.principal = principal;
@@ -22,6 +24,14 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     this.principal = principal;
     this.credentials = credentials;
     super.setAuthenticated(true);
+  }
+
+  public JwtAuthenticationToken(Object principal, Object credentials, Object csrfToken) {
+    super(null);
+    this.principal = principal;
+    this.credentials = credentials;
+    this.csrfToken = csrfToken;
+    super.setAuthenticated(false);
   }
 
   @Override

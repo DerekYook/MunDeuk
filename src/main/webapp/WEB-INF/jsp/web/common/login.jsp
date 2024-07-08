@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -17,7 +18,7 @@
     <link rel="stylesheet" href="<c:url value="/vendors/base/vendor.bundle.base.css"/>">
     <link rel="stylesheet" href="<c:url value="/css/style.css"/>">
     <link rel="shortcut icon" href="<c:url value="/images/main/slide.jpg"/><c:url value="/images/favicon.png"/>" />--%>
-    <script src="<c:url value="/js/jquery/jquery-3.6.0.js"/>"></script>
+    <script src="<c:url value="/js/jquery/jquery-3.7.1.js"/>"></script>
     <script src="<c:url value="/js/jquery/jquery-ui_1.12.1.js"/>"></script>
     <script src="<c:url value="/js/common/common.js"/>"></script>
     <script src="<c:url value="/js/common/util.js"/>"></script>
@@ -39,6 +40,14 @@
           }
 
           <%--fnAriAjaxString("<c:url value="/ajax/adm/admLoginProcess"/>", "loginFrm", loginProcessCallBack );--%>
+
+          // Extract CSRF token from hidden input
+          var form = document.getElementById('loginFrm');
+          var formData = new FormData(form);
+          var csrfToken = formData.get('_csrf');
+
+          console.log(csrfToken);
+
           const serializedValues = $('#loginFrm').serializeObject();
           $.ajax({
             type: 'POST',
@@ -47,6 +56,15 @@
             contentType: 'application/json',
             // contentType: 'text/html',
             data: JSON.stringify(serializedValues),
+            // csrf 처리 start
+            beforeSend: function(xhr){
+              // Set CSRF token Header
+              xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+              console.log(xhr);
+              console.log('-----------------------------');
+              console.log(csrfToken);
+            },
+            // csrf 처리 end
             success: function (response) {
               if(response.redirectUrl) {
                 location.href = response.redirectUrl;
@@ -84,8 +102,13 @@
           alert("Password를 입력하여주세요.");
           return;
         }
+        var form = document.getElementById('loginFrm');
+        var formData = new FormData(form);
+        var csrfToken = formData.get('_csrf');
+
+        console.log(csrfToken);
+
         const serializedValues = $('#loginFrm').serializeObject();
-        <%--fnAriAjaxString("<c:url value="/ajax/login"/>", "loginFrm", loginProcessCallBack );--%>
         $.ajax({
           type: 'POST',
           url: '/ajax/loginProcess',
@@ -93,6 +116,15 @@
           contentType: 'application/json',
           // contentType: 'text/html',
           data: JSON.stringify(serializedValues),
+          // csrf 처리 start
+          beforeSend: function(xhr){
+            // Set CSRF token Header
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+            console.log(xhr);
+            console.log('-----------------------------');
+            console.log(csrfToken);
+          },
+          // csrf 처리 end
           success: function (response) {
             if(response.redirectUrl) {
               location.href = response.redirectUrl;
@@ -140,6 +172,8 @@
                         </div>
                         <h3 style="width:100%;text-align:left;"><b>로그인</b></h3>
                         <form id="loginFrm" name="loginFrm">
+<%--                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />--%>
+                            <sec:csrfInput/>
                             <div>
                                 <label for="InputEmail">Email</label>
                                 <div>

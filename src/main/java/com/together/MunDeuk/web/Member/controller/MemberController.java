@@ -2,10 +2,13 @@ package com.together.MunDeuk.web.Member.controller;
 
 import com.together.MunDeuk.utils.CookieUtil;
 import com.together.MunDeuk.utils.JwtTokenizer2;
+import com.together.MunDeuk.web.Common.controller.CommonController;
+import com.together.MunDeuk.web.Member.dto.MemberDto.Response;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.mapper.MemberMapper;
 import com.together.MunDeuk.web.Member.service.MemberService;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,7 +24,9 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,12 +38,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequiredArgsConstructor
 @Validated
 @Slf4j
-public class MemberController {
+public class MemberController extends CommonController {
 
   private final MemberService memberService;
   private final MemberMapper memberMapper;
   private final CookieUtil cookieUtil;
   private final JwtTokenizer2 jwtTokenizer2;
+
+
 
   @Value("${jwt.access-header}")
   public String ACCESS_HEADER;
@@ -73,7 +80,7 @@ public class MemberController {
   @ResponseBody
   @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
 //  public void confirmLogin(){}
-  public ResponseEntity<?> confirmLogin(HttpServletRequest request, HttpServletResponse response)
+  public ResponseEntity<?> loginProcess(HttpServletRequest request, HttpServletResponse response, Model model)
       throws IOException {
 //    Map<String, Object> responseMap = new HashMap<>();
 //
@@ -88,7 +95,14 @@ public class MemberController {
 //    response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
 //    response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
 
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    String csrf = getCsrfToken(request);
+
+    model.addAttribute("csrfToken", csrf);
+
+    response.setHeader("X-CSRF-TOKEN",csrf);
+
+//    return new ResponseEntity<>(response, HttpStatus.OK);
+    return ResponseEntity.ok(response);
   }
 
   @ResponseBody

@@ -26,6 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// Spring Security적용
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// security taglibs
+	implementation 'org.springframework.security:spring-security-taglibs'
 
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'

@@ -10,7 +10,7 @@
     <title>카카오 로그인</title>
 
     <!-- 필요한 JS 파일 포함 -->
-    <script src="<c:url value="/js/jquery/jquery-3.6.0.js"/>"></script>
+    <script src="<c:url value="/js/jquery/jquery-3.7.1.js"/>"></script>
     <script>
       $(document).ready(function() {
         // 로그인 성공 여부를 확인합니다.
