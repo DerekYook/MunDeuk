@@ -74,13 +74,13 @@ public class SpringSecurityConfig2{
 
   @Bean
   public AuthenticationSuccessHandler customSuccessHandler() {
-    return new CustomLoginSuccessHandler2(jwtTokenizer2);
+    return new CustomLoginSuccessHandler2(cookieUtil, jwtTokenizer2);
   }
 
   // OAuth2 로그인 성공시 handler
   @Bean
   public CustomOauth2LoginSuccessHandler2 customOauth2LoginSuccessHandler() {
-    return new CustomOauth2LoginSuccessHandler2(jwtTokenizer2);
+    return new CustomOauth2LoginSuccessHandler2(cookieUtil, jwtTokenizer2);
   }
 
   // OAuth2 로그인 실패시 handler
