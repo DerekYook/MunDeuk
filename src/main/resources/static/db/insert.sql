@@ -1,9 +1,9 @@
 -- MEMBER TABLE
-INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 0, 'JOY', 'test@test.com', 'test1234', 'User', 'Active' );
-INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 1, 'LOTTO_PAPA', 'lotto@papa.com', 'test1234', 'Admin', 'Active' );
-INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 2, 'backDoor', 'admin@backDoor.com', 'test1234', 'Admin', 'Inactive' );
--- INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status ) VALUES ( 3, 'LOTTO_PAPA', 'lotto@papa.com', 'test1234', 'User', 'Active' );
-
+INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status, social_type, social_id ) VALUES ( 0, 'JOY', 'test@test.com', 'test1234', 'User', 'Active', null, null );
+INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status, social_type, social_id ) VALUES ( 1, 'LOTTO_PAPA', 'lotto@papa.com', 'test1234', 'Admin', 'Active', null, null );
+INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status, social_type, social_id ) VALUES ( 2, 'backDoor', 'admin@backDoor.com', 'test1234', 'Admin', 'Inactive', null, null );
+INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status, social_type, social_id ) VALUES ( 3, 'backDoor', 'admin@backDoor.com', 'test1234', 'Admin', 'Inactive', null, null );
+INSERT INTO member ( member_id, nick_name, email, password, member_auth, member_status, social_type, social_id ) VALUES ( 4, 'backDoor', 'admin@backDoor.com', 'test1234', 'Admin', 'Inactive', null, null );
 
 -- BOARD TABLE
 INSERT INTO board ( board_seq, title, content, board_ctgr, board_status, member_id ) VALUES ( 0, 'test1', 'test_text1', 'noti', 'Active', 1 );
