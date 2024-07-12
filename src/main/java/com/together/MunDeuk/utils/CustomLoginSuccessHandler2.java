@@ -40,8 +40,7 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
   @Value("${jwt.refresh-token-expiration-millis}")
   public int REFRESH_EXP_TIME;
 
-  @Autowired
-  private CookieUtil cookieUtil;
+  private final CookieUtil cookieUtil;
   private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
   private final JwtTokenizer2 jwtTokenizer2;

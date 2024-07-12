@@ -24,8 +24,7 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
   private CustomUserDetailService customUserDetailService;
   JwtTokenizer2 jwtTokenizer;
 
-  @Autowired
-  private CookieUtil cookieUtil;
+  CookieUtil cookieUtil;
 
   // 필터를 적용하지 않을 API들
   private static final String[] whitelist = {"/favicon.ico", "/signUp", "/login", "/refresh",
@@ -47,7 +46,7 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
       FilterChain filterChain) throws ServletException, IOException {
     log.info("--------------------------- JwtVerifyFilter ---------------------------");
     log.info(" before provider :", request.authenticate(response));
-    if (!cookieUtil.chkCookie(request, "Access")) {
+    if (cookieUtil == null || !cookieUtil.chkCookie(request, "Access")) {
       log.info("로그인이 필요합니다.");
     } else {
       log.info("---- branch Local Service / Oauth2 Service ----");

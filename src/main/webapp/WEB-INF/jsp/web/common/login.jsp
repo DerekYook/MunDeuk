@@ -60,9 +60,9 @@
             beforeSend: function(xhr){
               // Set CSRF token Header
               xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-              console.log(xhr);
-              console.log('-----------------------------');
-              console.log(csrfToken);
+              // console.log(xhr);
+              // console.log('-----------------------------');
+              // console.log(csrfToken);
             },
             // csrf 처리 end
             success: function (response) {
@@ -120,9 +120,6 @@
           beforeSend: function(xhr){
             // Set CSRF token Header
             xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-            console.log(xhr);
-            console.log('-----------------------------');
-            console.log(csrfToken);
           },
           // csrf 처리 end
           success: function (response) {

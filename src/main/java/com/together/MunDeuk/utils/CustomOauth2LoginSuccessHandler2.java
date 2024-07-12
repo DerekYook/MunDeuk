@@ -41,8 +41,7 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
   @Value("${jwt.refresh-token-expiration-millis}")
   public int REFRESH_EXP_TIME;
 
-  @Autowired
-  private CookieUtil cookieUtil;
+  private final CookieUtil cookieUtil;
   private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
   private final JwtTokenizer2 jwtTokenizer2;
 
@@ -74,10 +73,8 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
 ////    ResponseCookie refreshTokenCookie = cookieUtil.createCookieByUserId(
 ////        JwtTokenizer2.REFRESH_HEADER,
 ////        JwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
-    ResponseCookie accessTokenCookie = cookieUtil.createCookieByUserId(ACCESS_HEADER,
-        jwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
-    ResponseCookie refreshTokenCookie = cookieUtil.createCookieByUserId(REFRESH_HEADER,
-        jwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
+    ResponseCookie accessTokenCookie = cookieUtil.createCookieByUserId(ACCESS_HEADER, jwtTokenizer2.generateToken(responseMap, accessTokenLiveTime));
+    ResponseCookie refreshTokenCookie = cookieUtil.createCookieByUserId(REFRESH_HEADER, jwtTokenizer2.generateToken(responseMap, refreshTokenLiveTime));
 
     // Cookie로 넣을 때
     response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
