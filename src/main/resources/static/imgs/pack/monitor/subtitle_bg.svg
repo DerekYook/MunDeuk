@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1601" height="80" viewBox="0 0 1601 80">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #f11;
+      }
+
+      .cls-3 {
+        opacity: 0.07;
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-5 {
+        clip-path: url(#clip-path);
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_7" data-name="사각형 7" class="cls-1" width="1601" height="80"/>
+    </clipPath>
+  </defs>
+  <g id="자막_bg_shadow_x" transform="translate(-89 -465)">
+    <rect id="사각형_6" data-name="사각형 6" class="cls-2" width="1600" height="80" rx="8" transform="translate(90 465)"/>
+    <g id="그룹_12" data-name="그룹 12" class="cls-3" transform="translate(89 465)">
+      <path id="패스_40" data-name="패스 40" class="cls-4" d="M516.955,0,453.476,80h24.808L541.763,0Z"/>
+      <path id="패스_41" data-name="패스 41" class="cls-4" d="M1311.385,0l-63.479,80h24.809l63.479-80Z"/>
+      <path id="패스_42" data-name="패스 42" class="cls-4" d="M569.917,0l-63.48,80h24.808L594.726,0Z"/>
+      <path id="패스_43" data-name="패스 43" class="cls-4" d="M1258.424,0l-63.481,80h24.809l63.48-80Z"/>
+      <path id="패스_44" data-name="패스 44" class="cls-4" d="M622.879,0,559.4,80h24.808L647.687,0Z"/>
+      <path id="패스_45" data-name="패스 45" class="cls-4" d="M887.689,0,824.21,80h24.808L912.5,0Z"/>
+      <path id="패스_46" data-name="패스 46" class="cls-4" d="M1470.271,0l-63.48,80H1431.6l63.479-80Z"/>
+      <path id="패스_47" data-name="패스 47" class="cls-4" d="M1364.348,0l-63.479,80h24.808l63.479-80Z"/>
+      <path id="패스_48" data-name="패스 48" class="cls-4" d="M411.031,0l-63.48,80h24.808L435.838,0Z"/>
+      <path id="패스_49" data-name="패스 49" class="cls-4" d="M463.992,0l-63.48,80h24.809L488.8,0Z"/>
+      <path id="패스_50" data-name="패스 50" class="cls-4" d="M1417.31,0l-63.479,80h24.807l63.48-80Z"/>
+      <path id="패스_51" data-name="패스 51" class="cls-4" d="M940.651,0,877.172,80H901.98L965.459,0Z"/>
+      <path id="패스_52" data-name="패스 52" class="cls-4" d="M1046.575,0,983.1,80h24.8l63.48-80Z"/>
+      <path id="패스_53" data-name="패스 53" class="cls-4" d="M781.765,0,718.286,80h24.807l63.48-80Z"/>
+      <path id="패스_54" data-name="패스 54" class="cls-4" d="M1205.462,0l-63.479,80h24.807l63.48-80Z"/>
+      <path id="패스_55" data-name="패스 55" class="cls-4" d="M993.614,0l-63.48,80h24.808l63.48-80Z"/>
+      <path id="패스_56" data-name="패스 56" class="cls-4" d="M1152.5,0l-63.48,80h24.809l63.478-80Z"/>
+      <path id="패스_57" data-name="패스 57" class="cls-4" d="M1099.538,0l-63.48,80h24.808l63.479-80Z"/>
+      <path id="패스_58" data-name="패스 58" class="cls-4" d="M675.841,0,612.362,80h24.809L700.65,0Z"/>
+      <path id="패스_59" data-name="패스 59" class="cls-4" d="M728.8,0,665.324,80h24.808L753.611,0Z"/>
+      <path id="패스_60" data-name="패스 60" class="cls-4" d="M834.727,0l-63.48,80h24.809l63.48-80Z"/>
+      <path id="패스_61" data-name="패스 61" class="cls-4" d="M93.258,0,29.778,80H54.586l63.48-80Z"/>
+      <path id="패스_62" data-name="패스 62" class="cls-4" d="M358.069,0l-63.48,80H319.4L382.88,0Z"/>
+      <g id="그룹_11" data-name="그룹 11">
+        <g id="그룹_10" data-name="그룹 10" class="cls-5">
+          <path id="패스_63" data-name="패스 63" class="cls-4" d="M3.013,78.249,65.1,0H40.3L0,50.783V72a7.981,7.981,0,0,0,3.013,6.249"/>
+          <path id="패스_64" data-name="패스 64" class="cls-4" d="M305.106,0,241.627,80h24.807L329.913,0Z"/>
+          <path id="패스_65" data-name="패스 65" class="cls-4" d="M252.144,0,188.665,80h24.807l63.48-80Z"/>
+          <path id="패스_66" data-name="패스 66" class="cls-4" d="M8,0A8,8,0,0,0,0,8v7.3L12.141,0Z"/>
+          <path id="패스_67" data-name="패스 67" class="cls-4" d="M1523.234,0l-63.479,80h24.807l63.479-80Z"/>
+          <path id="패스_68" data-name="패스 68" class="cls-4" d="M146.22,0,82.741,80h24.807l63.48-80Z"/>
+          <path id="패스_69" data-name="패스 69" class="cls-4" d="M1598.571,3.061,1601,0h-7.667a6.327,6.327,0,0,1,5.238,3.061"/>
+          <path id="패스_70" data-name="패스 70" class="cls-4" d="M1593.333,0H1576.2l-63.479,80h24.808l61.042-76.939A6.33,6.33,0,0,0,1593.333,0"/>
+          <path id="패스_71" data-name="패스 71" class="cls-4" d="M1600,36.747,1565.679,80h24.807L1600,68.01Z"/>
+          <path id="패스_72" data-name="패스 72" class="cls-4" d="M199.182,0,135.7,80h24.81L223.989,0Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

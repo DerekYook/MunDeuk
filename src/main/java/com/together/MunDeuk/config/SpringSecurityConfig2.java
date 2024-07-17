@@ -1,7 +1,9 @@
 package com.together.MunDeuk.config;
 
+import com.together.MunDeuk.utils.CaptchaUtil;
 import com.together.MunDeuk.utils.CookieUtil;
 import com.together.MunDeuk.utils.CustomAuthenticationFailureHandler2;
+import com.together.MunDeuk.utils.CustomLoginFailHandler2;
 import com.together.MunDeuk.utils.CustomLoginSuccessHandler2;
 import com.together.MunDeuk.utils.CustomOauth2LoginSuccessHandler2;
 import com.together.MunDeuk.utils.JwtAuthenticationFilter2;
@@ -25,6 +27,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
@@ -57,6 +60,8 @@ public class SpringSecurityConfig2{
   private final JwtTokenizer2 jwtTokenizer2;
   private final CookieUtil cookieUtil;
 
+  private final CaptchaUtil captchaUtil;
+
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -77,6 +82,10 @@ public class SpringSecurityConfig2{
     return new CustomLoginSuccessHandler2(cookieUtil, jwtTokenizer2);
   }
 
+  @Bean
+  public AuthenticationFailureHandler customFailureHandler() {
+    return new CustomLoginFailHandler2();
+  }
   // OAuth2 로그인 성공시 handler
   @Bean
   public CustomOauth2LoginSuccessHandler2 customOauth2LoginSuccessHandler() {
@@ -136,10 +145,10 @@ public class SpringSecurityConfig2{
       httpSecurityFormLoginConfigurer
           .loginPage("/login")
           .successHandler(customSuccessHandler())
-          .failureHandler(customAuthenticationFailureHandler())
+          .failureHandler(customFailureHandler())
           ;
       // 로컬에서만 Filter적용
-      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager, captchaUtil), UsernamePasswordAuthenticationFilter.class);
     });
     // oauth인증
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
@@ -159,11 +168,12 @@ public class SpringSecurityConfig2{
   // 인증 필터
   public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
       // 토큰 정보 추가
-      final AuthenticationManager authenticationManager) {
+      final AuthenticationManager authenticationManager, final CaptchaUtil captchaUtil) {
     // 토큰 정보를 이용해 사용자 정보 식별
-    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager);
+    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager, captchaUtil);
     // Handler에 토큰 정보 추가
     loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
+    loginAuthenticationFilter.setAuthenticationFailureHandler(customFailureHandler());
     // Rest API 방식을 사용하기 위해 추가
     loginAuthenticationFilter.setSecurityContextRepository(
         new DelegatingSecurityContextRepository(

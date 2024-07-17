@@ -1,15 +1,20 @@
 package com.together.MunDeuk.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.together.MunDeuk.exception.CustomCaptchaException;
 import com.together.MunDeuk.exception.CustomOAuth2Exception;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -26,6 +31,8 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
   @Override
   public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
       AuthenticationException exception) throws IOException, ServletException {
+    logger.info("--------------------------- OAuth2LoginFailHandler ---------------------------");
+
     // 로그에 오류 메시지 기록
     logger.error("Authentication failed: " + exception.getMessage());
 
@@ -46,6 +53,11 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
       ResponseCookie accessTokenCookie = cookieUtil.createCookie(ACCESS_HEADER, customException.getToken());
 
       response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+    } else if (exception.getCause() instanceof CustomCaptchaException){
+      System.out.println("이거 동작 하는건가?????");
+      // 에러 메시지 추출
+      CustomCaptchaException customCaptchaException = (CustomCaptchaException) exception.getCause();
+      msg = customCaptchaException.getMessage();
     }
 
 //    // 기본 실패 핸들러 호출
@@ -59,7 +71,16 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
       } else if(msg.equals("NOT_FOUND")){
         logger.error("NOT FOUND ACCOUNT");
         response.sendRedirect("/error/NO_ACCOUNT");
+      } else if(msg.equals("INVALID_CAPTCHA")){
+        logger.error("FAIL CAPTCHA VALIDATE");
+//        response.sendRedirect("/error/WRONG_LOGIN");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+        Map<String, String> data = new HashMap<>();
+        data.put("error", msg);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(data));
       }
+
     }
 
   }

@@ -1,0 +1,26 @@
+<svg id="arrow_휴대폰인증" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="5.5" height="9.5" viewBox="0 0 5.5 9.5">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_1" data-name="사각형 1" class="cls-1" width="5.5" height="9.5"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_1" data-name="그룹 1" class="cls-2">
+    <path id="패스_6" data-name="패스 6" class="cls-3" d="M.75.75l4,3.941L.75,8.75"/>
+  </g>
+</svg>

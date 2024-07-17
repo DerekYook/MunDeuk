@@ -1,0 +1,23 @@
+<svg id="초대장" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="40" viewBox="0 0 48 40">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #7871f8;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_7" data-name="사각형 7" class="cls-1" width="48" height="40"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_13" data-name="그룹 13" class="cls-2">
+    <path id="패스_17" data-name="패스 17" class="cls-3" d="M44.643,9.492,25.939.44a4.49,4.49,0,0,0-3.878,0L3.357,9.492A5.828,5.828,0,0,0,0,14.748V34.122A5.984,5.984,0,0,0,6.072,40H41.928A5.984,5.984,0,0,0,48,34.122V14.748a5.828,5.828,0,0,0-3.357-5.256M23.612,3.444a.9.9,0,0,1,.776,0l18.148,8.78L24.107,21.145a.9.9,0,0,1-.776,0L5.18,12.364Z"/>
+  </g>
+</svg>

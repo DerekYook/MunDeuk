@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <g id="icon_언어" transform="translate(-1536 -32)">
+    <g id="icon_언어-2" data-name="icon_언어" transform="translate(1528.941 24.941)">
+      <circle id="타원_1" data-name="타원 1" cx="7.529" cy="7.529" r="7.529" transform="translate(7.529 7.529)" fill="none" stroke="#666" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.941"/>
+      <path id="패스_53" data-name="패스 53" d="M15.059,22.588a9.664,9.664,0,0,0,3.012-7.529,9.664,9.664,0,0,0-3.012-7.529,9.664,9.664,0,0,0-3.012,7.529A9.664,9.664,0,0,0,15.059,22.588Z" fill="none" stroke="#666" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.941"/>
+      <path id="패스_54" data-name="패스 54" d="M7.906,12.8H22.212M7.906,17.318H22.212" fill="none" stroke="#666" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.941"/>
+    </g>
+    <path id="Color_Overlay" data-name="Color Overlay" d="M1536.47,40a7.53,7.53,0,1,1,7.53,7.529A7.53,7.53,0,0,1,1536.47,40Z" fill="#aaa"/>
+  </g>
+</svg>

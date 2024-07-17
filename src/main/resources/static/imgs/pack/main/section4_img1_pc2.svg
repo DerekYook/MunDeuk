@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="732" height="252" viewBox="0 0 732 252">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #888;
+      }
+
+      .cls-3 {
+        fill: #eee;
+      }
+
+      .cls-10, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-5 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-6 {
+        fill: #7871f8;
+      }
+
+      .cls-7 {
+        clip-path: url(#clip-path-4);
+      }
+
+      .cls-8 {
+        clip-path: url(#clip-path-5);
+      }
+
+      .cls-9 {
+        fill: #111;
+      }
+
+      .cls-10, .cls-9 {
+        font-size: 16px;
+        font-family: NotoSansKR-Medium, Noto Sans KR;
+        font-weight: 500;
+        letter-spacing: -0.025em;
+      }
+
+      .cls-11 {
+        clip-path: url(#clip-path-7);
+      }
+
+      .cls-12 {
+        filter: url(#Rectangle_23);
+      }
+    </style>
+    <filter id="Rectangle_23" x="0" y="0" width="732" height="252" filterUnits="userSpaceOnUse">
+      <feOffset dy="6" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feFlood flood-opacity="0.122"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <rect id="사각형_29" data-name="사각형 29" class="cls-1" width="12" height="20"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <rect id="사각형_35" data-name="사각형 35" class="cls-1" width="36" height="48"/>
+    </clipPath>
+    <clipPath id="clip-path-5">
+      <rect id="사각형_36" data-name="사각형 36" class="cls-1" width="48" height="40"/>
+    </clipPath>
+    <clipPath id="clip-path-7">
+      <rect id="사각형_38" data-name="사각형 38" class="cls-1" width="48" height="38"/>
+    </clipPath>
+  </defs>
+  <g id="플랫폼안내_회원가입_가로" transform="translate(11 11)">
+    <g class="cls-12" transform="matrix(1, 0, 0, 1, -11, -11)">
+      <rect id="Rectangle_23-2" data-name="Rectangle 23" class="cls-3" width="660" height="180" rx="24" transform="translate(36 30)"/>
+    </g>
+    <rect id="Rectangle_21" data-name="Rectangle 21" class="cls-4" width="120" height="120" rx="16" transform="translate(55 49)"/>
+    <g id="Vector_Smart_Object" data-name="Vector Smart Object">
+      <g id="Vector_Smart_Object-2" data-name="Vector Smart Object" transform="translate(189 99)">
+        <g id="그룹_39" data-name="그룹 39">
+          <g id="그룹_38" data-name="그룹 38" class="cls-5">
+            <path id="패스_87" data-name="패스 87" class="cls-6" d="M1.142,20a1.19,1.19,0,0,1-.8-.3A.994.994,0,0,1,.33,18.21L9.254,9.888.57,1.79A.994.994,0,0,1,.58.3,1.213,1.213,0,0,1,2.194.312l9.477,8.837a.994.994,0,0,1,0,1.478L1.954,19.688A1.188,1.188,0,0,1,1.142,20"/>
+          </g>
+        </g>
+      </g>
+      <path id="Color_Overlay" data-name="Color Overlay" class="cls-2" d="M189.34,118.7a.994.994,0,0,1-.01-1.488l8.923-8.321-8.684-8.1a.994.994,0,0,1,.01-1.487,1.193,1.193,0,0,1,.8-.3h0a1.185,1.185,0,0,1,.81.312l9.477,8.837a1.011,1.011,0,0,1,.329.7v.079a1.011,1.011,0,0,1-.329.7l-9.717,9.061a1.214,1.214,0,0,1-1.614.009Z"/>
+    </g>
+    <g id="Vector_Smart_Object_copy_2" data-name="Vector Smart Object copy 2">
+      <g id="Vector_Smart_Object_copy_2-2" data-name="Vector Smart Object copy 2" transform="translate(349 99)">
+        <g id="그룹_43" data-name="그룹 43">
+          <g id="그룹_42" data-name="그룹 42" class="cls-5">
+            <path id="패스_89" data-name="패스 89" class="cls-6" d="M1.142,20a1.19,1.19,0,0,1-.8-.3A.994.994,0,0,1,.33,18.21L9.254,9.888.57,1.79A.994.994,0,0,1,.58.3,1.213,1.213,0,0,1,2.194.312l9.477,8.837a.994.994,0,0,1,0,1.478L1.954,19.688A1.188,1.188,0,0,1,1.142,20"/>
+          </g>
+        </g>
+      </g>
+      <path id="Color_Overlay-2" data-name="Color Overlay" class="cls-2" d="M349.34,118.7a.994.994,0,0,1-.01-1.488l8.923-8.321-8.684-8.1a.994.994,0,0,1,.01-1.487,1.193,1.193,0,0,1,.8-.3h0a1.185,1.185,0,0,1,.81.312l9.477,8.837a1.011,1.011,0,0,1,.328.7v.079a1.011,1.011,0,0,1-.328.7l-9.717,9.061a1.214,1.214,0,0,1-1.614.009Z"/>
+    </g>
+    <g id="Vector_Smart_Object_copy_3" data-name="Vector Smart Object copy 3">
+      <g id="Vector_Smart_Object_copy_3-2" data-name="Vector Smart Object copy 3" transform="translate(509 99)">
+        <g id="그룹_47" data-name="그룹 47">
+          <g id="그룹_46" data-name="그룹 46" class="cls-5">
+            <path id="패스_91" data-name="패스 91" class="cls-6" d="M1.142,20a1.19,1.19,0,0,1-.8-.3A.994.994,0,0,1,.33,18.21L9.254,9.888.57,1.79A.994.994,0,0,1,.58.3,1.213,1.213,0,0,1,2.194.312l9.477,8.837a.994.994,0,0,1,0,1.478L1.954,19.688A1.188,1.188,0,0,1,1.142,20"/>
+          </g>
+        </g>
+      </g>
+      <path id="Color_Overlay-3" data-name="Color Overlay" class="cls-2" d="M509.341,118.7a.994.994,0,0,1-.01-1.488l8.923-8.321-8.684-8.1a.994.994,0,0,1,.01-1.487,1.192,1.192,0,0,1,.8-.3h0a1.185,1.185,0,0,1,.81.312l9.477,8.837a1.011,1.011,0,0,1,.328.7v.079a1.011,1.011,0,0,1-.328.7l-9.717,9.061a1.214,1.214,0,0,1-1.614.009Z"/>
+    </g>
+    <rect id="Rectangle_21_copy_2" data-name="Rectangle 21 copy 2" class="cls-4" width="120" height="120" rx="16" transform="translate(215 49)"/>
+    <g id="Vector_Smart_Object-3" data-name="Vector Smart Object" transform="translate(257 73)">
+      <g id="그룹_51" data-name="그룹 51">
+        <g id="그룹_50" data-name="그룹 50" class="cls-7">
+          <path id="패스_93" data-name="패스 93" class="cls-6" d="M29.454,3.2H28.287a.819.819,0,0,1-.761-.508A4.312,4.312,0,0,0,23.509,0H12.49A4.313,4.313,0,0,0,8.473,2.692a.818.818,0,0,1-.761.508H6.545A6.473,6.473,0,0,0,0,9.6v32A6.474,6.474,0,0,0,6.545,48H29.454A6.475,6.475,0,0,0,36,41.6V9.6a6.474,6.474,0,0,0-6.546-6.4M11.467,6.4H24.532a1.6,1.6,0,1,1,0,3.2H11.467a1.6,1.6,0,1,1,0-3.2m15.1,31.635H9.428a1.714,1.714,0,0,1,0-3.428H26.571a1.714,1.714,0,0,1,0,3.428m0-8.247H9.428a1.715,1.715,0,0,1,0-3.429H26.571a1.715,1.715,0,0,1,0,3.429m0-8.248H9.428a1.715,1.715,0,0,1,0-3.429H26.571a1.715,1.715,0,0,1,0,3.429"/>
+        </g>
+      </g>
+    </g>
+    <rect id="Rectangle_21_copy_3" data-name="Rectangle 21 copy 3" class="cls-4" width="120" height="120" rx="16" transform="translate(375 49)"/>
+    <rect id="Rectangle_21_copy_4" data-name="Rectangle 21 copy 4" class="cls-6" width="120" height="120" rx="16" transform="translate(535 49)"/>
+    <g id="Vector_Smart_Object-4" data-name="Vector Smart Object" transform="translate(571 77)">
+      <g id="그룹_53" data-name="그룹 53">
+        <g id="그룹_52" data-name="그룹 52" class="cls-8">
+          <path id="패스_94" data-name="패스 94" class="cls-4" d="M12.368,2.891A10,10,0,0,1,19.608,0a9.966,9.966,0,0,1,7.224,2.909,9.116,9.116,0,0,1,2.548,7.2c-.425,5.456-4.8,9.9-9.772,9.9s-9.355-4.439-9.774-9.9a9.141,9.141,0,0,1,2.534-7.212"/>
+          <path id="패스_95" data-name="패스 95" class="cls-4" d="M19.176,29.246a5.406,5.406,0,0,1,1.689-3.86,5.783,5.783,0,0,1,3.871-1.569h.124a5.66,5.66,0,0,1,3.958,1.649c.039.039.068.069,3.819,4.013L34.049,27.8a17.978,17.978,0,0,0-2.073-1.545,23.424,23.424,0,0,0-12.368-3.393A23.415,23.415,0,0,0,7.24,26.25,15.277,15.277,0,0,0,.059,36.407a3.029,3.029,0,0,0,.677,2.6A2.988,2.988,0,0,0,3.017,40H27.248L20.73,33.107a5.367,5.367,0,0,1-1.554-3.861"/>
+          <path id="패스_96" data-name="패스 96" class="cls-4" d="M47.211,20.819a2.255,2.255,0,0,0-3.121.265L32.8,34.543s-6.372-6.7-6.415-6.743a2.23,2.23,0,0,0-1.559-.651,2.349,2.349,0,0,0-1.573.618,2.13,2.13,0,0,0-.044,3.05l8.007,8.466A2.261,2.261,0,0,0,32.9,40a2.234,2.234,0,0,0,1.661-.772L47.482,23.869a2.134,2.134,0,0,0-.271-3.05"/>
+        </g>
+      </g>
+    </g>
+    
+    <g id="Vector_Smart_Object-5" data-name="Vector Smart Object" transform="translate(97 73)">
+      <g id="그룹_55" data-name="그룹 55">
+        <g id="그룹_54" data-name="그룹 54" class="cls-7">
+          <path id="패스_97" data-name="패스 97" class="cls-6" d="M29.455,0H6.546A6.481,6.481,0,0,0,0,6.4V41.6A6.481,6.481,0,0,0,6.546,48H29.455A6.481,6.481,0,0,0,36,41.6V6.4A6.481,6.481,0,0,0,29.455,0m-8.1,22.051a4.436,4.436,0,0,1,1.181,3.44c-.2,2.608-2.23,4.73-4.533,4.73s-4.34-2.122-4.534-4.73a4.443,4.443,0,0,1,1.176-3.447,4.75,4.75,0,0,1,6.71.007M11.455,6.4a1.618,1.618,0,0,1,1.636-1.6h9.818a1.6,1.6,0,1,1,0,3.2H13.091a1.618,1.618,0,0,1-1.636-1.6m15.3,33.363a1.386,1.386,0,0,1-1.059.464H10.3a1.387,1.387,0,0,1-1.059-.464,1.422,1.422,0,0,1-.313-1.214,7.134,7.134,0,0,1,3.331-4.743A10.811,10.811,0,0,1,18,32.222a10.809,10.809,0,0,1,5.737,1.584,7.135,7.135,0,0,1,3.332,4.743,1.423,1.423,0,0,1-.314,1.214"/>
+        </g>
+      </g>
+    </g>
+    <g id="Vector_Smart_Object_copy" data-name="Vector Smart Object copy" transform="translate(411 79)">
+      <g id="그룹_57" data-name="그룹 57">
+        <g id="그룹_56" data-name="그룹 56" class="cls-11">
+          <path id="패스_98" data-name="패스 98" class="cls-6" d="M42,0H6A6.03,6.03,0,0,0,0,6.046V31.955A6.029,6.029,0,0,0,6,38H42a6.028,6.028,0,0,0,6-6.045V6.046A6.029,6.029,0,0,0,42,0M40.481,10,25.052,22.091a1.7,1.7,0,0,1-2.1,0L7.52,10a1.736,1.736,0,0,1-.327-2.421,1.706,1.706,0,0,1,2.4-.328l.028.022L24,18.539,38.377,7.273a1.705,1.705,0,0,1,2.408.278,1.736,1.736,0,0,1-.275,2.427Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

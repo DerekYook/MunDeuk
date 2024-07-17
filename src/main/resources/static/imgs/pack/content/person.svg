@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="시청자수" transform="translate(312.537 -476.753)">
+    <g id="그룹_6" data-name="그룹 6" transform="translate(-309.693 476.753)">
+      <g id="그룹_5" data-name="그룹 5">
+        <path id="패스_16" data-name="패스 16" class="cls-1" d="M-306.821,476.753a3.155,3.155,0,0,0-3.157,3.157,3.155,3.155,0,0,0,3.157,3.157,3.156,3.156,0,0,0,3.157-3.157A3.156,3.156,0,0,0-306.821,476.753Z" transform="translate(309.978 -476.753)"/>
+      </g>
+    </g>
+    <g id="그룹_8" data-name="그룹 8" transform="translate(-312.537 483.941)">
+      <g id="그룹_7" data-name="그룹 7">
+        <path id="패스_17" data-name="패스 17" class="cls-1" d="M-305.246,483.941h-2.581a4.605,4.605,0,0,0-4.709,4.486v1.828a.5.5,0,0,0,.524.5h10.953a.5.5,0,0,0,.523-.5v-1.828A4.6,4.6,0,0,0-305.246,483.941Z" transform="translate(312.537 -483.941)"/>
+      </g>
+    </g>
+  </g>
+</svg>

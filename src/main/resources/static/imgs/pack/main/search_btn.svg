@@ -1,0 +1,23 @@
+<svg id="search_btn" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18.259" height="17.832" viewBox="0 0 18.259 17.832">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_34" data-name="사각형 34" class="cls-1" width="18.259" height="17.832"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_67" data-name="그룹 67" class="cls-2">
+    <path id="패스_54" data-name="패스 54" class="cls-3" d="M18.26,16.418l-4.8-4.8A7.38,7.38,0,1,0,12.1,13.089l4.744,4.743ZM7.394,12.787a5.393,5.393,0,1,1,5.393-5.394,5.4,5.4,0,0,1-5.393,5.394"/>
+  </g>
+</svg>

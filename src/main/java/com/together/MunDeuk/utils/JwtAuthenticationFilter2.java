@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter2 extends OncePerRequestFilter {
 
   // 필터를 적용하지 않을 API들
   private static final String[] whitelist = {"/favicon.ico", "/signUp", "/login", "/refresh",
-      "/oauthRedirect", "/",
+      "/oauthRedirect", "/", "/captcha/*",
       "/ajax/loginProcess"
       , "/WEB-INF/jsp/web/member/signUp.jsp", "/WEB-INF/jsp/web/common/login.jsp",
       "/WEB-INF/jsp/web/common/oauthRedirect.jsp"

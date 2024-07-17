@@ -1,0 +1,23 @@
+<svg id="참석안내" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="38" viewBox="0 0 48 38">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #7871f8;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_6" data-name="사각형 6" class="cls-1" width="48" height="38"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_11" data-name="그룹 11" class="cls-2">
+    <path id="패스_16" data-name="패스 16" class="cls-3" d="M42,0H6A6.03,6.03,0,0,0,0,6.046V31.955A6.029,6.029,0,0,0,6,38H42a6.028,6.028,0,0,0,6-6.045V6.046A6.029,6.029,0,0,0,42,0M40.481,10,25.052,22.091a1.7,1.7,0,0,1-2.1,0L7.52,10a1.736,1.736,0,0,1-.327-2.421,1.706,1.706,0,0,1,2.4-.328l.028.022L24,18.539,38.377,7.273a1.705,1.705,0,0,1,2.408.278,1.736,1.736,0,0,1-.275,2.427Z"/>
+  </g>
+</svg>
