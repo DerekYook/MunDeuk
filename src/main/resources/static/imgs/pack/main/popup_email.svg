@@ -1,0 +1,23 @@
+<svg id="이메일" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="16" viewBox="0 0 20 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #726bf8;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_17" data-name="사각형 17" class="cls-1" width="20" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_15" data-name="그룹 15" class="cls-2">
+    <path id="패스_71" data-name="패스 71" class="cls-3" d="M17.5,0H2.5A2.527,2.527,0,0,0,0,2.546V13.455A2.526,2.526,0,0,0,2.5,16h15A2.525,2.525,0,0,0,20,13.455V2.546A2.526,2.526,0,0,0,17.5,0m-.633,4.211L10.438,9.3a.7.7,0,0,1-.873,0L3.136,4.211A.735.735,0,0,1,2.957,3.2a.7.7,0,0,1,.993-.183.675.675,0,0,1,.059.047L10,7.807l5.99-4.744A.705.705,0,0,1,17,3.139a.737.737,0,0,1-.076,1.026.65.65,0,0,1-.058.046Z"/>
+  </g>
+</svg>

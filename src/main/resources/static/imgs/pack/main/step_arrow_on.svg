@@ -1,0 +1,26 @@
+<svg id="회원가입_상단_arrow_on" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="16" viewBox="0 0 10 16">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        stroke: #726bf8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect id="사각형_3" data-name="사각형 3" class="cls-1" width="10" height="16"/>
+    </clipPath>
+  </defs>
+  <g id="그룹_3" data-name="그룹 3" class="cls-2">
+    <path id="패스_8" data-name="패스 8" class="cls-3" d="M1,1,9,7.9,1,15"/>
+  </g>
+</svg>

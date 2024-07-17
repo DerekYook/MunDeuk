@@ -65,6 +65,11 @@ dependencies {
 
 	runtimeOnly 'com.h2database:h2'
 
+	// 보안 문자 생성
+	implementation 'com.github.penggle:kaptcha:2.3.2'
+	// 음성화
+	implementation 'com.google.cloud:google-cloud-texttospeech:2.0.2'
+
 	compileOnly 'org.projectlombok:lombok'
 
 	annotationProcessor 'org.projectlombok:lombok'

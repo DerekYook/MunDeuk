@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.905" y1="1" x2="0.095" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#726bf8"/>
+      <stop offset="0.077" stop-color="#726bf8"/>
+      <stop offset="0.649" stop-color="#8983fc"/>
+      <stop offset="1" stop-color="#a09bff"/>
+    </linearGradient>
+  </defs>
+  <g id="그룹_29" data-name="그룹 29" transform="translate(-1364 -20)">
+    <circle id="Rectangle_7_copy_3" data-name="Rectangle 7 copy 3" cx="20" cy="20" r="20" transform="translate(1364 20)" fill="url(#linear-gradient)"/>
+    <g id="마이페이지">
+      <text id="My" transform="translate(1372.587 44.497)" fill="#fff" font-size="14" font-family="Montserrat-SemiBold, Montserrat" font-weight="600"><tspan x="0" y="0">My</tspan></text>
+      <circle id="Ellipse_5" data-name="Ellipse 5" cx="1.5" cy="1.5" r="1.5" transform="translate(1394 41)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

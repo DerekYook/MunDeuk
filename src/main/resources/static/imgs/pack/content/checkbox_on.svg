@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #726bf8;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="선택_on" transform="translate(-949 -445)">
+    <rect id="사각형_3" data-name="사각형 3" class="cls-1" width="36" height="36" rx="4" transform="translate(949 445)"/>
+    <path id="패스_4" data-name="패스 4" class="cls-2" d="M16.427,0,7.042,9,1.552,3.729,0,5.229,7.042,12,18,1.49Z" transform="translate(958 457)"/>
+  </g>
+</svg>

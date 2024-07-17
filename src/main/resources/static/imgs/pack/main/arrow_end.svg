@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #707070;
+      }
+
+      .cls-2, .cls-5 {
+        fill: none;
+        stroke: #aaa;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-4 {
+        clip-path: url(#clip-path-2);
+      }
+
+      .cls-5 {
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <circle id="타원_8" data-name="타원 8" class="cls-1" cx="20" cy="20" r="20" transform="translate(-1357 801)"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="사각형_39" data-name="사각형 39" class="cls-2" width="8.126" height="13.414" transform="translate(0 0)"/>
+    </clipPath>
+  </defs>
+  <g id="arrow_end" class="cls-3" transform="translate(-1317 841) rotate(180)">
+    <g id="그룹_77" data-name="그룹 77" transform="translate(-1346 814)">
+      <g id="그룹_75" data-name="그룹 75" class="cls-4">
+        <path id="패스_59" data-name="패스 59" class="cls-5" d="M7.414.7l-6,6.079,6,5.921"/>
+      </g>
+      <g id="그룹_76" data-name="그룹 76" class="cls-4" transform="translate(8.126)">
+        <path id="패스_60" data-name="패스 60" class="cls-5" d="M7.414.7l-6,6.079,6,5.921"/>
+      </g>
+    </g>
+  </g>
+</svg>

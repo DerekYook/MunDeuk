@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3" height="6" viewBox="0 0 3 6">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path id="모니터_next" class="cls-1" d="M-664.142,434.848l-.564-.51,2.026-2.5-1.969-2.492.571-.5,2.372,3Z" transform="translate(664.707 -428.848)"/>
+</svg>

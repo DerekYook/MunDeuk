@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12.696" height="9.696" viewBox="0 0 12.696 9.696">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #666;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="prev" transform="translate(-973.304 -1276.652)">
+    <g id="그룹_1" data-name="그룹 1" transform="translate(898.602 1308.995)">
+      <line id="선_3" data-name="선 3" class="cls-1" x2="12" transform="translate(75.399 -27.495)"/>
+      <path id="패스_7" data-name="패스 7" class="cls-1" d="M79.762-32,75.4-27.5,79.762-23"/>
+    </g>
+  </g>
+</svg>
