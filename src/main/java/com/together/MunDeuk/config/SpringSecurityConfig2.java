@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -83,9 +84,10 @@ public class SpringSecurityConfig2{
   }
 
   @Bean
-  public AuthenticationFailureHandler customFailureHandler() {
+  public CustomLoginFailHandler2 customFailureHandler() {
     return new CustomLoginFailHandler2();
   }
+
   // OAuth2 로그인 성공시 handler
   @Bean
   public CustomOauth2LoginSuccessHandler2 customOauth2LoginSuccessHandler() {
@@ -125,9 +127,12 @@ public class SpringSecurityConfig2{
 
     http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
 
-//    http.csrf(AbstractHttpConfigurer::disable);
-    http.csrf((csrf) -> csrf
-        .csrfTokenRepository(sessionCsrfRepository()));
+    http.csrf(AbstractHttpConfigurer::disable);
+//    http.csrf((csrf) -> csrf
+//        .csrfTokenRepository(sessionCsrfRepository()));
+
+//    // h2 볼때만 활성화
+//    http.headers().frameOptions().disable();
 
     http.sessionManagement(httpSecuritySessionManagementConfigurer -> {
       httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER);

@@ -18,6 +18,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value="SELECT * FROM member WHERE EMAIL = :email AND MEMBER_STATUS = 'Active'", nativeQuery = true)
     Member selectMember(String email);
 
+    @Query(value="SELECT * FROM member WHERE EMAIL = :email AND PASSWORD = :password AND MEMBER_STATUS = 'Active'", nativeQuery = true)
+    Member loginMember(String email, String password);
+
     @Query(value = "SELECT * FROM member WHERE SOCIAL_ID = :socialId AND SOCIAL_TYPE = :socialType AND MEMBER_STATUS = 'Active'", nativeQuery = true)
     Optional<Member> verifiedMember(String socialId, String socialType);
 

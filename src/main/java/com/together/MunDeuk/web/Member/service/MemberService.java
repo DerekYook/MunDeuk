@@ -18,10 +18,11 @@ public class MemberService {
     return memberRepository.selectMembers();
   }
 
-//  public Member validMember(String email) {
-//    Member verifiedMember = memberRepository.verifiedMember(email);
-//    return verifiedMember;
-//  }
+  public Member loginMember(String email, String password){
+    System.out.println(email);
+    System.out.println(password);
+    return memberRepository.loginMember(email, password);
+  }
 
   public long getMemberIndex() {
     return memberRepository.selectMaxMemberIdx();

@@ -53,11 +53,6 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
       ResponseCookie accessTokenCookie = cookieUtil.createCookie(ACCESS_HEADER, customException.getToken());
 
       response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
-    } else if (exception.getCause() instanceof CustomCaptchaException){
-      System.out.println("이거 동작 하는건가?????");
-      // 에러 메시지 추출
-      CustomCaptchaException customCaptchaException = (CustomCaptchaException) exception.getCause();
-      msg = customCaptchaException.getMessage();
     }
 
 //    // 기본 실패 핸들러 호출
@@ -71,14 +66,6 @@ public class CustomAuthenticationFailureHandler2 extends SimpleUrlAuthentication
       } else if(msg.equals("NOT_FOUND")){
         logger.error("NOT FOUND ACCOUNT");
         response.sendRedirect("/error/NO_ACCOUNT");
-      } else if(msg.equals("INVALID_CAPTCHA")){
-        logger.error("FAIL CAPTCHA VALIDATE");
-//        response.sendRedirect("/error/WRONG_LOGIN");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json;charset=UTF-8");
-        Map<String, String> data = new HashMap<>();
-        data.put("error", msg);
-        response.getWriter().write(new ObjectMapper().writeValueAsString(data));
       }
 
     }

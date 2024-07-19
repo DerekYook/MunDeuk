@@ -1,6 +1,8 @@
 package com.together.MunDeuk.exception;
 
-public class CustomCaptchaException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class CustomCaptchaException extends AuthenticationException {
 
   public CustomCaptchaException(String msg, Throwable t) {
     super(msg, t);
@@ -8,11 +10,10 @@ public class CustomCaptchaException extends RuntimeException {
 
   public CustomCaptchaException(String msg) {
     super(msg);
-    System.out.println(this.getCause());
   }
 
-  public CustomCaptchaException() {
-    super();
-  }
+//  public CustomCaptchaException() {
+//    super();
+//  }
 
 }
