@@ -22,15 +22,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-
   private final CaptchaUtil captchaUtil;
-
-  private MemberService memberService;
+  private final MemberService memberService;
 
   public LoginAuthenticationFilter(final String defaultFilterProcessesUrl,
-      final AuthenticationManager authenticationManager, CaptchaUtil captchaUtil) {
+      final AuthenticationManager authenticationManager, CaptchaUtil captchaUtil, MemberService memberService) {
     super(defaultFilterProcessesUrl, authenticationManager);
     this.captchaUtil = captchaUtil;
+    this.memberService = memberService;
   }
 
   @Override

@@ -11,6 +11,7 @@ import com.together.MunDeuk.utils.JwtAuthenticationProvider;
 import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.utils.LoginAuthenticationFilter;
 import com.together.MunDeuk.utils.OAuth2LoginAuthenticationProvider;
+import com.together.MunDeuk.web.Member.service.MemberService;
 import com.together.MunDeuk.web.OAuth2.service.CustomOAuth2UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @Slf4j
 public class SpringSecurityConfig2{
+
+  private final MemberService memberService;
   private final AuthenticationConfiguration authenticationConfiguration;
   private final CustomOAuth2UserService customOAuth2UserService;
   private final JwtAuthenticationProvider jwtAuthenticationProvider;
@@ -153,7 +156,7 @@ public class SpringSecurityConfig2{
           .failureHandler(customFailureHandler())
           ;
       // 로컬에서만 Filter적용
-      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager, captchaUtil), UsernamePasswordAuthenticationFilter.class);
+      http.addFilterAt(this.abstractAuthenticationProcessingFilter(authenticationManager, captchaUtil, memberService), UsernamePasswordAuthenticationFilter.class);
     });
     // oauth인증
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer -> {
@@ -173,9 +176,9 @@ public class SpringSecurityConfig2{
   // 인증 필터
   public AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter(
       // 토큰 정보 추가
-      final AuthenticationManager authenticationManager, final CaptchaUtil captchaUtil) {
+      final AuthenticationManager authenticationManager, final CaptchaUtil captchaUtil, final MemberService memberService) {
     // 토큰 정보를 이용해 사용자 정보 식별
-    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager, captchaUtil);
+    LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter("/ajax/loginProcess", authenticationManager, captchaUtil, memberService);
     // Handler에 토큰 정보 추가
     loginAuthenticationFilter.setAuthenticationSuccessHandler(customSuccessHandler());
     loginAuthenticationFilter.setAuthenticationFailureHandler(customFailureHandler());
