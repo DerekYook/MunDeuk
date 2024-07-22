@@ -19,7 +19,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-@Component(value = "customAuthenticationFailHandler2")
+@Component
 @Slf4j
 @RequiredArgsConstructor
 public class CustomLoginFailHandler2 implements AuthenticationFailureHandler {
@@ -34,22 +34,15 @@ public class CustomLoginFailHandler2 implements AuthenticationFailureHandler {
     String msg = exception.getMessage() == null ? "" : exception.getMessage();
 
     // 원인(cause)이 CustomOAuth2Exception인지 확인하고 그 메시지를 추출
-    if (exception.getCause() instanceof CustomCaptchaException) {
-      System.out.println("이거 동작 하는건가?????");
+    if (exception instanceof CustomCaptchaException) {
       // 에러 메시지 추출
-      CustomCaptchaException customCaptchaException = (CustomCaptchaException) exception.getCause();
-      msg = customCaptchaException.getMessage();
+//      CustomCaptchaException customCaptchaException = (CustomCaptchaException) exception.getCause();
+//      msg = customCaptchaException.getMessage();
+      msg = exception.getMessage();
     }
 
     if (!msg.equals("")) {
-      if (msg.equals("INVALID_PROVIDER")) {
-        log.error("UNKOWN PROVIDER");
-        // todo : redirect 처리
-        response.sendRedirect("/error/FAILED_PROVIDER");
-      } else if (msg.equals("NOT_FOUND")) {
-        log.error("NOT FOUND ACCOUNT");
-        response.sendRedirect("/error/NO_ACCOUNT");
-      } else if (msg.equals("INVALID_CAPTCHA")) {
+      if (msg.equals("INVALID_CAPTCHA")) {
         log.error("FAIL CAPTCHA VALIDATE");
 //        response.sendRedirect("/error/WRONG_LOGIN");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -57,8 +50,15 @@ public class CustomLoginFailHandler2 implements AuthenticationFailureHandler {
         Map<String, String> data = new HashMap<>();
         data.put("error", msg);
         response.getWriter().write(new ObjectMapper().writeValueAsString(data));
+      } else if (msg.equals("INVALID_ACCOUNT")) {
+        log.error("WRONG ACCOUNT INFO");
+//        response.sendRedirect("/error/WRONG_LOGIN");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+        Map<String, String> data = new HashMap<>();
+        data.put("error", msg);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(data));
       }
-
     }
   }
 }

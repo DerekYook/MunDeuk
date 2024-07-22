@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.Constants;
 import com.together.MunDeuk.exception.CustomCaptchaException;
+import com.together.MunDeuk.web.Member.entity.Member;
+import com.together.MunDeuk.web.Member.repository.MemberRepository;
+import com.together.MunDeuk.web.Member.service.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,19 +22,19 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-
   private final CaptchaUtil captchaUtil;
+  private final MemberService memberService;
 
   public LoginAuthenticationFilter(final String defaultFilterProcessesUrl,
-      final AuthenticationManager authenticationManager, CaptchaUtil captchaUtil) {
+      final AuthenticationManager authenticationManager, CaptchaUtil captchaUtil, MemberService memberService) {
     super(defaultFilterProcessesUrl, authenticationManager);
     this.captchaUtil = captchaUtil;
+    this.memberService = memberService;
   }
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request,
-      HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-
+      HttpServletResponse response) throws IOException, CustomCaptchaException {
     String method = request.getMethod();
 
     if (!method.equals("POST")) {
@@ -44,26 +47,35 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     LoginRequestDto loginRequestDto = new ObjectMapper().readValue(inputStream,
         LoginRequestDto.class);
 
-    // captcha 검증
+    String userName = loginRequestDto.username;
+    String password = loginRequestDto.password;
+    System.out.println(userName);
+    System.out.println(password);
+
+    try {
+      memberService.loginMember(userName, password);
+
+      // captcha 검증
 //    String captchaAnswer = request.getParameter("captchaAnswer");
-    String captchaAnswer = loginRequestDto.captchaAnswer;
-    String captchaId = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+      String captchaAnswer = loginRequestDto.captchaAnswer;
+      String captchaId = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
 
-    System.out.println("++++++++++++++++++");
-    System.out.println(captchaAnswer);
-    System.out.println(captchaId);
+      if (!captchaUtil.validateCaptcha(captchaId, captchaAnswer)) {
+        logger.info("Captcha Validate Fail : Provided Text : " + captchaId + " / User Text : " + captchaAnswer);
+        throw new CustomCaptchaException("INVALID_CAPTCHA");
+      } else {
+        logger.info("CAPTCHA validated successfully");
+      }
 
-    if(!captchaUtil.validateCaptcha(captchaId, captchaAnswer)){
-      logger.info("Captcha Validate Fail : Provided Text : " + captchaId + " / User Text : " + captchaAnswer);
-      throw new CustomCaptchaException("INVALID_CAPTCHA");
+      // AuthenticationManager : ProviderManager의 인스턴스 -> Provider 순회 인증시도
+      return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(
+          loginRequestDto.username,
+          loginRequestDto.password,
+          loginRequestDto.csrfToken
+      ));
+    } catch (NullPointerException e) {
+      throw new CustomCaptchaException("INVALID_ACCOUNT");
     }
-
-    // AuthenticationManager : ProviderManager의 인스턴스 -> Provider 순회 인증시도
-    return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(
-        loginRequestDto.username,
-        loginRequestDto.password,
-        loginRequestDto.csrfToken
-    ));
   }
 
   // json에서 email로 오는 값을 username으로 처리

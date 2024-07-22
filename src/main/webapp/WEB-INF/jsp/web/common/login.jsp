@@ -442,9 +442,12 @@
               } else if (errorMsg === 'NOT_FOUND') {
                 console.error("NOT FOUND ACCOUNT");
                 // Redirect or handle accordingly
+              } else if (errorMsg === 'INVALID_ACCOUNT') {
+                console.error("INVALID ACCOUNT");
+                alert("계정 정보를 다시 확인하시기 바랍니다.");
               } else if (errorMsg === 'INVALID_CAPTCHA') {
                 console.error("FAIL CAPTCHA VALIDATE");
-                alert("입력 정보를 다시 확인하시기 바랍니다.");
+                alert("보안 문자를 다시 확인하시기 바랍니다.");
               } else {
                 console.error("Authentication failed: " + errorMsg);
               }
