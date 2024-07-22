@@ -9,10 +9,16 @@
 - [License](#license)
 
 ## About Project
+<!--
 이 프로젝트는 기록용 웹서비스 API제작 프로젝트 입니다.
+-->
+이 프로젝트는 Spring Security를 이용한 웹 및 OAuth2로그인 구현 프로젝트 입니다.
 
 ## Overview
+<!--
 - Object : 기록용 웹서비스 프로젝트
+-->
+- Object : 보안 로그인 구현 프로젝트
 - Language : Java 17
 - FrameWork : Sping Boot 3.2.2
 - Databese : H2
