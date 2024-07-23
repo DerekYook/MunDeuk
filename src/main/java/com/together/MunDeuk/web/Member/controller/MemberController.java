@@ -56,7 +56,12 @@ public class MemberController extends CommonController {
   }
 
   @RequestMapping(value = "/main")
-  public String mainPage() {
+  public String mainPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+    String csrf = getCsrfToken(request);
+    model.addAttribute("csrfToken", csrf);
+    response.setHeader("X-CSRF-TOKEN",csrf);
+
     return "web/common/main";
   }
 
@@ -167,6 +172,38 @@ public class MemberController extends CommonController {
 
     String returnPage = "web/error/" + errorCode;
     return returnPage;
+  }
+
+  @RequestMapping(value = "/ajax/logout")
+  public ResponseEntity<?> logoutProcess(HttpServletRequest request, HttpServletResponse response, Model model){
+
+    String csrf = getCsrfToken(request);
+    model.addAttribute("csrfToken", csrf);
+    response.setHeader("X-CSRF-TOKEN",csrf);
+
+    // JSESSIONID 쿠키 삭제
+    Cookie jsessionIdCookie = new Cookie("JSESSIONID", null);
+    jsessionIdCookie.setPath("/");
+    jsessionIdCookie.setHttpOnly(true);
+    jsessionIdCookie.setMaxAge(0); // 쿠키 만료 시간 설정
+    response.addCookie(jsessionIdCookie);
+
+    // Access 쿠키 삭제
+    Cookie accessCookie = new Cookie("Access", null);
+    accessCookie.setPath("/");
+    accessCookie.setHttpOnly(true);
+    accessCookie.setMaxAge(0);
+    response.addCookie(accessCookie);
+
+    // Refresh 쿠키 삭제
+    Cookie refreshCookie = new Cookie("Refresh", null);
+    refreshCookie.setPath("/");
+    refreshCookie.setHttpOnly(true);
+    refreshCookie.setMaxAge(0);
+    response.addCookie(refreshCookie);
+
+
+    return ResponseEntity.ok("Successfully logged out");
   }
 
 }

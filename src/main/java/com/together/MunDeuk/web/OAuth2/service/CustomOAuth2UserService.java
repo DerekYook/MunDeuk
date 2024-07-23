@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-  @Value("${jwt.access-token-expiration-millis}")
+  @Value("${jwt.access-exp-time}")
   public int ACCESS_EXP_TIME;
 
   private final MemberRepository memberRepository;
