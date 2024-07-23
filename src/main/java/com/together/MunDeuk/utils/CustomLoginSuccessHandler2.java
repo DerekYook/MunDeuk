@@ -34,10 +34,10 @@ public class CustomLoginSuccessHandler2 implements AuthenticationSuccessHandler 
   @Value("${jwt.refresh-header}")
   public String REFRESH_HEADER;
 
-  @Value("${jwt.access-token-expiration-millis}")
+  @Value("${jwt.access-exp-time}")
   public int ACCESS_EXP_TIME;
 
-  @Value("${jwt.refresh-token-expiration-millis}")
+  @Value("${jwt.refresh-exp-time}")
   public int REFRESH_EXP_TIME;
 
   private final CookieUtil cookieUtil;

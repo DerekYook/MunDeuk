@@ -131,8 +131,8 @@ public class SpringSecurityConfig2{
     http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
 
     http.csrf(AbstractHttpConfigurer::disable);
-//    http.csrf((csrf) -> csrf
-//        .csrfTokenRepository(sessionCsrfRepository()));
+    http.csrf((csrf) -> csrf
+        .csrfTokenRepository(sessionCsrfRepository()));
 
 //    // h2 볼때만 활성화
 //    http.headers().frameOptions().disable();

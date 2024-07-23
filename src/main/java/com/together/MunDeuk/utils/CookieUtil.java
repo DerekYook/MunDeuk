@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieUtil {
 
-  @Value("${jwt.access-token-expiration-millis}")
+  @Value("${jwt.access-exp-time}")
   public int ACCESS_EXP_TIME;
 
   public ResponseCookie createCookie(String cookieName, String value) {
