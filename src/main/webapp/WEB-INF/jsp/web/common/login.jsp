@@ -530,6 +530,18 @@
           }
         });
       }
+
+      function fn_googleLogin() {
+        window.name = "Parent_window";
+        window.open('/oauthRedirect?gb=google', 'popupChk',
+            'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+       }
+
+      function fn_kakaoLogin() {
+        window.name = "Parent_window";
+        window.open('/oauthRedirect?gb=kakao', 'popupChk',
+            'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+        }
     </script>
 </head>
 
@@ -592,13 +604,7 @@
                         </form>
                     </div>
                     <div>
-                        <button type="button" onclick="fn_facebookSignUp()">페이스북 회원가입</button>
-                    </div>
-                    <div>
-                        <button type="button" onclick="fn_facebookLogin()">페이스북 로그인</button>
-                    </div>
-                    <div>
-                        <button type="button" onclick="fn_kakaoSignUp()">카카오톡 회원가입</button>
+                        <button type="button" onclick="fn_googleLogin()">구글 로그인</button>
                     </div>
                     <div>
                         <button type="button" onclick="fn_kakaoLogin()">카카오톡 로그인</button>

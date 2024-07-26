@@ -10,8 +10,6 @@ spring:
             user-name-attribute: id
         registration:
           kakao:
-            client-id: e2174bb494b6baccb7326bdd3a1ba0c8
-            client-secret: lqikOKHdBzUmnMHmIy2EeGOFN8e9ddvH
             client-authentication-method: client_secret_post
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
@@ -20,3 +18,6 @@ spring:
               - profile_nickname
               - profile_image
               - account_email # 비즈 혹은 테스트 앱일 경우에만 제공됨
+          google:
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope: email, openid

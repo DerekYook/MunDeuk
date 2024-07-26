@@ -85,8 +85,7 @@ public class MemberController extends CommonController {
   @ResponseBody
   @RequestMapping(value = "/ajax/loginProcess", method = RequestMethod.POST)
 //  public void confirmLogin(){}
-  public ResponseEntity<?> loginProcess(HttpServletRequest request, HttpServletResponse response, Model model)
-      throws IOException {
+  public ResponseEntity<?> loginProcess(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 //    Map<String, Object> responseMap = new HashMap<>();
 //
 //    int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
@@ -99,7 +98,6 @@ public class MemberController extends CommonController {
 //
 //    response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
 //    response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
-
     String csrf = getCsrfToken(request);
 
     model.addAttribute("csrfToken", csrf);
@@ -115,6 +113,7 @@ public class MemberController extends CommonController {
   public ResponseEntity signUp(@RequestParam String nickName, @RequestParam String email,
       @RequestParam String password) throws Exception {
     // todo : 휴대폰 본인 인증 혹은 이메일 인증 서비스 추가
+    // 둘다 유료 흠...
 
     long memberId = memberService.getMemberIndex();
     memberService.signUpMember(memberId, nickName, email, password);
@@ -144,20 +143,27 @@ public class MemberController extends CommonController {
   }
 
   @RequestMapping(value = "/oauthRedirect")
-  public String oauth2LoginProcess() {
+  public String oauth2LoginProcess(HttpServletRequest request, Model model) {
     String returnPage = "web/common/oauthRedirect";
+
+    log.info("###########" + request.getParameter("gb"));
+
+    String csrf = getCsrfToken(request);
+    model.addAttribute("newToken", csrf);
+    model.addAttribute("gb", request.getParameter("gb"));
+
     return returnPage;
   }
 
-  @ResponseBody
-  @RequestMapping(value = "/ajax/accountChk", method = RequestMethod.POST)
-  public ResponseEntity<?> oauthAccountChk(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    log.info("----------------------------------------------");
-    log.info("account Check : " + response);
-    log.info("account Check : " + request);
-
-    return new ResponseEntity<>(null, HttpStatus.OK);
-  }
+//  @ResponseBody
+//  @RequestMapping(value = "/ajax/accountChk", method = RequestMethod.POST)
+//  public ResponseEntity<?> oauthAccountChk(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//    log.info("----------------------------------------------");
+//    log.info("account Check : " + response);
+//    log.info("account Check : " + request);
+//
+//    return new ResponseEntity<>(null, HttpStatus.OK);
+//  }
 
   @RequestMapping(value = "/error/{errorCode}")
   public String errorRedirect(@PathVariable String errorCode, HttpServletRequest request, HttpServletResponse response){
