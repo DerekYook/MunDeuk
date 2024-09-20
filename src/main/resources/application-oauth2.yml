@@ -10,8 +10,8 @@ spring:
             user-name-attribute: id
         registration:
           kakao:
-            client-id: e2174bb494b6baccb7326bdd3a1ba0c8
-            client-secret: lqikOKHdBzUmnMHmIy2EeGOFN8e9ddvH
+            ENC("dj/BMDa5fSYOopikkMAqNRjWEl/j5XAHs4JvRs6qjWwxtU4yNyLObSvmp2ZbQYrY")
+            ENC("nHO/EGPshiYS7a6Y/UcmDQl1gL5Ttvo9uL28QUn7felFFt7XdvJdGFupJ3Iq0DeF")
             client-authentication-method: client_secret_post
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
@@ -20,3 +20,8 @@ spring:
               - profile_nickname
               - profile_image
               - account_email # 비즈 혹은 테스트 앱일 경우에만 제공됨
+          google:
+            ENC("MMf3qBNYW9q7Is8tGzHmyohLN1CLVTQ658fSJEmGShSinszKZfEg469CpTVBn/n6x//HJ3llb6fuex6hCy0TSNDR3cN86AN7SpyMZvxMGA/jHO2fZPbzFg==")
+            ENC("ceFxX0Eih0uXJc73t3zHiTl6hLKEy7b1ou4LrycVUhNMdLR0Hceu2+UkSU56TG3b")
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope: email, openid

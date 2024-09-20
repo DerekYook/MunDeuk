@@ -1,10 +1,13 @@
 HELP.md
 .github
 .gradle
+application-oauth2.yml
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+/src/main/resources/jasypt-encryptor-password.txt
 
 ### STS ###
 .apt_generated

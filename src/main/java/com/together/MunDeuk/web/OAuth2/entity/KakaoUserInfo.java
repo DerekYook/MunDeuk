@@ -2,13 +2,14 @@ package com.together.MunDeuk.web.OAuth2.entity;
 
 import java.util.Map;
 
-public class OAuth2UserInfo {
+public class KakaoUserInfo {
 
   public static String socialId;
   public static Map<String, Object> account;
   public static Map<String, Object> profile;
   public static String email;
-  public OAuth2UserInfo (Map<String, Object> attributes) {
+
+  public KakaoUserInfo(Map<String, Object> attributes) {
     socialId = String.valueOf(attributes.get("id"));
     account = (Map<String, Object>) attributes.get("kakao_account");
     profile = (Map<String, Object>) account.get("profile");

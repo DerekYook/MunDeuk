@@ -53,7 +53,7 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
     log.info("Principal class: " + authentication.getPrincipal().getClass().getName());
 
     OAuth2PrincipalDetail principal = (OAuth2PrincipalDetail) authentication.getPrincipal();
-
+    String gb = String.valueOf(principal.getMember().getSocialType()).toLowerCase();
     log.info("authentication.getPrincipal() = {}", principal);
 
     Map<String, Object> responseMap = principal.getMemberInfo();
@@ -91,7 +91,7 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
 
       Map<String, Object> responseData = new HashMap<>();
       String targetUrl =
-          determineTargetUrl(authentication) + "?loginSuccess=true"; // 사용자 역할에 따라 URL 결정
+          determineTargetUrl(authentication) + "?gb=" + gb + "&loginSuccess=true"; // 사용자 역할에 따라 URL 결정
       responseData.put("redirectUrl", targetUrl); // 리디렉션할 URL을 JSON 응답에 포함
       new ObjectMapper().writeValue(response.getWriter(), responseData);
     } else {
@@ -102,7 +102,10 @@ public class CustomOauth2LoginSuccessHandler2 implements AuthenticationSuccessHa
 
   private void handle(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) throws IOException {
-    String targetUrl = determineTargetUrl(authentication) + "?loginSuccess=true";
+    OAuth2PrincipalDetail principal = (OAuth2PrincipalDetail) authentication.getPrincipal();
+    String gb = String.valueOf(principal.getMember().getSocialType()).toLowerCase();
+
+    String targetUrl = determineTargetUrl(authentication) + "?gb=" + gb + "&loginSuccess=true";
     log.info("Authentication : " + authentication);
 
     if (response.isCommitted()) {

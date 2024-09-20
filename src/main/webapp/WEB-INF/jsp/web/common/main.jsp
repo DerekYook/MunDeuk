@@ -61,6 +61,17 @@
                     </form>
                 </div>
                 <div>
+                    <span>메뉴 이동</span>
+                    <ul>
+                        <li>게시판</li>
+                        <li>지도</li>
+                    </ul>
+                </div>
+                <div>
+                    <span>일정</span>
+
+                </div>
+                <div>
                     <p>Copyright MoonDeuk 2024 All rights reserved.</p>
                 </div>
             </div>

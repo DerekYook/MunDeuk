@@ -5,7 +5,8 @@ import com.together.MunDeuk.utils.JwtTokenizer2;
 import com.together.MunDeuk.web.OAuth2.domain.OAuth2PrincipalDetail;
 import com.together.MunDeuk.web.Member.entity.Member;
 import com.together.MunDeuk.web.Member.repository.MemberRepository;
-import com.together.MunDeuk.web.OAuth2.entity.OAuth2UserInfo;
+import com.together.MunDeuk.web.OAuth2.entity.GoogleUserInfo;
+import com.together.MunDeuk.web.OAuth2.entity.KakaoUserInfo;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     log.info("OAuth2 User = {}", oAuth2User);
     log.info("attributes = {}", attributes);
 
-    try{
+    try {
       return oAuth2VerifyProcess(userRequest, oAuth2User);
     } catch (CustomOAuth2Exception e) {
 //      throw new OAuth2AuthenticationException(new CustomOAuth2Exception(e.getMessage(), e));
@@ -77,7 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       Map<String, Object> accountInfo = (Map<String, Object>) attributes.get("kakao_account");
       String userEmail = (String) accountInfo.get("email");
 
-      OAuth2UserInfo kakaoUserInfo = new OAuth2UserInfo(attributes);
+      KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(attributes);
 
       log.info("kakao Login Info = {}", kakaoUserInfo);
 
@@ -87,18 +88,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
       String email = userEmail;
 
       // todo : 로그인 회원가입 분리
-      Optional<Member> verifiedMemberBySocial = memberRepository.verifiedMember(socialId, socialType);
+      Optional<Member> verifiedMemberBySocial = memberRepository.verifiedMember(socialId,
+          socialType);
       if (verifiedMemberBySocial.isPresent()) {
         try {
-          log.info("!!!! Login !!!!");
+          log.info("!!!! Kakao Login !!!!");
           member = memberRepository.findBySocial(socialId, socialType);
         } catch (Exception e) {
-          log.info("!!!! Error during Login !!!!");
-          log.error("Error finding user by social ID: " + socialId + ", " + socialType, e);
+          log.info("!!!! Error during Kakao Login !!!!");
+          log.error("Error finding user by Kakao social ID: " + socialId + ", " + socialType, e);
           throw e; // 또는 적절한 예외 처리
         }
       } else {
-        log.debug("!!!! Need Registration !!!!");
+        log.debug("!!!! Need Kakao Registration !!!!");
         // 일치 하는 회원이 없다면 새로 등록
         Map<String, Object> memberMap = new HashMap<>();
 
@@ -110,27 +112,65 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //        // static 분리
 //        int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
         int accessTokenLiveTime = ACCESS_EXP_TIME;
-
+        // 임시 토큰 발행
         String tempToken = jwtTokenizer2.generateToken(memberMap, accessTokenLiveTime);
         throw new CustomOAuth2Exception("NOT_FOUND", tempToken);
       }
 
 //      member = verifiedMemberBySocial.orElseGet(() -> saveSocialMember(name, email, socialId, socialType));
 
-//    } else if(registrationId.eqauls("")){
-//      // 구글
-    }
+    } else if (registrationId.equals("google")) {
+      // 구글
+      String userEmail = (String) attributes.get("email");
 
+      GoogleUserInfo googleUserInfo = new GoogleUserInfo(attributes);
+
+      log.info("google Login Info = {}", googleUserInfo);
+
+      String socialType = registrationId.toUpperCase();
+      String socialId = googleUserInfo.getSocialId();
+      String email = googleUserInfo.getEmail();
+
+      // todo : 로그인 회원가입 분리
+      Optional<Member> verifiedMemberBySocial = memberRepository.verifiedMember(socialId,
+          socialType);
+      if (verifiedMemberBySocial.isPresent()) {
+        try {
+          log.info("!!!! Google Login !!!!");
+          member = memberRepository.findBySocial(socialId, socialType);
+        } catch (Exception e) {
+          log.info("!!!! Error during Google Login !!!!");
+          log.error("Error finding user by Google social ID: " + socialId + ", " + socialType, e);
+          throw e; // 또는 적절한 예외 처리
+        }
+      } else {
+        log.debug("!!!! Need Google Registration !!!!");
+        // 일치 하는 회원이 없다면 새로 등록
+        Map<String, Object> memberMap = new HashMap<>();
+        String[] tempName = email.split("@");
+        memberMap.put("name", tempName[0]);
+        memberMap.put("socialType", socialType);
+        memberMap.put("socialId", socialId);
+        memberMap.put("email", email);
+
+//        // static 분리
+//        int accessTokenLiveTime = JwtTokenizer2.ACCESS_EXP_TIME;
+        int accessTokenLiveTime = ACCESS_EXP_TIME;
+
+        String tempToken = jwtTokenizer2.generateToken(memberMap, accessTokenLiveTime);
+        throw new CustomOAuth2Exception("NOT_FOUND", tempToken);
+      }
+
+
+    }
     return new OAuth2PrincipalDetail(member,
         Collections.singleton(new SimpleGrantedAuthority(member.getMemberAuth().name())),
         attributes);
-  }
-
 //  public Member saveSocialMember(String name, String email, String socialId, String socialType) {
 //    long memberId = memberRepository.selectMaxMemberIdx();
 //    memberRepository.saveSocialMember(memberId, name, email, socialId, socialType);
 //    return memberRepository.selectMember(email);
 //  }
 
+  }
 }
-
